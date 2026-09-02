@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sullivan Hart LLP — St. Kitts & Nevis CBI · Additional Information</title>
+<style>
+  :root{
+    --gold:#B8962E; --gold-soft:#D8C27E; --dark:#1A1A2E; --dark-2:#2A2A45;
+    --body:#2C2C2C; --sub:#888888; --lblbg:#F9F4E8; --roweven:#F5F5F5;
+    --border:#CCCCCC; --border-soft:#E4E4E4; --page:#FBFAF6; --card:#FFFFFF;
+    --ok:#2E7D4F; --err:#B23A3A; --err-bg:#FBEDED; --pre:#EAF1EC; --pre-bd:#BFD8C6;
+    --font:Arial,"Helvetica Neue",Helvetica,sans-serif;
+    --shadow:0 1px 2px rgba(26,26,46,.06),0 8px 24px rgba(26,26,46,.06);
+    --shadow-sm:0 1px 2px rgba(26,26,46,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font);color:var(--body);background:var(--page);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px 90px;}
+  .masthead{background:var(--dark);border-bottom:3px solid var(--gold);color:#fff;padding:30px 0 26px;}
+  .masthead .inner{max-width:920px;margin:0 auto;padding:0 20px;}
+  .firm{font-size:20px;font-weight:bold;letter-spacing:.16em;}
+  .firm .amp{color:var(--gold-soft);}
+  .masthead .rule{height:2px;width:54px;background:var(--gold);margin:12px 0 14px;border-radius:2px;}
+  .masthead h1{font-size:22px;margin:0;font-weight:bold;}
+  .masthead .sub{color:#B9B9C8;font-size:12px;letter-spacing:.18em;margin-top:8px;text-transform:uppercase;}
+  .intro{background:var(--lblbg);border:1px solid #ECE0C2;border-left:4px solid var(--gold);border-radius:6px;padding:20px 22px;margin:26px 0 8px;box-shadow:var(--shadow-sm);}
+  .intro h2{margin:0 0 6px;font-size:16px;color:var(--dark);}
+  .intro p{margin:6px 0;font-size:14px;color:#5b5645;}
+  .intro .note{font-size:12.5px;color:var(--sub);margin-top:12px;font-style:italic;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:#5b5645;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot-pre{width:12px;height:12px;border-radius:3px;background:var(--pre);border:1px solid var(--pre-bd);display:inline-block;}
+  .dot-new{width:12px;height:12px;border-radius:3px;background:#fff;border:1px solid var(--border);display:inline-block;}
+  .card{background:var(--card);border:1px solid var(--border-soft);border-radius:8px;padding:24px 26px 26px;margin:22px 0;box-shadow:var(--shadow);}
+  .card-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--gold);padding-bottom:10px;margin-bottom:6px;}
+  .badge{flex:0 0 auto;min-width:26px;height:26px;padding:0 8px;border-radius:5px;background:var(--dark);color:#fff;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center;}
+  .card-head h2{margin:0;font-size:18px;color:var(--dark);font-weight:bold;}
+  .card-head .role{color:var(--sub);font-size:12px;font-weight:normal;letter-spacing:.04em;}
+  .card > .lede{color:#5d5d5d;font-size:13px;margin:6px 0 16px;}
+  .subhead{font-size:13px;font-weight:bold;color:var(--dark);letter-spacing:.05em;text-transform:uppercase;margin:24px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border-soft);}
+  .qnum{color:var(--gold);font-weight:bold;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;}
+  .grid .full{grid-column:1 / -1;}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:2px;}
+  label.lbl{font-size:13px;font-weight:bold;color:var(--dark);}
+  .req{color:var(--err);}
+  .help{font-size:12px;color:var(--sub);}
+  input[type=text],input[type=number],input[type=date],textarea,select{
+    font-family:var(--font);font-size:14px;color:var(--body);background:#fff;
+    border:1px solid var(--border);border-radius:6px;padding:9px 11px;width:100%;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,150,46,.15);}
+  textarea{min-height:80px;resize:vertical;}
+  .prefill input,.prefill textarea{background:var(--pre);border-color:var(--pre-bd);}
+  .tag{display:inline-block;font-size:10.5px;font-weight:bold;letter-spacing:.05em;text-transform:uppercase;color:var(--ok);background:#fff;border:1px solid var(--pre-bd);border-radius:4px;padding:1px 6px;margin-left:8px;vertical-align:middle;}
+  .yn{display:flex;gap:22px;padding:4px 0;}
+  .yn label{font-size:14px;font-weight:normal;display:inline-flex;align-items:center;gap:7px;cursor:pointer;}
+  .qrow{border:1px solid var(--border-soft);border-radius:6px;padding:12px 14px;margin-bottom:10px;background:#fff;}
+  .qrow .qtext{font-size:13.5px;margin:0 0 8px;}
+  .rowline{display:flex;gap:10px;align-items:flex-end;margin-bottom:10px;}
+  .rowline .field{flex:1;margin:0;}
+  .miniadd{background:none;border:1px dashed var(--gold);color:#8a6d1e;border-radius:6px;padding:7px 12px;font-size:13px;cursor:pointer;font-family:var(--font);margin-top:2px;}
+  .miniadd:hover{background:var(--lblbg);}
+  .rm{background:none;border:1px solid var(--border);border-radius:6px;color:#8a8a8a;font-size:12px;padding:8px 10px;cursor:pointer;font-family:var(--font);}
+  .rm:hover{border-color:var(--err);color:var(--err);}
+  .attest{background:#F7F5EE;border:1px solid #E7DFC6;border-radius:6px;padding:14px 16px;margin-top:18px;}
+  .attest label.chk{display:flex;gap:9px;font-size:13px;align-items:flex-start;cursor:pointer;}
+  .submitbar{margin-top:30px;padding-top:24px;border-top:2px solid var(--gold);}
+  .submitbar .ready{font-size:14px;color:#5d5d5d;margin:0 0 16px;}
+  .actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
+  .btn-primary{background:var(--dark);color:#fff;border:none;border-radius:7px;padding:13px 26px;font-size:15px;font-weight:bold;cursor:pointer;font-family:var(--font);}
+  .btn-primary:hover{background:var(--dark-2);}
+  .btn-ghost{background:none;border:1px solid var(--border);border-radius:7px;padding:12px 18px;font-size:13.5px;color:#6b6b6b;cursor:pointer;font-family:var(--font);}
+  .btn-ghost:hover{border-color:var(--gold);color:#8a6d1e;}
+  .status{font-size:13.5px;margin-top:14px;}
+  .status.ok{color:var(--ok);} .status.err{color:var(--err);}
+  .saver{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#F4F6F3;border:1px solid #DCE5DC;border-left:4px solid var(--ok);border-radius:6px;padding:10px 15px;margin:16px 0 0;font-size:12.5px;color:#4a5a4a;}
+  .saver-btn{background:none;border:1px solid var(--border);border-radius:5px;color:#6b6b6b;font-size:12px;padding:5px 11px;cursor:pointer;font-family:var(--font);}
+  .saver-btn:hover{border-color:var(--err);color:var(--err);}
+  .foot{color:var(--sub);font-size:11.5px;text-align:center;margin-top:26px;font-style:italic;}
+</style>
+</head>
+<body>
+<div class="masthead"><div class="inner">
+  <div class="firm">SULLIVAN HART <span class="amp">LLP</span></div>
+  <div class="rule"></div>
+  <h1>St. Kitts &amp; Nevis — Citizenship by Investment</h1>
+  <div class="sub">Additional Due-Diligence Information · SH018</div>
+</div></div>
+
+<div class="wrap">
+  <div class="intro">
+    <h2>Please complete this form for both applicants</h2>
+    <p>The St. Kitts and Nevis Citizenship by Investment Unit requires the additional information below for each applicant. We have <strong>pre-filled everything already in your file</strong> — please check it and correct anything that is not right. The remaining fields we do not have on record; please complete them as fully and accurately as you can.</p>
+    <p>Because this is a citizenship application, every answer must be true and complete. Once we receive this, we will set up the application and let you know if any further documents are needed.</p>
+    <div class="legend">
+      <span><span class="dot-pre"></span> Pre-filled from your file — please confirm</span>
+      <span><span class="dot-new"></span> Please complete</span>
+    </div>
+    <p class="note">Your answers are sent directly and securely to Sullivan Hart. You can also save your progress on this device and finish later, or download your answers and email them to us instead.</p>
+  </div>
+
+  <div class="saver">
+    <span>Your progress is saved on this device as you type.</span>
+    <button type="button" class="saver-btn" id="btn-clear">Start over</button>
+  </div>
+
+  <form id="cbiForm" novalidate>
+    <div id="applicants"></div>
+
+    <div class="submitbar">
+      <p class="ready">When both applicants are complete, press Submit. If you would rather not submit online, download your answers and email them to us.</p>
+      <div class="actions">
+        <button type="button" class="btn-primary" id="btn-submit">Submit to Sullivan Hart &nbsp;→</button>
+        <button type="button" class="btn-ghost" id="btn-download">Download my answers</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </form>
+
+  <div class="foot">Sullivan Hart LLP — Confidential. This form collects information for the St. Kitts &amp; Nevis citizenship-by-investment application only.</div>
+</div>
+
+<script>
+/* ===== PER-MATTER CONFIG ===== */
+const CONFIG = {
+  clientId: "SH018",
+  matter: "St. Kitts & Nevis CBI — Additional DD",
+  formEndpoint: "https://formspree.io/f/mkgvyyop"   // firm Formspree endpoint
+};
+
+/* ===== Pre-filled data from file (editable by applicant) ===== */
+const APPLICANTS = [
+  {
+    tag: "Tamara Scott", role: "Main Applicant",
+    fullName: "Tamara Joan Scott",
+    dob: "1965-10-09",
+    pobCity: "", pobCountry: "United States (Oregon)",
+    nationality: "United States",
+    address: "1818 N Towner Street, Santa Ana, California 92706, United States",
+    since: "approx. 2018 (about 8 years)",
+    occupation: "Founder — consulting and coaching practice (self-employed)",
+    incomeEst: "USD 250,000–500,000 (household band on file)",
+    assetsEst: "USD 4,000,000 (household / joint estimate)"
+  },
+  {
+    tag: "William Crowley", role: "Applicant (spouse)",
+    fullName: "William Al Crowley",
+    dob: "1968-07-12",
+    pobCity: "", pobCountry: "United States",
+    nationality: "Ireland; United States",
+    address: "1818 N Towner Street, Santa Ana, California 92706, United States",
+    since: "approx. 2018 (about 8 years)",
+    occupation: "Key Account Manager (sales) — GracoRoberts, 3200 Avenue E East, Arlington, TX 76011-5231",
+    incomeEst: "USD 250,000–500,000 (household band on file)",
+    assetsEst: "USD 4,000,000 (household / joint estimate)"
+  }
+];
+
+const BG_QUESTIONS = [
+  "Have you EVER committed, assisted in committing, or attempted to commit, a crime or offence for which you were not arrested?",
+  "Have you EVER been arrested, cited or detained by any law-enforcement officer (including any immigration official) for any reason?",
+  "Have you EVER been charged with committing, attempting to commit, or assisting in committing a crime or offence?",
+  "Have you EVER been convicted of a crime or offence?",
+  "Have you EVER been placed in an alternative-sentencing or a rehabilitative programme (for example, diversion, deferred prosecution)?",
+  "Have you EVER served in the armed forces of any country?"
+];
+
+/* ===== helpers ===== */
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+function fld(name,label,opts={}){
+  const pre = opts.value ? "prefill" : "";
+  const tag = opts.value ? '<span class="tag">on file</span>' : "";
+  const req = opts.req ? ' <span class="req">*</span>' : "";
+  const help = opts.help ? `<div class="help">${opts.help}</div>` : "";
+  const cls = opts.full ? "field full" : "field";
+  const type = opts.type || "text";
+  return `<div class="${cls} ${pre}"><label class="lbl">${label}${req}${tag}</label>`+
+    `<input type="${type}" name="${esc(name)}" value="${esc(opts.value||"")}" placeholder="${esc(opts.ph||"")}">${help}</div>`;
+}
+function area(name,label,opts={}){
+  const pre = opts.value ? "prefill" : "";
+  const tag = opts.value ? '<span class="tag">on file</span>' : "";
+  const help = opts.help ? `<div class="help">${opts.help}</div>` : "";
+  return `<div class="field full ${pre}"><label class="lbl">${label}</label>`+
+    `<textarea name="${esc(name)}" placeholder="${esc(opts.ph||"")}">${esc(opts.value||"")}</textarea>${help}</div>`;
+}
+function yn(name,text){
+  return `<div class="qrow"><p class="qtext">${text}</p><div class="yn">`+
+    `<label><input type="radio" name="${esc(name)}" value="Yes"> Yes</label>`+
+    `<label><input type="radio" name="${esc(name)}" value="No"> No</label></div>`+
+    `<div class="field full"><input type="text" name="${esc(name)} — details" placeholder="If yes, please give details (dates, place, outcome)"></div></div>`;
+}
+
+function section(a, idx){
+  const P = s => `${a.tag} — ${s}`;   // field-name prefix
+  let h = `<div class="card"><div class="card-head"><span class="badge">${idx+1}</span>`+
+    `<h2>${esc(a.fullName)}</h2><span class="role">${esc(a.role)}</span></div>`+
+    `<p class="lede">Fields shaded green are already in your file — please confirm or correct. All other fields are for you to complete.</p>`;
+
+  // identity confirm
+  h += `<div class="subhead">Identity (please confirm)</div><div class="grid">`+
+    fld(P("Full name"),"Full name",{value:a.fullName})+
+    fld(P("Date of birth"),"Date of birth",{value:a.dob,type:"date"})+
+    fld(P("Place of birth — city"),"Place of birth — city",{ph:"City / town of birth",help:"We do not have your city of birth on file — please add it."})+
+    fld(P("Place of birth — country"),"Place of birth — country/state",{value:a.pobCountry})+
+    fld(P("Nationality (all held)"),"Nationality — all citizenships held",{value:a.nationality,full:true})+
+    `</div>`;
+
+  // 1. marriages
+  h += `<div class="subhead"><span class="qnum">1.</span> Marital history</div><div class="grid">`+
+    fld(P("Number of times married"),"How many times have you been married?",{type:"number",req:true,help:"Enter a number. If more than once, we may ask for a little more detail."})+
+    `</div>`;
+
+  // 2. close family
+  h += `<div class="subhead"><span class="qnum">2.</span> Close family (children &amp; parents)</div>`+
+    `<div class="qrow"><p class="qtext">Children — our records show <strong>no children</strong>. Please confirm, or list any children below.</p><div class="yn">`+
+      `<label><input type="radio" name="${esc(P("Has children"))}" value="No children" checked> No children (confirmed)</label>`+
+      `<label><input type="radio" name="${esc(P("Has children"))}" value="Has children"> I have children (list below)</label></div>`+
+      `<div class="field full"><input type="text" name="${esc(P("Children — details"))}" placeholder="If any: name, date of birth, place of birth, nationality (one per line)"></div></div>`+
+    `<p class="help" style="margin:2px 0 10px">Parents — please give details for each parent (write “deceased” if applicable).</p>`+
+    `<div class="grid">`+
+      fld(P("Father — full name"),"Father — full name",{})+
+      fld(P("Father — date of birth"),"Father — date of birth",{ph:"or approx. year"})+
+      fld(P("Father — place of birth"),"Father — place of birth",{ph:"City, country"})+
+      fld(P("Father — nationality"),"Father — nationality",{})+
+      fld(P("Mother — full name"),"Mother — full name (incl. maiden name)",{})+
+      fld(P("Mother — date of birth"),"Mother — date of birth",{ph:"or approx. year"})+
+      fld(P("Mother — place of birth"),"Mother — place of birth",{ph:"City, country"})+
+      fld(P("Mother — nationality"),"Mother — nationality",{})+
+    `</div>`;
+
+  // 3. addresses (repeatable)
+  h += `<div class="subhead"><span class="qnum">3.</span> Addresses — last 10 years</div>`+
+    `<p class="help" style="margin:0 0 10px">We have your current address on file. Please confirm the dates and add any other address you have lived at in the last 10 years.</p>`+
+    `<div class="addrs" data-p="${esc(a.tag)}">`+
+      addrRow(a.tag,0,{address:a.address,dates:a.since,current:true})+
+    `</div>`+
+    `<button type="button" class="miniadd" data-addaddr="${esc(a.tag)}">+ add a previous address</button>`;
+
+  // 4-8 physical
+  h += `<div class="subhead"><span class="qnum">4–8.</span> Physical description</div><div class="grid">`+
+    fld(P("Height"),"Height",{req:true,ph:"e.g. 5 ft 9 in / 175 cm"})+
+    fld(P("Weight"),"Weight",{req:true,ph:"e.g. 160 lb / 73 kg"})+
+    fld(P("Colour of hair"),"Colour of hair",{req:true})+
+    fld(P("Colour of eyes"),"Colour of eyes",{req:true})+
+    fld(P("Distinguishing marks"),"Distinguishing marks",{full:true,ph:"e.g. scars, tattoos — or write “none”"})+
+    `</div>`;
+
+  // 9. CV / education — CV on file
+  h += `<div class="subhead"><span class="qnum">9.</span> Employment, qualifications &amp; education</div>`+
+    `<div class="qrow prefill"><p class="qtext"><span class="tag">on file</span> &nbsp;We have your CV / résumé on file, covering your employment history, qualifications and education — no need to re-enter it here.</p>`+
+    `<div class="yn">`+
+      `<label><input type="radio" name="${esc(P("CV status"))}" value="Current — no changes" checked> My CV is current — no changes</label>`+
+      `<label><input type="radio" name="${esc(P("CV status"))}" value="Has updates"> I have updates (note below)</label></div>`+
+    area(P("CV updates / additions"),"Any updates or additions",{ph:"Note anything changed since your CV — new roles or dates, or any qualifications or education not shown on it. Leave blank if none."})+
+    `</div>`;
+
+  // 10. income & assets
+  h += `<div class="subhead"><span class="qnum">10.</span> Financial estimate (USD)</div>`+
+    `<p class="help" style="margin:0 0 10px">The figures below are our current file estimate (household). Please confirm or replace with your own figure — <strong>annual net income to the nearest USD 100,000</strong> and <strong>personal net assets to the nearest USD 1,000,000</strong>.</p>`+
+    `<div class="grid">`+
+      fld(P("Annual net income (USD)"),"Annual net income (nearest 100,000)",{value:a.incomeEst})+
+      fld(P("Personal net assets (USD)"),"Personal net assets (nearest 1,000,000)",{value:a.assetsEst})+
+    `</div>`;
+
+  // 11. background
+  h += `<div class="subhead"><span class="qnum">11.</span> Background declarations</div>`+
+    `<p class="help" style="margin:0 0 10px">Please answer every question. If any answer is “Yes”, give details in the box that appears.</p>`;
+  BG_QUESTIONS.forEach((q,qi)=>{ h += yn(P("Q"+(qi+1)+" — "+q.slice(0,60)), q); });
+
+  // attestation
+  h += `<div class="attest"><label class="chk"><input type="checkbox" name="${esc(P("Declaration"))}" value="Confirmed">`+
+    `<span>I, <strong>${esc(a.fullName)}</strong>, declare that the information I have provided in this section is true, complete and accurate to the best of my knowledge and belief.</span></label>`+
+    `<div class="grid" style="margin-top:12px">`+
+      fld(P("Signed (type full name)"),"Type your full name to sign",{})+
+      fld(P("Date"),"Date",{type:"date"})+
+    `</div></div>`;
+
+  h += `</div>`;
+  return h;
+}
+
+function addrRow(tag, i, opts={}){
+  const P = s => `${tag} — Address ${i+1} ${s}`;
+  const pre = opts.current ? "prefill" : "";
+  const tagEl = opts.current ? '<span class="tag">on file</span>' : "";
+  const rm = opts.current ? "" : `<button type="button" class="rm" data-rmaddr>Remove</button>`;
+  return `<div class="qrow ${pre}" style="display:block">`+
+    `<div class="field full"><label class="lbl">Address ${i+1}${opts.current?" (current)":""}${tagEl}</label>`+
+    `<input type="text" name="${esc(P('address'))}" value="${esc(opts.address||"")}" placeholder="Full address incl. country"></div>`+
+    `<div class="rowline"><div class="field"><label class="lbl">Dates lived here</label>`+
+    `<input type="text" name="${esc(P('dates'))}" value="${esc(opts.dates||"")}" placeholder="from – to (month/year)"></div>${rm}</div></div>`;
+}
+
+/* render */
+const host = document.getElementById("applicants");
+host.innerHTML = APPLICANTS.map(section).join("");
+
+/* repeatable addresses */
+const addrCount = {};
+APPLICANTS.forEach(a=>addrCount[a.tag]=1);
+document.querySelectorAll("[data-addaddr]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const tag=btn.getAttribute("data-addaddr");
+    const box=document.querySelector(`.addrs[data-p="${CSS.escape(tag)}"]`);
+    const i=addrCount[tag]++;
+    box.insertAdjacentHTML("beforeend", addrRow(tag,i,{}));
+    box.lastElementChild.querySelector("[data-rmaddr]").addEventListener("click",e=>e.target.closest(".qrow").remove());
+    bindSave();
+  });
+});
+
+/* ===== conditional detail boxes for Yes/No ===== */
+function refreshYN(){
+  document.querySelectorAll(".qrow").forEach(row=>{
+    const radios=row.querySelectorAll('input[type=radio]');
+    if(!radios.length) return;
+    const detail=row.querySelector('input[type=text][name$="— details"], input[type=text][name*="Children — details"]');
+    if(!detail) return;
+    const yes=[...radios].some(r=>r.checked && (r.value==="Yes"||r.value==="Has children"));
+    detail.parentElement.style.display = yes ? "" : "none";
+  });
+}
+
+/* ===== progress save (localStorage) ===== */
+const KEY="sh_cbi_"+CONFIG.clientId;
+function bindSave(){
+  document.querySelectorAll("#cbiForm input, #cbiForm textarea").forEach(el=>{
+    el.removeEventListener("input",saveState); el.addEventListener("input",saveState);
+    el.removeEventListener("change",onChange); el.addEventListener("change",onChange);
+  });
+}
+function onChange(){ refreshYN(); saveState(); }
+function saveState(){
+  try{
+    const data={};
+    document.querySelectorAll("#cbiForm input, #cbiForm textarea").forEach(el=>{
+      if(el.type==="radio"||el.type==="checkbox"){ if(el.checked) data[el.name]=el.value; }
+      else data[el.name]=el.value;
+    });
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }catch(e){}
+}
+function restoreState(){
+  let data; try{ data=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ return; }
+  document.querySelectorAll("#cbiForm input, #cbiForm textarea").forEach(el=>{
+    if(!(el.name in data)) return;
+    if(el.type==="radio"||el.type==="checkbox"){ el.checked=(data[el.name]===el.value); }
+    else el.value=data[el.name];
+  });
+}
+document.getElementById("btn-clear").addEventListener("click",()=>{
+  if(confirm("Clear all answers on this device and start over?")){ try{localStorage.removeItem(KEY);}catch(e){} location.reload(); }
+});
+
+/* ===== build payload ===== */
+function collect(){
+  const fd=new FormData();
+  document.querySelectorAll("#cbiForm input, #cbiForm textarea").forEach(el=>{
+    if(el.type==="radio"||el.type==="checkbox"){ if(el.checked) fd.append(el.name, el.value); }
+    else if(el.value.trim()!=="") fd.append(el.name, el.value.trim());
+  });
+  fd.append("_client_id", CONFIG.clientId);
+  fd.append("_subject", `CBI additional DD — ${CONFIG.clientId} (Scott & Crowley)`);
+  return fd;
+}
+function textDump(){
+  const lines=[`SULLIVAN HART — ST. KITTS CBI ADDITIONAL DD (${CONFIG.clientId})`,""];
+  document.querySelectorAll(".card").forEach(card=>{
+    lines.push("=== "+card.querySelector("h2").textContent+" ===");
+    card.querySelectorAll("input, textarea").forEach(el=>{
+      let v="";
+      if(el.type==="radio"||el.type==="checkbox"){ if(el.checked) v=el.value; else return; }
+      else v=el.value.trim();
+      if(v) lines.push(`${el.name}: ${v}`);
+    });
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+/* ===== submit ===== */
+const statusEl=document.getElementById("status");
+document.getElementById("btn-submit").addEventListener("click",()=>{
+  const ep=(CONFIG.formEndpoint||"").trim();
+  statusEl.className="status"; statusEl.textContent="Sending…";
+  if(!ep){ statusEl.className="status err"; statusEl.textContent="No submit endpoint configured — please download your answers and email them to us."; return; }
+  fetch(ep,{method:"POST",body:collect(),headers:{"Accept":"application/json"}})
+    .then(r=>{ if(r.ok){ statusEl.className="status ok"; statusEl.textContent="Thank you — your information has been sent to Sullivan Hart. You may close this page."; try{localStorage.removeItem(KEY);}catch(e){} document.getElementById("btn-submit").disabled=true; }
+      else { statusEl.className="status err"; statusEl.textContent="Something went wrong sending online. Please download your answers and email them to us."; } })
+    .catch(()=>{ statusEl.className="status err"; statusEl.textContent="Could not reach the network. Please download your answers and email them to us."; });
+});
+document.getElementById("btn-download").addEventListener("click",()=>{
+  const blob=new Blob([textDump()],{type:"text/plain"});
+  const url=URL.createObjectURL(blob); const A=document.createElement("a");
+  A.href=url; A.download=`SH018_CBI_AdditionalDD_ScottCrowley.txt`; A.click(); URL.revokeObjectURL(url);
+});
+
+/* init */
+bindSave(); restoreState(); refreshYN();
+</script>
+</body>
+</html>

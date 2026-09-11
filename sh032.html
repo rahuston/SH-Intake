@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sullivan Hart LLP — Client Intake</title>
+<style>
+  :root{
+    --gold:#B8962E; --gold-soft:#D8C27E; --dark:#1A1A2E; --dark-2:#2A2A45;
+    --body:#2C2C2C; --sub:#888888; --lblbg:#F9F4E8; --roweven:#F5F5F5;
+    --border:#CCCCCC; --border-soft:#E4E4E4; --page:#FBFAF6; --card:#FFFFFF;
+    --ok:#2E7D4F; --err:#B23A3A; --err-bg:#FBEDED;
+    --font:Arial, "Helvetica Neue", Helvetica, sans-serif;
+    --shadow:0 1px 2px rgba(26,26,46,.06), 0 8px 24px rgba(26,26,46,.06);
+    --shadow-sm:0 1px 2px rgba(26,26,46,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:var(--font); color:var(--body); background:var(--page);
+    font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px 80px;}
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    background:var(--dark);
+    border-bottom:3px solid var(--gold);
+    color:#fff; padding:30px 0 26px;
+  }
+  .masthead .inner{max-width:920px; margin:0 auto; padding:0 20px;}
+  .firm{font-size:20px; font-weight:bold; letter-spacing:.16em;}
+  .firm .amp{color:var(--gold-soft); font-weight:bold;}
+  .masthead .rule{height:2px; width:54px; background:var(--gold); margin:12px 0 14px; border-radius:2px;}
+  .masthead h1{font-size:23px; margin:0; font-weight:bold; letter-spacing:.01em;}
+  .masthead .sub{color:#B9B9C8; font-size:12px; letter-spacing:.18em; margin-top:8px; text-transform:uppercase;}
+
+  /* ---------- intro / instructions ---------- */
+  .intro{
+    background:var(--lblbg); border:1px solid #ECE0C2; border-left:4px solid var(--gold);
+    border-radius:6px; padding:20px 22px; margin:26px 0 8px; box-shadow:var(--shadow-sm);
+  }
+  .intro h2{margin:0 0 6px; font-size:16px; color:var(--dark); letter-spacing:.01em;}
+  .intro p{margin:6px 0; font-size:14px; color:#5b5645;}
+  .steps{margin:14px 0 4px; padding:0; list-style:none; counter-reset:s;}
+  .steps li{
+    position:relative; padding:6px 0 6px 38px; font-size:14px; color:#4a4636; counter-increment:s;
+  }
+  .steps li::before{
+    content:counter(s); position:absolute; left:0; top:5px;
+    width:24px; height:24px; border-radius:50%; background:var(--dark); color:#fff;
+    font-size:12px; font-weight:bold; display:flex; align-items:center; justify-content:center;
+  }
+  .intro .note{font-size:12.5px; color:var(--sub); margin-top:12px; font-style:italic;}
+  .saver{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    background:#F4F6F3; border:1px solid #DCE5DC; border-left:4px solid var(--ok); border-radius:6px;
+    padding:11px 16px; margin:18px 0 0; font-size:13px; color:#4a5a4a;}
+  .saver-btn{background:none; border:1px solid var(--border); border-radius:5px; color:#6b6b6b;
+    font-size:12.5px; padding:6px 12px; cursor:pointer; font-family:var(--font); white-space:nowrap;}
+  .saver-btn:hover{border-color:var(--err); color:var(--err);}
+
+  /* ---------- cards / sections ---------- */
+  .card{
+    background:var(--card); border:1px solid var(--border-soft); border-radius:8px;
+    padding:24px 26px 26px; margin:22px 0; box-shadow:var(--shadow);
+    opacity:0; transform:translateY(8px); animation:rise .5s ease forwards;
+  }
+  @keyframes rise{to{opacity:1; transform:none}}
+  @media (prefers-reduced-motion:reduce){.card{animation:none; opacity:1; transform:none}}
+  .card-head{display:flex; align-items:baseline; gap:12px; border-bottom:2px solid var(--gold);
+    padding-bottom:10px; margin-bottom:18px;}
+  .badge{
+    flex:0 0 auto; min-width:26px; height:26px; padding:0 6px; border-radius:5px;
+    background:var(--dark); color:#fff; font-size:13px; font-weight:bold;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .card-head h2{margin:0; font-size:18px; color:var(--dark); font-weight:bold; letter-spacing:.01em;}
+  .card-head .opt{color:var(--sub); font-size:12px; font-weight:normal; letter-spacing:.04em;}
+  .card > .lede{color:#5d5d5d; font-size:13.5px; margin:-4px 0 18px;}
+
+  .subhead{font-size:13px; font-weight:bold; color:var(--dark); letter-spacing:.06em;
+    text-transform:uppercase; margin:22px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--border-soft);}
+  .subhead:first-child{margin-top:0;}
+
+  /* ---------- grid + fields ---------- */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px 18px;}
+  .grid .full{grid-column:1 / -1;}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+  .field{display:flex; flex-direction:column; gap:5px;}
+  label.lbl{font-size:13px; font-weight:bold; color:var(--dark);}
+  .req{color:var(--gold); margin-left:2px;}
+  .help{font-size:12px; color:var(--sub); margin-top:-1px;}
+  input[type=text], input[type=email], input[type=tel], input[type=number], select, textarea{
+    font-family:var(--font); font-size:14px; color:var(--body); background:#fff;
+    border:1px solid var(--border); border-radius:5px; padding:9px 11px; width:100%;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  textarea{resize:vertical; min-height:74px; line-height:1.45;}
+  input:focus, select:focus, textarea:focus{
+    outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,150,46,.16);
+  }
+  input.invalid, select.invalid, textarea.invalid{border-color:var(--err); background:var(--err-bg);}
+  .na-pill{display:inline-flex; margin-top:8px;}
+  input.na-off{background:#f2f2f2; color:#9a9a9a;}
+  fieldset.fs-bad .opts{outline:2px solid var(--err); outline-offset:6px; border-radius:6px;}
+  .opt-pill.pill-bad label{border-color:var(--err); background:var(--err-bg);}
+  select{appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.6' stroke-linecap='round'/></svg>");
+    background-repeat:no-repeat; background-position:right 11px center; padding-right:30px; cursor:pointer;}
+
+  /* date control */
+  .datectl{display:grid; grid-template-columns:1.4fr .8fr 1fr; gap:8px;}
+  .datectl + .datepreview{font-size:12.5px; color:var(--gold); margin-top:5px; font-weight:bold; min-height:16px;}
+  .datepreview.bad{color:var(--err);}
+
+  /* radio + checkbox groups */
+  .opts{display:flex; flex-wrap:wrap; gap:8px;}
+  .opt-pill{position:relative;}
+  .opt-pill input{position:absolute; opacity:0; width:0; height:0;}
+  .opt-pill label{
+    display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;
+    border:1px solid var(--border); border-radius:6px; padding:8px 13px; font-size:13.5px;
+    color:var(--body); background:#fff; transition:.15s;
+  }
+  .opt-pill input:focus-visible + label{box-shadow:0 0 0 3px rgba(184,150,46,.18);}
+  .opt-pill input:checked + label{
+    border-color:var(--dark); background:var(--dark); color:#fff; font-weight:bold;
+  }
+  .opt-pill input:checked + label .tick{opacity:1;}
+  .opt-pill .tick{width:14px; height:14px; opacity:.25;}
+  fieldset{border:none; margin:0; padding:0; min-width:0;}
+
+  /* conditional reveal */
+  .reveal{display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--border);}
+  .reveal.on{display:block;}
+
+  /* repeatable */
+  .party{border:1px solid var(--border-soft); border-radius:8px; padding:18px 20px; margin:16px 0;
+    background:#FCFCFB; position:relative;}
+  .party-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .party-head .pt{font-size:13px; font-weight:bold; color:var(--dark); letter-spacing:.05em; text-transform:uppercase;}
+  .btn-add{
+    display:inline-flex; align-items:center; gap:8px; background:#fff; color:var(--dark);
+    border:1.5px solid var(--dark); border-radius:6px; padding:9px 16px; font-size:13.5px;
+    font-weight:bold; cursor:pointer; font-family:var(--font); transition:.15s; margin-top:6px;
+  }
+  .btn-add:hover{background:var(--dark); color:#fff;}
+  .btn-rm{background:none; border:none; color:var(--sub); font-size:12.5px; cursor:pointer;
+    font-family:var(--font); text-decoration:underline; padding:4px;}
+  .btn-rm:hover{color:var(--err);}
+  .miniadd{background:none; border:1px dashed var(--border); border-radius:5px; color:#6b6b6b;
+    font-size:12.5px; padding:6px 12px; cursor:pointer; font-family:var(--font); margin-top:4px;}
+  .miniadd:hover{border-color:var(--gold); color:var(--dark);}
+
+  /* submit area */
+  .submitbar{margin-top:30px; padding-top:24px; border-top:2px solid var(--gold);}
+  .submitbar .ready{font-size:14px; color:#5d5d5d; margin:0 0 16px;}
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:10px; background:var(--dark); color:#fff;
+    border:2px solid var(--dark); border-radius:7px; padding:14px 30px; font-size:15px;
+    font-weight:bold; letter-spacing:.03em; cursor:pointer; font-family:var(--font); transition:.18s;
+  }
+  .btn-primary:hover{background:#fff; color:var(--dark); border-color:var(--gold);}
+  .btn-secondary{
+    display:inline-flex; align-items:center; gap:8px; background:none; color:var(--dark);
+    border:none; padding:14px 6px; font-size:13.5px; cursor:pointer; font-family:var(--font);
+    text-decoration:underline; margin-left:10px;
+  }
+  .btn-secondary:hover{color:var(--gold);}
+  .actions{display:flex; align-items:center; flex-wrap:wrap; gap:6px;}
+
+  /* error summary */
+  .errsum{display:none; background:var(--err-bg); border:1px solid #E7C3C3; border-left:4px solid var(--err);
+    border-radius:6px; padding:14px 18px; margin:20px 0; color:#7a2727; font-size:13.5px;}
+  .errsum.on{display:block;}
+  .errsum strong{color:var(--err);}
+  .errsum ul{margin:8px 0 0; padding-left:20px;}
+
+  /* success / fallback panels */
+  .panel{display:none; border-radius:8px; padding:26px 28px; margin:24px 0; box-shadow:var(--shadow);}
+  .panel.on{display:block;}
+  .panel.success{background:#F1F8F3; border:1px solid #CBE5D3; border-left:4px solid var(--ok);}
+  .panel.success h2{color:var(--ok); margin:0 0 8px; font-size:19px;}
+  .panel.fallback{background:#fff; border:1px solid var(--border-soft); border-left:4px solid var(--gold);}
+  .panel.fallback h2{color:var(--dark); margin:0 0 8px; font-size:18px;}
+  .panel p{font-size:14px; color:#4a4a4a; margin:8px 0;}
+  .panel .big{font-size:15px; color:var(--dark);}
+  .panel textarea{margin-top:12px; min-height:150px; font-size:12px; font-family:ui-monospace,Menlo,Consolas,monospace; background:#FCFBF8;}
+
+  /* footer */
+  .foot{margin-top:46px; padding-top:18px; border-top:1px solid var(--border-soft);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    color:var(--sub); font-size:11.5px; letter-spacing:.03em;}
+  .conf{font-style:italic;}
+
+  /* staff strip */
+  .staff{margin-top:18px; font-size:11.5px; color:#b3b3b3;}
+  .staff button{background:none; border:none; color:#b3b3b3; text-decoration:underline;
+    font-size:11.5px; cursor:pointer; font-family:var(--font);}
+  .staff button:hover{color:var(--sub);}
+
+  @media print{
+    body{background:#fff} .intro,.btn-add,.miniadd,.btn-rm,.submitbar,.staff,.errsum{display:none!important}
+    .card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="inner">
+    <div class="firm">SULLIVAN&nbsp;<span class="amp">HART</span>&nbsp;LLP</div>
+    <div class="rule"></div>
+    <h1>Confidential Client Intake</h1>
+    <div class="sub">Registration &nbsp;•&nbsp; <span id="client-id-label">SH000</span> &nbsp;•&nbsp; Private &amp; Confidential</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="intro" id="intro">
+    <h2>Welcome — and thank you</h2>
+    <p>This form gathers the information we need to set up your structure. It is thorough by design: the care you take here is what makes everything that follows — registration, banking, and your documents — go smoothly.</p>
+    <p>Before you begin, it helps to have a few things to hand: your passport and one other photo ID, your tax identification number(s), and contact details for a bank reference and a professional reference (such as your accountant or attorney).</p>
+    <ol class="steps">
+      <li>Fill in every box marked with a gold star <span class="req" style="font-weight:bold">★</span>. The others are helpful but optional.</li>
+      <li>When you reach the bottom, press <strong>Submit</strong>. That sends your answers straight to us — you are done.</li>
+    </ol>
+    <p class="note">Everything you enter is held in strict confidence and used only to prepare your documents.</p>
+  </div>
+
+  <div id="saver" class="saver" style="display:none">
+    <span id="saver-text">Your answers save automatically on this device, so you can close this window and come back to finish later.</span>
+    <button type="button" id="btn-startover" class="saver-btn">Start over</button>
+  </div>
+
+  <div id="form-root"></div>
+
+  <div class="errsum" id="errsum">
+    <strong>A few items still need attention.</strong> Please check the boxes highlighted below:
+    <ul id="errlist"></ul>
+  </div>
+
+  <div class="submitbar" id="submitbar">
+    <p class="ready">When everything is filled in, press Submit. If you would rather not submit online, you can download your answers and email them to us instead.</p>
+    <div class="actions">
+      <button type="button" class="btn-primary" id="btn-submit">Submit my answers &nbsp;→</button>
+      <button type="button" class="btn-secondary" id="btn-download">or download my answers to email</button>
+    </div>
+    <div class="staff">
+      <span>Staff use:</span>
+      <button type="button" id="btn-yaml">copy YAML block</button> &nbsp;·&nbsp;
+      <button type="button" id="btn-txt">copy field export (TSV)</button>
+    </div>
+  </div>
+
+  <div class="panel success" id="panel-success">
+    <h2>✓ Received — thank you</h2>
+    <p class="big">Your information has reached Sullivan Hart. There is nothing further for you to do right now; we will be in touch with the next steps.</p>
+    <p>You may now close this window.</p>
+  </div>
+
+  <div class="panel fallback" id="panel-fallback">
+    <h2>Almost done — one small step</h2>
+    <p class="big">Your answers have been saved to a file on your device (look in your <strong>Downloads</strong> folder for a file beginning <strong>SH_Intake</strong>).</p>
+    <p><strong>Please reply to our email and attach that file.</strong> That is everything — thank you.</p>
+    <p style="font-size:13px; color:#888">If the download did not start, copy the text below and paste it into your reply instead:</p>
+    <textarea id="fallback-text" readonly onclick="this.select()"></textarea>
+  </div>
+
+  <div class="foot">
+    <span>Sullivan Hart LLP &nbsp;•&nbsp; Private &amp; Confidential</span>
+    <span class="conf">This form and its contents are confidential.</span>
+  </div>
+
+</div>
+
+<datalist id="countries"></datalist>
+
+<script>
+/* =====================================================================
+   SULLIVAN HART — MODULAR REGISTRATION INTAKE  (sh_intake_v3)
+   Lineage: successor to sh_intake_v2.html. Field names preserve YAML
+   Schema v2.0 §9 so the export is a drop-in for the existing
+   TXT -> YAML derivation. Registration intake only (banking is separate).
+
+   2026Jun08 — YAML generator pass (toYAML): the emitted draft now includes
+   the §4 fields the form already collected but previously dropped — pep,
+   business_holdings, dependents, mailing_address (+ address.time_at_address
+   and mailing_same_as_residential), and wealth.real_estate_holdings /
+   primary_non_real_estate_assets / banking_reference. onboarding is now
+   nested under client (client.onboarding) and the sign-off is folded into
+   client.onboarding.declarations_signed. Client-facing fields unchanged.
+
+   -------------------------------------------------------------------
+   PER-CLIENT CONFIG  — Ariel: edit ONLY this block for each client.
+   -------------------------------------------------------------------
+   clientId .............. client file id, e.g. "SH027"
+   showSpouse ............ true only if a spouse is a NAMED PARTY in the
+                           structure (beneficiary / board / AR). SH030 = false.
+   preloadAdditionalParties  how many additional adult parties to show
+                           on open (client can add more). SH030 = 1.
+   showEntityNaming ...... show the proposed-names section (usually true).
+   showBusiness .......... show the business / source-of-wealth section.
+   formEndpoint .......... Formspree endpoint for one-click submit, e.g.
+                           "https://formspree.io/f/xxxxxxxx" (the same one
+                           sh_intake_v2 uses). LEAVE BLANK to run in
+                           download-and-email mode (no backend needed).
+   ===================================================================== */
+   const CONFIG = {
+     clientId: "SH032",
+     showSpouse: false,
+     preloadAdditionalParties: 0,
+     showEntityNaming: true,
+     showBusiness: true,
+     formEndpoint: "https://formspree.io/f/xvznayzy"   // firm Formspree endpoint — online submit enabled
+   };
+
+/* ------------------------------------------------------------------ */
+const MONTHS = [["January","Jan"],["February","Feb"],["March","Mar"],["April","Apr"],
+  ["May","May"],["June","Jun"],["July","Jul"],["August","Aug"],["September","Sep"],
+  ["October","Oct"],["November","Nov"],["December","Dec"]];
+
+const COUNTRIES = ["United States","Australia","New Zealand","United Kingdom","Canada",
+  "Ireland","Singapore","Hong Kong","Switzerland","Germany","France","Netherlands","Spain",
+  "Italy","Portugal","Belgium","Austria","Sweden","Norway","Denmark","Finland","Luxembourg",
+  "Monaco","Liechtenstein","United Arab Emirates","Qatar","Saudi Arabia","Israel","South Africa",
+  "Japan","South Korea","China","Taiwan","Malaysia","Thailand","Philippines","Indonesia","India",
+  "Vietnam","Mexico","Brazil","Argentina","Chile","Colombia","Uruguay","Panama","Costa Rica",
+  "Cayman Islands","British Virgin Islands","Bermuda","Bahamas","Nevis","Saint Kitts and Nevis",
+  "Cook Islands","Belize","Malta","Cyprus","Gibraltar","Jersey","Guernsey","Isle of Man",
+  "Czech Republic","Poland","Hungary","Greece","Turkey","Russia","Ukraine","Egypt","Nigeria",
+  "Kenya","Morocco","Other"];
+
+const INCOME_SOURCES = ["Employment","Business ownership","Investments","Inheritance",
+  "Real estate","Precious metals","Cryptocurrency","Savings","Other"];
+
+const NET_WORTH_BANDS = ["Under $1M","$1M – $5M","$5M – $10M","$10M – $25M","$25M – $50M","$50M+"];
+const INCOME_BRACKETS = ["Under $100k","$100k – $250k","$250k – $500k","$500k – $1M","Over $1M"];
+
+/* ---------- small builders ---------- */
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const idOf = n => "f_"+n;
+const star = req => req ? '<span class="req">★</span>' : '';
+
+function fieldText(name, label, o={}){
+  const t = o.type || "text";
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <input type="${t}" id="${idOf(name)}" name="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}"
+      ${o.placeholder?`placeholder="${esc(o.placeholder)}"`:''} ${o.attr||''}>
+  </div>`;
+}
+function fieldTextNA(name, label, naLabel, o={}){
+  // required text field, with a "none / not applicable" checkbox that exempts it
+  const naId = idOf(name+"_None");
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(true)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <input type="${o.type||'text'}" id="${idOf(name)}" name="${name}" data-req="1" data-label="${esc(label)}"
+      ${o.placeholder?`placeholder="${esc(o.placeholder)}"`:''}>
+    <span class="opt-pill na-pill">
+      <input type="checkbox" id="${naId}" name="${name}_None" value="Yes" data-naof="${name}">
+      <label for="${naId}">${TICK}${esc(naLabel)}</label></span>
+  </div>`;
+}
+function fieldArea(name, label, o={}){
+  return `<div class="field full">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <textarea id="${idOf(name)}" name="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}"
+      ${o.placeholder?`placeholder="${esc(o.placeholder)}"`:''}></textarea>
+  </div>`;
+}
+function fieldCountry(name, label, o={}){
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <input type="text" list="countries" id="${idOf(name)}" name="${name}" autocomplete="off"
+      data-req="${o.req?1:0}" data-label="${esc(label)}" placeholder="Start typing…">
+  </div>`;
+}
+function fieldSelect(name, label, opts, o={}){
+  const options = ['<option value="">— select —</option>']
+    .concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join("");
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <select id="${idOf(name)}" name="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}">${options}</select>
+  </div>`;
+}
+function fieldRadio(name, label, opts, o={}){
+  const pills = opts.map((v,i)=>`<span class="opt-pill">
+    <input type="radio" id="${idOf(name)}_${i}" name="${name}" value="${esc(v)}">
+    <label for="${idOf(name)}_${i}">${esc(v)}</label></span>`).join("");
+  return `<fieldset class="field${o.half===false?' full':''}" data-radio="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}">
+    <label class="lbl">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <div class="opts">${pills}</div></fieldset>`;
+}
+const TICK = '<svg class="tick" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function fieldChecks(name, label, opts, o={}){
+  const pills = opts.map((v,i)=>`<span class="opt-pill">
+    <input type="checkbox" id="${idOf(name)}_${i}" name="${name}" value="${esc(v)}">
+    <label for="${idOf(name)}_${i}">${TICK}${esc(v)}</label></span>`).join("");
+  return `<fieldset class="field full" data-checks="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}">
+    <label class="lbl">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <div class="opts">${pills}</div></fieldset>`;
+}
+function fieldDate(name, label, o={}){
+  const m = ['<option value="">Month</option>']
+    .concat(MONTHS.map(([full,code])=>`<option value="${code}">${full}</option>`)).join("");
+  const maxY = o.future ? 2100 : 2026;
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <div class="datectl" data-date="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}" ${o.adult?'data-adult="1"':''}>
+      <select name="${name}__m" aria-label="${esc(label)} month">${m}</select>
+      <input type="number" name="${name}__d" inputmode="numeric" min="1" max="31" placeholder="Day" aria-label="${esc(label)} day">
+      <input type="number" name="${name}__y" inputmode="numeric" min="1900" max="${maxY}" placeholder="Year" aria-label="${esc(label)} year">
+    </div>
+    <div class="datepreview" data-preview="${name}"></div>
+  </div>`;
+}
+
+/* ---------- person block (Modules A / B / C share this) ---------- */
+function personBlock(prefix, o={}){
+  // o: {role, sameAddress, adultDOB}
+  let h = "";
+  if (o.role){
+    h += `<div class="subhead">This person's involvement</div>`;
+    h += `<p class="help" style="margin-top:-4px">We'll work out their exact role in the structure with you once the file is set up. For now we just need the basics.</p>`+
+      `<div class="grid">`+
+      fieldText(prefix+"_Relationship_to_Primary","Relationship to the primary client",
+        {req:true, half:false, placeholder:"e.g. spouse / domestic partner / adult child / parent / relative / other"})+
+      fieldRadio(prefix+"_Equal_Powers","Will this person have equal powers and responsibilities to the primary client?",
+        ["Yes","No"],{req:true, half:false})+
+      fieldRadio(prefix+"_Copy_Correspondence","Should this person be copied on all correspondence?",
+        ["Yes","No"],{req:true, half:false})+
+      `</div>`;
+  }
+  h += `<div class="subhead">Identity</div><div class="grid">`+
+    fieldText(prefix+"_First_Name","First name",{req:true})+
+    fieldTextNA(prefix+"_Middle_Name","Middle name(s)","I have no middle name",{help:"As it appears on your passport."})+
+    fieldText(prefix+"_Last_Name","Last name",{req:true})+
+    fieldText(prefix+"_Preferred_Name","Preferred name",{help:"What we should call you, if different"})+
+    fieldDate(prefix+"_Date_of_Birth","Date of birth",{req:true, adult:(o.adultDOB!==false)})+
+    fieldRadio(prefix+"_Sex","Sex",["Male","Female"],{req:true})+
+    fieldText(prefix+"_Place_of_Birth_City","City of birth",{req:true})+
+    fieldCountry(prefix+"_Place_of_Birth_Country","Country of birth",{req:true})+
+    fieldRadio(prefix+"_Marital_Status","Marital status",["Single","Married"],{req:true})+
+    fieldText(prefix+"_Dependents","Number of dependents",{type:"number", attr:'data-deps="'+prefix+'"', help:"Enter 0 if none."})+
+    `</div>`+
+    `<div class="reveal" data-depsreveal="${prefix}"><div class="grid">`+
+      fieldRadio(prefix+"_Dependents_All_Beneficiaries","Will all of your dependents be beneficiaries of the structure?",
+        ["Yes","No"],{half:false})+
+    `</div></div>`;
+
+  h += `<div class="subhead">Citizenship &amp; tax</div><div class="grid">`+
+    fieldCountry(prefix+"_Nationality","Nationality (citizenship)",{req:true})+
+    fieldRadio(prefix+"_Has_Multiple_Citizenship","Do you hold more than one citizenship or passport?",
+      ["Yes","No"],{req:true, half:false, help:"Please tell us about every citizenship and passport you hold."})+
+    `</div>`+
+    `<div class="reveal" data-revealfor="${prefix}_Has_Multiple_Citizenship">`+
+      `<div class="repeat" data-repeat="${prefix}_Citizenship" data-label="Additional citizenship"></div>`+
+      `<button type="button" class="miniadd" data-addrepeat="${prefix}_Citizenship">+ add another citizenship</button>`+
+    `</div>`+
+    `<div class="grid" style="margin-top:14px">`+
+      fieldRadio(prefix+"_US_Person","Are you a U.S. person?",["Yes","No"],{req:true, half:false,
+        help:"A U.S. citizen or U.S. tax resident (e.g. green-card holder)"})+
+    `</div>`;
+  // tax residencies (repeatable, with TIN) — one preloaded
+  h += `<div class="repeat" data-repeat="${prefix}_TaxRes" data-label="Tax residency"></div>`+
+       `<button type="button" class="miniadd" data-addrepeat="${prefix}_TaxRes">+ add another tax residency</button>`;
+
+  h += `<div class="subhead">Identification</div>`+
+    `<p class="help" style="margin-top:-4px">Your passport, plus one other government-issued photo ID (for example a driver's licence).</p>`+
+    `<div class="grid">`+
+    fieldText(prefix+"_Passport_Number","Passport number",{req:true})+
+    fieldCountry(prefix+"_Passport_Issuing_Country","Issuing country",{req:true})+
+    fieldDate(prefix+"_Passport_Issue_Date","Passport issue date",{req:true})+
+    fieldDate(prefix+"_Passport_Expiry","Passport expiry date",{req:true, future:true})+
+    `</div>`+
+    `<div class="grid" style="margin-top:6px">`+
+    fieldText(prefix+"_Second_ID_Type","Second ID — type",{req:true, placeholder:"e.g. Driver's licence, National ID"})+
+    fieldText(prefix+"_Second_ID_Number","Second ID — number",{req:true})+
+    fieldCountry(prefix+"_Second_ID_Issuing_Country","Issuing country / authority",{req:true})+
+    fieldDate(prefix+"_Second_ID_Issue_Date","Second ID — issue date",{req:true})+
+    fieldDate(prefix+"_Second_ID_Expiry","Second ID — expiry date",{req:true, future:true})+
+    `</div>`;
+
+  h += `<div class="subhead">Permanent residential address</div>`;
+  if (o.sameAddress){
+    h += `<span class="opt-pill" style="margin-bottom:10px; display:inline-block">
+      <input type="checkbox" id="${idOf(prefix+"_Same_Address")}" data-sameas="${prefix}">
+      <label for="${idOf(prefix+"_Same_Address")}">${TICK}Same address as the primary client</label></span>`;
+  }
+  h += `<div class="grid" data-addrblock="${prefix}">`+
+    fieldText(prefix+"_Street","Street address",{req:true, half:false})+
+    fieldText(prefix+"_City","City / town",{req:true})+
+    fieldTextNA(prefix+"_State_Province","State / province","My address has no state or province")+
+    fieldText(prefix+"_Postal_Code","Postal / ZIP code",{req:true})+
+    fieldCountry(prefix+"_Country","Country",{req:true})+
+    fieldText(prefix+"_Length_at_Address","How long at this address?",{placeholder:"e.g. 6 years"})+
+    `</div>`+
+    `<div class="grid" style="margin-top:10px">`+
+      fieldRadio(prefix+"_Mailing_Different","Is your mailing address different from your home address?",
+        ["Yes","No"],{req:true, half:false})+
+    `</div>`+
+    `<div class="reveal" data-revealfor="${prefix}_Mailing_Different"><div class="grid">`+
+      fieldText(prefix+"_Mailing_Street","Mailing — street address",{half:false})+
+      fieldText(prefix+"_Mailing_City","Mailing — city / town")+
+      fieldText(prefix+"_Mailing_State_Province","Mailing — state / province")+
+      fieldText(prefix+"_Mailing_Postal_Code","Mailing — postal / ZIP code")+
+      fieldCountry(prefix+"_Mailing_Country","Mailing — country")+
+    `</div></div>`;
+
+  h += `<div class="subhead">Contact</div><div class="grid">`+
+    fieldText(prefix+"_Email","Preferred email",{req:true, type:"email"})+
+    fieldText(prefix+"_Telephone","Telephone",{req:true, type:"tel"})+
+    `</div>`;
+
+  h += `<div class="subhead">Occupation</div><div class="grid">`+
+    fieldText(prefix+"_Occupation","Occupation",{req:true})+
+    fieldText(prefix+"_Title","Title / position")+
+    fieldText(prefix+"_Company_Name","Company / employer")+
+    fieldText(prefix+"_Employment_Sector","Industry / sector")+
+    `</div>`;
+
+  h += `<div class="subhead">References</div>`+
+    `<p class="help" style="margin-top:-4px">A bank reference and a professional reference (for example an accountant or attorney). We'll request the reference letters separately — here we just need the contact information.</p>`+
+    `<div class="grid">`+
+      fieldText(prefix+"_Bank_Reference_Name","Bank reference — contact name",{req:true})+
+      fieldText(prefix+"_Bank_Reference_Bank_Name","Bank reference — bank name",{req:true})+
+      fieldText(prefix+"_Bank_Reference_Contact","Bank reference — contact details",{req:true, half:false, placeholder:"Email, phone, or address"})+
+      fieldText(prefix+"_Professional_Reference_Name","Professional reference — name",{req:true})+
+      fieldText(prefix+"_Professional_Reference_Company","Professional reference — company",{req:true})+
+      fieldText(prefix+"_Professional_Reference_Contact","Professional reference — contact details",{req:true, half:false, placeholder:"Email, phone, or address"})+
+    `</div>`;
+
+  h += `<div class="subhead">Politically exposed person (PEP)</div><div class="grid">`+
+    fieldRadio(prefix+"_PEP","Are you, or have you been, a politically exposed person, or closely associated with one?",
+      ["Yes","No"],{req:true, half:false,
+      help:"A senior public/government official, or their close family or associate"})+
+    `</div>`+
+    `<div class="reveal" data-revealfor="${prefix}_PEP"><div class="grid">`+
+      fieldText(prefix+"_PEP_Name","Name of the public official")+
+      fieldText(prefix+"_PEP_Position","Position held")+
+      fieldCountry(prefix+"_PEP_Country","Country")+
+      fieldText(prefix+"_PEP_Relationship","Your relationship to them")+
+      fieldText(prefix+"_PEP_Period","Period (years)")+
+    `</div></div>`;
+
+  h += `<div class="subhead">Background declarations</div>`+
+    `<p class="help" style="margin-top:-4px">Standard checks required by the registered agent. If you answer Yes to any, a short box will appear for brief details.</p>`+
+    `<div class="grid">`+
+      fieldRadio(prefix+"_Bankruptcy","Have you ever been declared bankrupt, or helped manage a company that became insolvent?",
+        ["Yes","No"],{req:true, half:false})+
+    `</div><div class="reveal" data-revealfor="${prefix}_Bankruptcy"><div class="grid">`+
+      fieldArea(prefix+"_Bankruptcy_Detail","Please give brief details")+
+    `</div></div>`+
+    `<div class="grid">`+
+      fieldRadio(prefix+"_Conviction","Have you ever been convicted of fraud, dishonesty, or an offence relating to financial services?",
+        ["Yes","No"],{req:true, half:false})+
+    `</div><div class="reveal" data-revealfor="${prefix}_Conviction"><div class="grid">`+
+      fieldArea(prefix+"_Conviction_Detail","Please give brief details")+
+    `</div></div>`+
+    `<div class="grid">`+
+      fieldRadio(prefix+"_Sanctions","Are you, or have you ever been, subject to any national or international sanctions?",
+        ["Yes","No"],{req:true, half:false})+
+    `</div><div class="reveal" data-revealfor="${prefix}_Sanctions"><div class="grid">`+
+      fieldArea(prefix+"_Sanctions_Detail","Please give brief details")+
+    `</div></div>`;
+  return h;
+}
+
+/* ---------- repeatable row renderers ---------- */
+function citizenshipRow(prefix,i){
+  return `<div class="grid" data-row="1">`+
+    fieldCountry(`${prefix}_${i}`,"Additional citizenship")+
+    `<div class="field" style="justify-content:flex-end"><button type="button" class="btn-rm" data-rmrow>remove</button></div>`+
+    `</div>`;
+}
+function taxResRow(prefix,i){
+  return `<div class="grid" data-row="1" style="border-top:1px dashed var(--border); padding-top:12px; margin-top:6px">`+
+    fieldCountry(`${prefix}_Country_${i}`, i===1?"Country of tax residence":"Additional tax residence",{req:i===1})+
+    fieldText(`${prefix}_TIN_${i}`,"Tax ID number (TIN)",{req:i===1, help:"As issued by that country"})+
+    (i===1? `<div class="field full" style="margin-top:-4px"><span class="help">If you have more than one tax residency, add each one with its tax ID.</span></div>`
+          : `<div class="field full" style="justify-content:flex-end"><button type="button" class="btn-rm" data-rmrow>remove this tax residency</button></div>`)+
+    `</div>`;
+}
+
+/* ---------- business row ---------- */
+function businessRow(i){
+  return `<div class="party" data-bizrow="${i}">
+    <div class="party-head"><span class="pt">Business ${i}</span>
+      ${i>1?'<button type="button" class="btn-rm" data-rmbiz>remove</button>':''}</div>
+    <div class="grid">`+
+    fieldText(`Business${i}_Name`,"Business name")+
+    fieldText(`Business${i}_Type`,"Type of business")+
+    fieldText(`Business${i}_Location`,"Location")+
+    fieldText(`Business${i}_Ownership_Pct`,"Your ownership %",{type:"number", placeholder:"e.g. 100"})+
+    fieldText(`Business${i}_Ownership_Structure`,"Ownership structure",{placeholder:"e.g. LLC (S-corp), 100%"})+
+    fieldText(`Business${i}_Estimated_Value`,"Estimated value",{placeholder:"e.g. $5,000,000"})+
+    `</div></div>`;
+}
+
+/* =====================  BUILD THE FORM  ===================== */
+const root = document.getElementById("form-root");
+document.getElementById("countries").innerHTML = COUNTRIES.map(c=>`<option value="${esc(c)}">`).join("");
+document.getElementById("client-id-label").textContent = CONFIG.clientId;
+
+let html = "";
+let n = 0;
+const sec = (title, opt, inner) => {
+  n++;
+  return `<div class="card"><div class="card-head"><span class="badge">${n}</span>
+    <h2>${title}${opt?` <span class="opt">${opt}</span>`:''}</h2></div>${inner}</div>`;
+};
+
+/* Module A — Primary Client / AR */
+html += sec("Primary Client", "Authorized Representative",
+  `<p class="lede">Your details as the primary client and Authorized Representative.</p>`
+  + personBlock("Client", {adultDOB:true}));
+
+/* Module B — Spouse (only if config) */
+if (CONFIG.showSpouse){
+  html += sec("Spouse", "named party in the structure",
+    `<p class="lede">Complete only the spouse's details below.</p>`
+    + personBlock("Spouse", {adultDOB:true}));
+}
+
+/* Module C — Additional Adult Parties (repeatable) */
+html += sec("Additional Adult Parties to be Designated as Discretionary Beneficiaries", "spouse / domestic partner / adult children / parent / other",
+  `<p class="lede">Leave empty if there are none.</p>
+   <div id="parties"></div>
+   <button type="button" class="btn-add" id="add-party"><span style="font-size:18px;line-height:1">+</span> Add an adult party</button>`);
+
+/* Module E — Entity Naming */
+if (CONFIG.showEntityNaming){
+  html += sec("Proposed Names", "for the new entities",
+    `<p class="lede">Give us three name choices for each entity, in order of preference.</p>
+     <div class="intro" style="margin:0 0 18px">
+       <h2 style="font-size:14px">A few rules for choosing names</h2>
+       <ol class="steps" style="margin:8px 0 0">
+         <li>Every foundation name must end with <strong>Trust Foundation</strong>.</li>
+         <li>Every company name must end with <strong>LLC</strong>.</li>
+         <li>Avoid using your family name or the name of your business.</li>
+         <li>Avoid anything that could be read as provocative or vulgar.</li>
+       </ol>
+     </div>
+     <div class="subhead">Multiform Trust Foundation</div><div class="grid">`+
+      fieldText("Proposed_NMTF_Name_1","First choice",{req:true, placeholder:"e.g. Blue Harbor Trust Foundation"})+
+      fieldText("Proposed_NMTF_Name_2","Second choice",{req:true, placeholder:"ends with “Trust Foundation”"})+
+      fieldText("Proposed_NMTF_Name_3","Third choice",{req:true, placeholder:"ends with “Trust Foundation”"})+
+     `</div><div class="subhead">Cook Islands LLC</div><div class="grid">`+
+      fieldText("Proposed_CILLC_Name_1","First choice",{req:true, placeholder:"e.g. Blue Harbor LLC"})+
+      fieldText("Proposed_CILLC_Name_2","Second choice",{req:true, placeholder:"ends with “LLC”"})+
+      fieldText("Proposed_CILLC_Name_3","Third choice",{req:true, placeholder:"ends with “LLC”"})+
+     `</div><div class="subhead">Domestic LLC 1</div><div class="grid">`+
+      fieldText("Proposed_DomesticLLC_Name_1","First choice",{req:true, placeholder:"e.g. Blue Harbor LLC"})+
+      fieldText("Proposed_DomesticLLC_Name_2","Second choice",{req:true, placeholder:"ends with “LLC”"})+
+      fieldText("Proposed_DomesticLLC_Name_3","Third choice",{req:true, placeholder:"ends with “LLC”"})+
+     `</div><div class="subhead">Domestic LLC 2</div><div class="grid">`+
+      fieldText("Proposed_DomesticLLC2_Name_1","First choice",{req:true, placeholder:"e.g. Blue Harbor Holdings LLC"})+
+      fieldText("Proposed_DomesticLLC2_Name_2","Second choice",{req:true, placeholder:"ends with “LLC”"})+
+      fieldText("Proposed_DomesticLLC2_Name_3","Third choice",{req:true, placeholder:"ends with “LLC”"})+
+     `</div>`);
+}
+
+/* Module F — Business / Source of Wealth */
+if (CONFIG.showBusiness){
+  html += sec("Wealth &amp; Source of Wealth", "your description, in your own words",
+    `<p class="lede">A plain-language picture of your finances, in your own words.</p>
+     <div class="subhead">Overview</div><div class="grid">`+
+      fieldSelect("NW_Range","Estimated net worth",NET_WORTH_BANDS,{req:true})+
+      fieldSelect("Income_Bracket","Annual income",INCOME_BRACKETS,{req:true})+
+     `</div>`+
+      fieldChecks("Income_Sources","Main sources of income",INCOME_SOURCES,{req:true})+
+     `<div class="grid">`+
+      fieldText("Real_Estate_Holdings","Real-estate holdings (brief)",{placeholder:"e.g. primary home + 2 rentals"})+
+      fieldText("Primary_Non_Real_Estate_Assets","Other main assets (brief)",{placeholder:"e.g. brokerage, business equity"})+
+     `</div>`+
+      fieldArea("Source_of_Wealth_Description","How did you build your wealth? (a few sentences)",
+        {req:true, placeholder:"e.g. Founded and grew a research business over 20 years; reinvested profits…"})+
+     `<div class="grid">`+
+      fieldText("Countries_of_Wealth","Countries where your wealth was generated",{req:true, placeholder:"e.g. United States"})+
+      fieldText("Countries_of_Income","Countries where your income is earned now",{req:true, placeholder:"e.g. United States"})+
+     `</div>`+
+     `<div class="grid">`+
+      fieldText("Countries_of_Asset_Location","Countries where your main assets are held now",{placeholder:"e.g. United States, Switzerland"})+
+     `</div>
+     <div class="subhead">Business interests</div>
+     <p class="help" style="margin-top:-4px">List any businesses you own a stake in. (Optional — leave blank if none.)</p>
+     <div id="bizlist"></div>
+     <button type="button" class="miniadd" id="add-biz">+ add another business</button>`);
+}
+
+/* Declaration — sign-off (always last) */
+html += `<div class="card"><div class="card-head"><span class="badge">✓</span><h2>Declaration</h2></div>
+  <p style="font-size:14px; color:#3a3a3a; margin:0 0 4px">I declare that the information contained herein is true and correct to the best of my knowledge, and I agree to promptly inform Sullivan Hart of any changes made to such information.</p>
+  <span class="opt-pill" style="display:inline-block; margin:14px 0 4px">
+    <input type="checkbox" id="decl-agree" name="Declaration_Agreed" value="Yes" data-reqcheck="1" data-label="the declaration">
+    <label for="decl-agree">${TICK}I have read and agree to the above</label></span>
+  <div class="grid">`+
+    fieldText("Declaration_Signature_Name","Type your full name to sign",{req:true, half:false})+
+  `</div>
+  <p class="help" style="margin-top:8px">Date: <span id="decl-date" style="color:var(--dark); font-weight:bold"></span></p>
+  <input type="hidden" name="Declaration_Date">`;
+
+root.innerHTML = html;
+
+// declaration date
+(function(){
+  const d=new Date();
+  const disp=`${MONTHS[d.getMonth()][0]} ${d.getDate()}, ${d.getFullYear()}`;
+  const dEl=document.getElementById("decl-date"); if(dEl) dEl.textContent=disp;
+  const dHid=document.querySelector('[name="Declaration_Date"]'); if(dHid) dHid.value=ymdToday();
+})();
+
+/* ---------- post-render wiring ---------- */
+// preload one tax residency + one citizenship slot inside every person block
+document.querySelectorAll('[data-repeat$="_TaxRes"]').forEach(c=>{
+  c.dataset.count = "0"; addRepeat(c.dataset.repeat, true);
+});
+
+function repeatContainer(key){ return document.querySelector(`[data-repeat="${key}"]`); }
+function addRepeat(key, isFirst){
+  const c = repeatContainer(key); if(!c) return;
+  let i = parseInt(c.dataset.count||"0",10) + 1; c.dataset.count = i;
+  c.insertAdjacentHTML("beforeend", key.endsWith("_TaxRes") ? taxResRow(key, i) : citizenshipRow(key, i));
+  rebindCountries();
+}
+
+// additional parties
+let partyN = 0;
+const partiesEl = document.getElementById("parties");
+function addParty(){
+  partyN++;
+  const d = document.createElement("div");
+  d.className = "party"; d.dataset.party = partyN;
+  d.innerHTML = `<div class="party-head"><span class="pt">Party ${partyN}</span>
+      <button type="button" class="btn-rm" data-rmparty>remove this party</button></div>`
+    + personBlock("AdditionalParty"+partyN, {role:true, relationship:true, sameAddress:true, adultDOB:true});
+  partiesEl.appendChild(d);
+  // preload one tax residency in the new party
+  const tr = d.querySelector('[data-repeat$="_TaxRes"]'); tr.dataset.count="0";
+  addRepeat(tr.dataset.repeat, true);
+  rebindAll();
+}
+document.getElementById("add-party").addEventListener("click", addParty);
+for(let k=0;k<(CONFIG.preloadAdditionalParties||0);k++) addParty();
+
+// businesses
+let bizN = 0;
+const bizListEl = document.getElementById("bizlist");
+function addBiz(){ bizN++; const d=document.createElement("div"); d.innerHTML=businessRow(bizN);
+  bizListEl.appendChild(d.firstElementChild); rebindCountries(); }
+if (CONFIG.showBusiness){ document.getElementById("add-biz").addEventListener("click", addBiz); addBiz(); }
+
+/* ---------- delegated events ---------- */
+document.addEventListener("click", e=>{
+  const addBtn = e.target.closest("[data-addrepeat]");
+  if (addBtn) { addRepeat(addBtn.dataset.addrepeat, false); return; }
+  if (e.target.matches("[data-rmrow]")) { e.target.closest("[data-row]").remove(); }
+  if (e.target.matches("[data-rmparty]")) { e.target.closest(".party").remove(); }
+  if (e.target.matches("[data-rmbiz]")) { e.target.closest("[data-bizrow]").remove(); }
+});
+// PEP reveal + date preview + same-address
+document.addEventListener("change", e=>{
+  const t = e.target;
+  if (t.type==="radio" && t.name){
+    const rev = document.querySelector(`[data-revealfor="${t.name}"]`);
+    if (rev) rev.classList.toggle("on", t.value==="Yes");
+  }
+  if (t.dataset && t.dataset.sameas){ toggleSameAddress(t.dataset.sameas, t.checked); }
+  if (t.dataset && t.dataset.deps){ toggleDepsReveal(t.dataset.deps, t.value); }
+  if (t.dataset && t.dataset.naof){ toggleNA(t); }
+  if (t.name && /__[mdy]$/.test(t.name)) updatePreview(t.name.replace(/__[mdy]$/,""));
+});
+document.addEventListener("input", e=>{
+  const t=e.target;
+  if (t.dataset && t.dataset.deps){ toggleDepsReveal(t.dataset.deps, t.value); }
+  if (t.name && /__[mdy]$/.test(t.name)) updatePreview(t.name.replace(/__[mdy]$/,""));
+});
+
+function toggleNA(cb){
+  const field = document.querySelector(`[name="${cb.dataset.naof}"]`);
+  if(!field) return;
+  if(cb.checked){ field.value=""; field.disabled=true; field.dataset.req="0"; field.classList.remove("invalid"); field.classList.add("na-off"); }
+  else { field.disabled=false; field.dataset.req="1"; field.classList.remove("na-off"); }
+}
+
+function toggleDepsReveal(prefix, val){
+  const rev = document.querySelector(`[data-depsreveal="${prefix}"]`);
+  if(!rev) return;
+  rev.classList.toggle("on", parseInt(val,10) >= 1);
+}
+
+function toggleSameAddress(prefix, on){
+  const blk = document.querySelector(`[data-addrblock="${prefix}"]`);
+  if(!blk) return;
+  blk.style.display = on ? "none" : "";
+}
+
+/* ---------- date helpers ---------- */
+function readDate(name){
+  const m=document.querySelector(`[name="${name}__m"]`), d=document.querySelector(`[name="${name}__d"]`), y=document.querySelector(`[name="${name}__y"]`);
+  if(!m) return null;
+  return {m:m.value, d:d.value.trim(), y:y.value.trim()};
+}
+function composeYAMLDate(name){ // -> "1969Oct28" or ""
+  const v=readDate(name); if(!v||!v.m||!v.d||!v.y) return "";
+  return `${v.y}${v.m}${String(v.d).padStart(2,"0")}`;
+}
+function fullMonth(code){ const f=MONTHS.find(x=>x[1]===code); return f?f[0]:code; }
+function displayDate(name){
+  const v=readDate(name); if(!v||!v.m||!v.d||!v.y) return "";
+  return `${fullMonth(v.m)} ${parseInt(v.d,10)}, ${v.y}`;
+}
+function ageFrom(name){
+  const v=readDate(name); if(!v||!v.m||!v.d||!v.y) return null;
+  const mi=MONTHS.findIndex(x=>x[1]===v.m); if(mi<0) return null;
+  const dob=new Date(parseInt(v.y,10), mi, parseInt(v.d,10));
+  if (isNaN(dob)) return null;
+  const now=new Date(); let a=now.getFullYear()-dob.getFullYear();
+  const mm=now.getMonth()-dob.getMonth();
+  if (mm<0 || (mm===0 && now.getDate()<dob.getDate())) a--;
+  return a;
+}
+function updatePreview(name){
+  const el=document.querySelector(`[data-preview="${name}"]`); if(!el) return;
+  const ctl=document.querySelector(`[data-date="${name}"]`);
+  const disp=displayDate(name);
+  el.classList.remove("bad");
+  if(!disp){ el.textContent=""; return; }
+  if (ctl && ctl.dataset.adult==="1"){
+    const a=ageFrom(name);
+    if (a!==null && a<18){ el.textContent=`→ ${disp}  ·  this person is under 18`; el.classList.add("bad"); return; }
+  }
+  el.textContent = `→ ${disp}`;
+}
+
+/* ---------- country re-binding (datalist already global; nothing to rebind, kept for clarity) ---------- */
+function rebindCountries(){ /* inputs use shared <datalist id="countries">, no action needed */ }
+function rebindAll(){ rebindCountries(); }
+
+/* =====================  COLLECT + VALIDATE  ===================== */
+function collect(){
+  const out = [];
+  const seenDate = new Set();
+  // plain inputs/selects/textareas with a name (skip date sub-parts; handle separately)
+  root.querySelectorAll("input[name], select[name], textarea[name]").forEach(el=>{
+    if (/__[mdy]$/.test(el.name)) { seenDate.add(el.name.replace(/__[mdy]$/,"")); return; }
+    if (el.type==="radio"){ if(el.checked) out.push([el.name, el.value]); return; }
+    if (el.type==="checkbox"){ if(el.checked) out.push([el.name, el.value]); return; }
+    const v=(el.value||"").trim(); if(v!=="") out.push([el.name, v]);
+  });
+  // dates -> YYYYMonDD
+  seenDate.forEach(name=>{ const c=composeYAMLDate(name); if(c) out.push([name, c]); });
+  // same-address markers
+  document.querySelectorAll("[data-sameas]").forEach(cb=>{
+    if (cb.checked) out.push([cb.dataset.sameas+"_Same_As_Primary","Yes"]);
+  });
+  return out;
+}
+
+function validate(){
+  const errs=[]; clearInvalid();
+  // required text/select/country/email
+  root.querySelectorAll('[data-req="1"]').forEach(el=>{
+    if (el.matches("[data-radio]")){
+      const name=el.dataset.radio;
+      if (!root.querySelector(`input[name="${name}"]:checked`)){ markFieldset(el); errs.push(el.dataset.label); }
+      return;
+    }
+    if (el.matches("[data-checks]")){
+      const name=el.dataset.checks;
+      if (!root.querySelector(`input[name="${name}"]:checked`)){ markFieldset(el); errs.push(el.dataset.label); }
+      return;
+    }
+    if (el.matches("[data-date]")){
+      const name=el.dataset.date;
+      if (!composeYAMLDate(name)){ el.querySelectorAll("select,input").forEach(x=>x.classList.add("invalid")); errs.push(el.dataset.label+" (complete date)"); }
+      else if (el.dataset.adult==="1"){ const a=ageFrom(name); if(a!==null && a<18){ el.querySelectorAll("select,input").forEach(x=>x.classList.add("invalid")); errs.push(el.dataset.label+" — must be 18 or older"); } }
+      return;
+    }
+    // hidden by same-address? skip requiredness on hidden address blocks
+    if (el.offsetParent===null) return;
+    const v=(el.value||"").trim();
+    if (v===""){ el.classList.add("invalid"); errs.push(el.dataset.label||el.name); }
+    else if (el.type==="email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ el.classList.add("invalid"); errs.push((el.dataset.label||"Email")+" (check format)"); }
+  });
+  // required checkboxes (declaration)
+  root.querySelectorAll('[data-reqcheck="1"]').forEach(cb=>{
+    if (!cb.checked){ const pill=cb.closest(".opt-pill"); if(pill) pill.classList.add("pill-bad"); errs.push("Please confirm "+(cb.dataset.label||"the declaration")); }
+  });
+  return errs;
+}
+function markFieldset(fs){ fs.querySelectorAll("label.lbl").forEach(()=>{}); fs.style.outline=""; fs.classList.add("fs-bad"); }
+function clearInvalid(){
+  root.querySelectorAll(".invalid").forEach(e=>e.classList.remove("invalid"));
+  root.querySelectorAll(".pill-bad").forEach(e=>e.classList.remove("pill-bad"));
+  root.querySelectorAll(".fs-bad").forEach(e=>e.classList.remove("fs-bad"));
+}
+
+/* =====================  EXPORTS  ===================== */
+function toTSV(pairs){
+  return pairs.map(([k,v])=>`${k}\t${String(v).replace(/\t/g," ").replace(/\r?\n/g," ")}`).join("\n");
+}
+function lastNameForFile(){
+  const el=document.querySelector('[name="Client_Last_Name"]'); return (el&&el.value.trim())?el.value.trim().replace(/[^A-Za-z0-9]/g,""):"Client";
+}
+function fileStamp(){ const d=new Date(); return d.toISOString().slice(0,10); }       // YYYY-MM-DD — download filename only
+function ymdToday(){ const d=new Date(); return `${d.getFullYear()}${MONTHS[d.getMonth()][1]}${String(d.getDate()).padStart(2,"0")}`; } // YYYYMonDD — YAML date fields (schema §10)
+
+// minimal, clearly-DRAFT YAML mirror (proposed paths marked) for staff convenience
+function toYAML(pairs){
+  const map={}; pairs.forEach(([k,v])=>map[k]=v);
+  const q = s => `"${String(s).replace(/"/g,'\\"')}"`;
+  const get = k => map[k]!==undefined?map[k]:null;
+  const L=[];
+  L.push(`# DRAFT YAML — generated from intake (${CONFIG.clientId}). Proposed paths marked. Review before merge.`);
+  L.push(`client_id: ${q(CONFIG.clientId)}`);
+  L.push(`client:`);
+  const ci=(k,key)=>{ const v=get(k); if(v!==null) L.push(`  ${key}: ${/Date_of_Birth|TIN|Tax_ID/.test(k)?q(v):q(v)}`); };
+  ci("Client_First_Name","given_name"); ci("Client_Middle_Name","middle_name"); ci("Client_Last_Name","surname");
+  ci("Client_Preferred_Name","preferred_name");
+  if(get("Client_Date_of_Birth")) L.push(`  date_of_birth: ${q(get("Client_Date_of_Birth"))}`);
+  const pob=[get("Client_Place_of_Birth_City"),get("Client_Place_of_Birth_Country")].filter(Boolean).join(", ");
+  if(pob) L.push(`  place_of_birth: ${q(pob)}`);
+  ci("Client_Sex","sex"); ci("Client_Marital_Status","marital_status");
+  { const dep=get("Client_Dependents"); if(dep!==null&&dep!=="") L.push(`  dependents: ${parseInt(dep,10)||0}`); } // §4
+  if(get("Client_Nationality")) L.push(`  citizenship: [${q(get("Client_Nationality"))}]`);
+  if(get("Client_US_Person")) L.push(`  us_person: ${get("Client_US_Person")==="Yes"?"true":"false"}   # derived`);
+  // tax residency array
+  const tr=[]; let i=1; while(get(`Client_TaxRes_Country_${i}`)){ tr.push(`    - {country: ${q(get(`Client_TaxRes_Country_${i}`))}, tin: ${q(get(`Client_TaxRes_TIN_${i}`)||"")}}`); i++; }
+  if(tr.length){ L.push(`  tax_residency:`); L.push(...tr); }
+  if(get("Client_Passport_Number")){ L.push(`  passport: {number: ${q(get("Client_Passport_Number"))}, expiry: ${q(get("Client_Passport_Expiry")||"")}, issuing_country: ${q(get("Client_Passport_Issuing_Country")||"")}}`); }
+  const _msr=get("Client_Mailing_Different")==="No"?"true":(get("Client_Mailing_Different")==="Yes"?"false":"null");
+  L.push(`  address: {street: ${q(get("Client_Street")||"")}, city: ${q(get("Client_City")||"")}, state_province: ${q(get("Client_State_Province")||"")}, postal_code: ${q(get("Client_Postal_Code")||"")}, country: ${q(get("Client_Country")||"")}, time_at_address: ${q(get("Client_Length_at_Address")||"")}, mailing_same_as_residential: ${_msr}}`);
+  if(get("Client_Mailing_Different")==="Yes") L.push(`  mailing_address: {street: ${q(get("Client_Mailing_Street")||"")}, city: ${q(get("Client_Mailing_City")||"")}, state_province: ${q(get("Client_Mailing_State_Province")||"")}, postal_code: ${q(get("Client_Mailing_Postal_Code")||"")}, country: ${q(get("Client_Mailing_Country")||"")}}`); // §4
+  L.push(`  contact: {email_primary: ${q(get("Client_Email")||"")}, phone: ${q(get("Client_Telephone")||"")}}`);
+  ci("Client_Occupation","occupation"); ci("Client_Title","title"); ci("Client_Company_Name","employer"); ci("Client_Employment_Sector","employer_sector");
+  // wealth
+  L.push(`  wealth:`);
+  if(get("NW_Range")) L.push(`    net_worth_range: ${q(get("NW_Range"))}`);
+  if(get("Income_Bracket")) L.push(`    income_bracket: ${q(get("Income_Bracket"))}`);
+  const isrc=pairs.filter(([k])=>k==="Income_Sources").map(([,v])=>q(v));
+  if(isrc.length) L.push(`    income_sources: [${isrc.join(", ")}]`);
+  if(get("Real_Estate_Holdings")) L.push(`    real_estate_holdings: ${q(get("Real_Estate_Holdings"))}`); // §4
+  if(get("Primary_Non_Real_Estate_Assets")) L.push(`    primary_non_real_estate_assets: ${q(get("Primary_Non_Real_Estate_Assets"))}`); // §4
+  { const brN=get("Client_Bank_Reference_Name"), brB=get("Client_Bank_Reference_Bank_Name"), brC=get("Client_Bank_Reference_Contact"); if(brN||brB||brC) L.push(`    banking_reference: {bank_name: ${q(brB||"")}, contact_name: ${q(brN||"")}, contact: ${q(brC||"")}}`); } // §4
+  if(get("Source_of_Wealth_Description")) L.push(`    source_of_wealth_description: ${q(get("Source_of_Wealth_Description"))}   # §6 (approved)`);
+  if(get("Countries_of_Wealth")) L.push(`    countries_of_wealth: [${q(get("Countries_of_Wealth"))}]   # §6 (approved)`);
+  if(get("Countries_of_Income")) L.push(`    countries_of_income: [${q(get("Countries_of_Income"))}]   # §6 (approved)`);
+  if(get("Countries_of_Asset_Location")) L.push(`    countries_of_asset_location: [${q(get("Countries_of_Asset_Location"))}]   # §6 (pending)`);
+  // background declarations — PENDING extension
+  const decl=[];
+  [["Bankruptcy","bankruptcy"],["Conviction","conviction"],["Sanctions","sanctions"]].forEach(([k,key])=>{
+    if(get("Client_"+k)) decl.push(`    ${key}: {flag: ${get("Client_"+k)==="Yes"?"true":"false"}, detail: ${q(get("Client_"+k+"_Detail")||"")}}`);
+  });
+  if(decl.length){ L.push(`  declarations:   # §6 (pending)`); L.push(...decl); }
+  // additional parties — PROPOSED extension
+  const parties=[...document.querySelectorAll(".party[data-party]")].map(p=>p.dataset.party);
+  if(parties.length){
+    L.push(`  additional_parties:   # §6 (approved)`);
+    parties.forEach(pi=>{
+      const pre="AdditionalParty"+pi;
+      L.push(`    - given_name: ${q(get(pre+"_First_Name")||"")}`);
+      L.push(`      surname: ${q(get(pre+"_Last_Name")||"")}`);
+      if(get(pre+"_Date_of_Birth")) L.push(`      date_of_birth: ${q(get(pre+"_Date_of_Birth"))}`);
+      L.push(`      relationship: ${q(get(pre+"_Relationship_to_Primary")||"")}`);
+      L.push(`      equal_powers: ${get(pre+"_Equal_Powers")==="Yes"?"true":"false"}`);
+      L.push(`      copy_correspondence: ${get(pre+"_Copy_Correspondence")==="Yes"?"true":"false"}`);
+      L.push(`      roles: []   # assigned by firm once determined`);
+    });
+  }
+  // business holdings (§4)
+  { const biz=[]; let bi=1;
+    while(get(`Business${bi}_Name`)!==null && get(`Business${bi}_Name`)!==""){
+      biz.push(`    - name: ${q(get(`Business${bi}_Name`))}`);
+      biz.push(`      type_of_business: ${q(get(`Business${bi}_Type`)||"")}`);
+      biz.push(`      location: ${q(get(`Business${bi}_Location`)||"")}`);
+      biz.push(`      ownership_pct: ${q(get(`Business${bi}_Ownership_Pct`)||"")}`);
+      biz.push(`      ownership_structure: ${q(get(`Business${bi}_Ownership_Structure`)||"")}`);
+      biz.push(`      estimated_value: ${q(get(`Business${bi}_Estimated_Value`)||"")}`);
+      bi++;
+    }
+    if(biz.length){ L.push(`  business_holdings:`); L.push(...biz); }
+  }
+  // PEP (§4)
+  if(get("Client_PEP")==="Yes"){
+    L.push(`  pep:`);
+    L.push(`    flag: true`);
+    L.push(`    name: ${q(get("Client_PEP_Name")||"")}`);
+    L.push(`    country: ${q(get("Client_PEP_Country")||"")}`);
+    L.push(`    job_title: ${q(get("Client_PEP_Position")||"")}`);
+    L.push(`    relationship: ${q(get("Client_PEP_Relationship")||"")}`);
+    L.push(`    period: ${q(get("Client_PEP_Period")||"")}`);
+  } else if(get("Client_PEP")==="No"){
+    L.push(`  pep: {flag: false}`);
+  }
+  // onboarding (§4 client.onboarding) — declaration folded in
+  L.push(`  onboarding:`);
+  L.push(`    intake_date: ${q(get("Declaration_Date")||ymdToday())}`);
+  L.push(`    intake_form_version: "v3"`);
+  L.push(`    declarations_signed: ${get("Declaration_Agreed")==="Yes"?"true":"false"}`);
+  L.push(`    signed_name: ${q(get("Declaration_Signature_Name")||"")}`);
+  return L.join("\n");
+}
+
+/* ---------- download / copy ---------- */
+function downloadText(text, filename){
+  try{
+    const blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 1500);
+    return true;
+  }catch(err){ return false; }
+}
+function copyText(text){
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).then(()=>true).catch(()=>false);
+  }
+  return Promise.resolve(false);
+}
+function show(id){ document.getElementById(id).classList.add("on"); }
+function hide(id){ document.getElementById(id).classList.remove("on"); }
+
+/* ---------- readable summary (for the notification email) ---------- */
+function prettyVal(v){
+  const m=String(v).match(/^(\d{4})([A-Z][a-z]{2})(\d{2})$/); // YYYYMonDD -> Month DD, YYYY
+  if(m){ const mo=MONTHS.find(x=>x[1]===m[2]); if(mo) return `${mo[0]} ${parseInt(m[3],10)}, ${m[1]}`; }
+  return v;
+}
+function readableLabel(name){
+  const el=root.querySelector(`[name="${name}"]`);
+  if(el&&el.dataset&&el.dataset.label) return el.dataset.label;
+  const fs=root.querySelector(`[data-radio="${name}"],[data-checks="${name}"],[data-date="${name}"]`);
+  if(fs&&fs.dataset&&fs.dataset.label) return fs.dataset.label;
+  return name.replace(/^(Client_|Spouse_|AdditionalParty\d+_|Business\d+_)/,"").replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+}
+function sectionTitleFor(name){
+  let el=root.querySelector(`[name="${name}"]`)
+       ||root.querySelector(`[data-radio="${name}"],[data-checks="${name}"],[data-date="${name}"]`);
+  if(!el){ const m=name.match(/^(AdditionalParty\d+)_/); if(m) el=root.querySelector(`[name^="${m[1]}_"]`); }
+  if(!el) return "Other";
+  let t="Other";
+  const card=el.closest(".card");
+  if(card){ const h=card.querySelector(".card-head h2"); if(h){ const c=h.cloneNode(true); const o=c.querySelector(".opt"); if(o)o.remove(); t=c.textContent.trim(); } }
+  const party=el.closest(".party");
+  if(party){ const pt=party.querySelector(".pt"); if(pt) t=t+" · "+pt.textContent.trim(); }
+  return t;
+}
+function buildReadable(pairs){
+  const order=[], vals={};
+  pairs.forEach(([k,v])=>{ if(k==="_form_version"||k==="_client_id") return; if(!(k in vals)){vals[k]=[];order.push(k);} vals[k].push(v); });
+  const groups=[], gidx={};
+  order.forEach(name=>{
+    let label, value, lookup=name;
+    if(/_None$/.test(name)){ lookup=name.replace(/_None$/,""); label=readableLabel(lookup); value="(none)"; }
+    else if(/_Same_As_Primary$/.test(name)){ label="Residential address"; value="Same as primary client"; }
+    else { label=readableLabel(name); value=vals[name].map(prettyVal).join(", "); }
+    const title=sectionTitleFor(lookup);
+    if(!gidx[title]){ gidx[title]={title,lines:[]}; groups.push(gidx[title]); }
+    gidx[title].lines.push(`${label}: ${value}`);
+  });
+  const out=[`SULLIVAN HART — INTAKE SUBMISSION (${CONFIG.clientId})`,""];
+  groups.forEach(g=>{ out.push(`== ${g.title.toUpperCase()} ==`); g.lines.forEach(l=>out.push(l)); out.push(""); });
+  return out.join("\n").trim();
+}
+
+/* ---------- submit ---------- */
+document.getElementById("btn-submit").addEventListener("click", ()=>{
+  const errs = validate();
+  const box=document.getElementById("errsum"), list=document.getElementById("errlist");
+  if (errs.length){
+    list.innerHTML = errs.slice(0,12).map(e=>`<li>${esc(e)}</li>`).join("")
+      + (errs.length>12?`<li>…and ${errs.length-12} more</li>`:"");
+    box.classList.add("on");
+    const firstBad=root.querySelector(".invalid, .fs-bad"); if(firstBad) firstBad.scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  box.classList.remove("on");
+  const pairs = collect();
+  const tsv = toTSV(pairs);
+  const yaml = toYAML(pairs);
+  const readable = buildReadable(pairs);
+
+  const ep = (CONFIG.formEndpoint||"").trim();
+  if (/^https?:\/\//.test(ep)){
+    const fd=new FormData();
+    fd.append("Readable_Summary", readable);   // shows first in the email — copy this into Box
+    fd.append("YAML_for_filing", yaml);         // schema draft for Ariel
+    fd.append("Field_Export_TSV", tsv);         // tab-separated, for the YAML pipeline
+    fd.append("_client_id", CONFIG.clientId);
+    fd.append("_form_version", "sh_intake_v3");
+    fd.append("_subject", `Intake submission — ${CONFIG.clientId}`);
+    fetch(ep,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+      .then(r=>{ if(r.ok){ doneOnline(); } else { doneFallback(tsv); } })
+      .catch(()=> doneFallback(tsv));
+  } else {
+    doneFallback(tsv);
+  }
+});
+function finishUI(){ document.getElementById("submitbar").style.display="none";
+  document.getElementById("intro").style.display="none"; root.style.display="none";
+  window.scrollTo({top:0,behavior:"smooth"}); }
+function doneOnline(){ clearSaved(); finishUI(); show("panel-success"); }
+function doneFallback(tsv){
+  clearSaved();
+  finishUI();
+  const fn=`SH_Intake_${CONFIG.clientId}_${lastNameForFile()}_${fileStamp()}.txt`;
+  const ok=downloadText(tsv, fn);
+  document.getElementById("fallback-text").value = tsv;
+  show("panel-fallback");
+}
+
+/* manual buttons */
+document.getElementById("btn-download").addEventListener("click", ()=>{
+  const errs=validate();
+  const pairs=collect(); const tsv=toTSV(pairs);
+  const fn=`SH_Intake_${CONFIG.clientId}_${lastNameForFile()}_${fileStamp()}.txt`;
+  downloadText(tsv, fn);
+  if(errs.length){ /* still let them download a partial copy */ }
+});
+document.getElementById("btn-yaml").addEventListener("click", async ()=>{
+  const y=toYAML(collect()); const ok=await copyText(y);
+  flash(document.getElementById("btn-yaml"), ok?"YAML copied":"copy failed — see console"); if(!ok) console.log(y);
+});
+document.getElementById("btn-txt").addEventListener("click", async ()=>{
+  const t=toTSV(collect()); const ok=await copyText(t);
+  flash(document.getElementById("btn-txt"), ok?"TSV copied":"copy failed — see console"); if(!ok) console.log(t);
+});
+function flash(btn,msg){ const o=btn.textContent; btn.textContent=msg; setTimeout(()=>btn.textContent=o,1600); }
+
+/* ---------- save / restore progress (localStorage) ----------
+   Works when the form is hosted or opened as a file in a normal browser.
+   In a sandboxed preview, storage is blocked — calls fail quietly and the
+   form still works (just without save). All sensitive entries live only on
+   the person's own device and are cleared on submit or "Start over". */
+const STORE_KEY = "sh_intake_" + CONFIG.clientId;
+let saveTimer = null, RESTORING = true;
+function storeAvailable(){ try{ const k="__sh_t"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return true; }catch(e){ return false; } }
+const CAN_SAVE = storeAvailable();
+
+function snapshot(){
+  const d = { v:1, ts:Date.now(), counts:{}, repeats:{}, sameAddr:{}, fields:{}, multi:{} };
+  d.counts.parties = document.querySelectorAll('#parties .party[data-party]').length;
+  d.counts.biz = document.querySelectorAll('#bizlist [data-bizrow]').length;
+  document.querySelectorAll('[data-repeat]').forEach(c=>{ d.repeats[c.dataset.repeat] = parseInt(c.dataset.count||"0",10); });
+  root.querySelectorAll('input[name], select[name], textarea[name]').forEach(el=>{
+    const nm = el.name;
+    if (el.type==='radio'){ if(el.checked) d.fields[nm]=el.value; return; }
+    if (el.type==='checkbox'){ (d.multi[nm]=d.multi[nm]||[]); if(el.checked) d.multi[nm].push(el.value); return; }
+    d.fields[nm] = el.value;
+  });
+  document.querySelectorAll('[data-sameas]').forEach(cb=>{ d.sameAddr[cb.dataset.sameas]=cb.checked; });
+  return d;
+}
+function saveNow(){ if(!CAN_SAVE||RESTORING) return; try{ localStorage.setItem(STORE_KEY, JSON.stringify(snapshot())); }catch(e){} }
+function scheduleSave(){ if(!CAN_SAVE||RESTORING) return; clearTimeout(saveTimer); saveTimer=setTimeout(saveNow, 500); }
+function clearSaved(){ try{ localStorage.removeItem(STORE_KEY); }catch(e){} }
+
+function restore(d){
+  if(!d || !d.fields) return false;
+  d.counts = d.counts||{}; d.repeats = d.repeats||{}; d.multi = d.multi||{}; d.sameAddr = d.sameAddr||{};
+  // structural counts
+  let curP = document.querySelectorAll('#parties .party[data-party]').length;
+  const tgtP = (d.counts.parties!=null) ? d.counts.parties : curP;
+  while(curP < tgtP){ addParty(); curP++; }
+  while(curP > tgtP){ const last=[...document.querySelectorAll('#parties .party[data-party]')].pop(); if(!last)break; last.remove(); curP--; }
+  let curB = document.querySelectorAll('#bizlist [data-bizrow]').length;
+  const tgtB = (d.counts.biz!=null) ? d.counts.biz : curB;
+  while(curB < tgtB){ addBiz(); curB++; }
+  while(curB > tgtB){ const last=[...document.querySelectorAll('#bizlist [data-bizrow]')].pop(); if(!last)break; last.remove(); curB--; }
+  Object.keys(d.repeats).forEach(key=>{
+    const c = repeatContainer(key); if(!c) return;
+    let cur = parseInt(c.dataset.count||"0",10);
+    const tgt = d.repeats[key]||0;
+    while(cur < tgt){ addRepeat(key, false); cur++; }
+  });
+  // values
+  Object.keys(d.fields).forEach(nm=>{
+    const els = root.querySelectorAll(`[name="${nm}"]`); if(!els.length) return;
+    if(els[0].type==='radio'){ els.forEach(r=> r.checked = (r.value===d.fields[nm])); return; }
+    els[0].value = d.fields[nm];
+  });
+  Object.keys(d.multi).forEach(nm=>{
+    const vals = d.multi[nm]||[];
+    root.querySelectorAll(`input[type=checkbox][name="${nm}"]`).forEach(cb=>{ cb.checked = vals.includes(cb.value); });
+  });
+  Object.keys(d.sameAddr).forEach(prefix=>{
+    const cb = document.querySelector(`[data-sameas="${prefix}"]`);
+    if(cb){ cb.checked = !!d.sameAddr[prefix]; toggleSameAddress(prefix, cb.checked); }
+  });
+  // re-fire reveals + previews
+  root.querySelectorAll('[data-radio]').forEach(fs=>{
+    const nm = fs.dataset.radio, checked = root.querySelector(`input[name="${nm}"]:checked`);
+    if(checked){ const rev=document.querySelector(`[data-revealfor="${nm}"]`); if(rev) rev.classList.toggle('on', checked.value==='Yes'); }
+  });
+  root.querySelectorAll('[data-deps]').forEach(x=> toggleDepsReveal(x.dataset.deps, x.value));
+  root.querySelectorAll('[data-naof]').forEach(cb=> toggleNA(cb));
+  root.querySelectorAll('[data-date]').forEach(c=> updatePreview(c.dataset.date));
+  return true;
+}
+
+// attempt restore, then enable saving
+(function initSaveRestore(){
+  let resumed=false;
+  if(CAN_SAVE){
+    let saved=null;
+    try{ const raw=localStorage.getItem(STORE_KEY); if(raw) saved=JSON.parse(raw); }catch(e){}
+    if(saved && saved.fields && Object.keys(saved.fields).length){
+      try{ restore(saved); resumed=true; }catch(e){ console.warn("restore failed", e); }
+    }
+  }
+  RESTORING=false;
+  if(CAN_SAVE){
+    const sv=document.getElementById("saver"); if(sv) sv.style.display="";
+    if(resumed){ const t=document.getElementById("saver-text"); if(t) t.textContent="We've brought back the answers you started earlier — pick up where you left off. (Saved on this device.)"; }
+    document.addEventListener("input", scheduleSave, true);
+    document.addEventListener("change", scheduleSave, true);
+  }
+})();
+const _startover=document.getElementById("btn-startover");
+if(_startover) _startover.addEventListener("click", ()=>{
+  if(confirm("Clear everything and start over? This cannot be undone.")){ clearSaved(); location.reload(); }
+});
+</script>
+</body>
+</html>

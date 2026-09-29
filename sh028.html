@@ -312,6 +312,12 @@
                            the per-client file. A future version could parameterize this as
                            CONFIG.domesticLLCCount; not yet built.
    showBusiness .......... show the business / source-of-wealth section.
+   showProfessionalReference  ask for a professional reference (contact details)
+                           in every person block. false when the firm itself
+                           will stand as reference (e.g. Peter). Default true.
+   showDomesticLLC ....... show the Domestic LLC name choices in the proposed-names
+                           section, and require them. true only when a domestic
+                           LLC is part of the structure. Default false.
    formEndpoint .......... Formspree endpoint for one-click submit, e.g.
                            "https://formspree.io/f/xxxxxxxx" (the same one
                            sh_intake_v2 uses). LEAVE BLANK to run in
@@ -323,6 +329,8 @@
      preloadAdditionalParties: 0,
      showEntityNaming: true,
      showBusiness: true,
+     showProfessionalReference: false,
+     showDomesticLLC: true,
      formEndpoint: "https://formspree.io/f/xvznayzy"   // firm Formspree endpoint — online submit enabled
    };
 
@@ -539,15 +547,20 @@ function personBlock(prefix, o={}){
     fieldText(prefix+"_Employment_Sector","Industry / sector")+
     `</div>`;
 
-  h += `<div class="subhead">References</div>`+
-    `<p class="help" style="margin-top:-4px">A bank reference and a professional reference (for example an accountant or attorney). We'll request the reference letters separately — here we just need the contact information.</p>`+
+  const wantProf = (CONFIG.showProfessionalReference !== false);
+  h += `<div class="subhead">${wantProf ? "References" : "Bank reference"}</div>`+
+    `<p class="help" style="margin-top:-4px">${wantProf
+       ? "A bank reference and a professional reference (for example an accountant or attorney). We'll request the reference letters separately — here we just need the contact information."
+       : "A bank reference. We'll request the reference letter separately — here we just need the contact information."}</p>`+
     `<div class="grid">`+
       fieldText(prefix+"_Bank_Reference_Name","Bank reference — contact name",{req:true})+
       fieldText(prefix+"_Bank_Reference_Bank_Name","Bank reference — bank name",{req:true})+
       fieldText(prefix+"_Bank_Reference_Contact","Bank reference — contact details",{req:true, half:false, placeholder:"Email, phone, or address"})+
+      (wantProf ? (
       fieldText(prefix+"_Professional_Reference_Name","Professional reference — name",{req:true})+
       fieldText(prefix+"_Professional_Reference_Company","Professional reference — company",{req:true})+
-      fieldText(prefix+"_Professional_Reference_Contact","Professional reference — contact details",{req:true, half:false, placeholder:"Email, phone, or address"})+
+      fieldText(prefix+"_Professional_Reference_Contact","Professional reference — contact details",{req:true, half:false, placeholder:"Email, phone, or address"})
+      ) : "")+
     `</div>`;
 
   h += `<div class="subhead">Politically exposed person (PEP)</div><div class="grid">`+
@@ -669,11 +682,13 @@ if (CONFIG.showEntityNaming){
       fieldText("Proposed_CILLC_Name_1","First choice",{req:true, placeholder:"e.g. Blue Harbor LLC"})+
       fieldText("Proposed_CILLC_Name_2","Second choice",{req:true, placeholder:"ends with “LLC”"})+
       fieldText("Proposed_CILLC_Name_3","Third choice",{req:true, placeholder:"ends with “LLC”"})+
-     `</div><div class="subhead">Domestic LLC <span style="font-weight:normal;text-transform:none;color:#888">(only if one is part of your structure)</span></div><div class="grid">`+
-      fieldText("Proposed_DomesticLLC_Name_1","First choice",{placeholder:"ends with “LLC”"})+
-      fieldText("Proposed_DomesticLLC_Name_2","Second choice",{placeholder:"ends with “LLC”"})+
-      fieldText("Proposed_DomesticLLC_Name_3","Third choice",{placeholder:"ends with “LLC”"})+
-     `</div>`);
+     `</div>`+
+     (CONFIG.showDomesticLLC ? (
+     `<div class="subhead">Domestic LLC</div><div class="grid">`+
+      fieldText("Proposed_DomesticLLC_Name_1","First choice",{req:true, placeholder:"e.g. Blue Harbor Holdings LLC"})+
+      fieldText("Proposed_DomesticLLC_Name_2","Second choice",{req:true, placeholder:"ends with “LLC”"})+
+      fieldText("Proposed_DomesticLLC_Name_3","Third choice",{req:true, placeholder:"ends with “LLC”"})+
+     `</div>`) : ""));
 }
 
 /* Module F — Business / Source of Wealth */

@@ -446,7 +446,7 @@ html += sec("The bank account", "Caye International Bank",
     {req:true, half:false, value:"Holding and investment account", help:"Holding and investment: receiving your funds, funding a brokerage account in the LLC's name, and paying the LLC's own costs."})+
   `</div><div class="reveal" data-revealfor="Acct_Main_Use" data-revealon="Other"><div class="grid">`+fieldText("Acct_Main_Use_Other","Please describe",{req:true, half:false})+`</div></div>
    <div class="grid" style="margin-top:14px">`+
-  fieldArea("SOF", "Where the money comes from", {req:true, value:"Our personal funds in New Zealand: savings held with TSB Bank, and the proceeds of our personal Interactive Brokers portfolios once they are realised.", help:"We've drafted this from our call. Please correct it."})+
+  fieldArea("SOF", "Where the money comes from", {req:true, value:"Our personal funds in New Zealand: savings held with our bank, and the proceeds of our personal Interactive Brokers portfolios once they are realised.", help:"We've drafted this from our call. Please correct it."})+
   fieldText("Sending_Account", "Bank and account the opening deposit (at least USD 3,000) will come from", {req:true, half:false})+
   `</div><div class="subhead">Expected size and activity</div><div class="grid">`+
   fieldText("Balance_From", "Typical balance — from (USD)", {req:true, help:"The bank's minimum balance is USD 2,000."})+fieldText("Balance_To", "Typical balance — to (USD)", {req:true})+
@@ -454,7 +454,7 @@ html += sec("The bank account", "Caye International Bank",
   fieldText("In_From", "Monthly total in — from (USD)", {req:true})+fieldText("In_To", "Monthly total in — to (USD)", {req:true})+
   fieldRadio("Out_Count", "Payments out, per month", ["1–5","6–10","11–15"], {req:true})+`<div></div>`+
   fieldText("Out_From", "Monthly total out — from (USD)", {req:true})+fieldText("Out_To", "Monthly total out — to (USD)", {req:true})+
-  fieldArea("Counterparties", "Who pays in, and who is paid", {req:true, placeholder:"In general terms — e.g. transfers from our TSB account; the LLC's brokerage account; registered agent and management fees"})+
+  fieldArea("Counterparties", "Who pays in, and who is paid", {req:true, placeholder:"In general terms — e.g. transfers from our bank account; the LLC's brokerage account; registered agent and management fees"})+
   fieldText("Countries", "Countries payments will come from or go to", {req:true, half:false, value:"New Zealand"})+
   `</div><div class="notfor" style="margin-top:14px">Please describe only what the LLC will actually do with the account. If you're considering an arrangement between the LLC and Steam &amp; Process Limited, such as a licence or an equipment lease, tell us about it separately: it needs to be in place and documented before payments under it are described to the bank.</div>
    <div class="reveal" data-revealfor="Acct_Main_Use" data-revealon="Holding and investment account, plus a separate operating account for business">
@@ -501,12 +501,12 @@ html += sec("Documents checklist", "please email these to us",
   `<div class="subhead">Derek and Rosalind</div>`+
   docRow("Doc_DC_Passport", "Derek — renewed passport", "A colour scan of the photo page.")+
   docRow("Doc_DR_POA", "Proof of address — your home address", "A utility bill or bank statement dated within the last 90 days. One naming you both is enough.")+
-  `<div class="docrow">`+fieldRadio("Doc_DR_RefRoute", "Bank reference — one for the two of you", ["(a) A TSB reference letter","(b) A current TSB account statement"], {req:true, half:false,
-    help:"One document covers you both, as long as it shows both your names. Either (a) a reference letter from TSB on its letterhead, as in the example enclosed, confirming how long you've banked with it and that the account is in good standing; or (b) a current statement for a joint account that shows when the account was opened. Dated within the last 90 days."})+`</div>`+
-  `<div class="reveal" data-revealfor="Doc_DR_RefRoute" data-revealon="(a) A TSB reference letter">`+
-    docRow("Doc_DR_BankRef", "TSB reference letter", "On TSB letterhead, showing both your names.")+`</div>`+
-  `<div class="reveal" data-revealfor="Doc_DR_RefRoute" data-revealon="(b) A current TSB account statement">`+
-    docRow("Doc_DR_AcctStatement", "Current TSB account statement", "Showing both your names and the date the account was opened.")+
+  `<div class="docrow">`+fieldRadio("Doc_DR_RefRoute", "Bank reference — one for the two of you", ["(a) A reference letter from your bank","(b) A current account statement"], {req:true, half:false,
+    help:"One document covers you both, as long as it shows both your names. Either (a) a reference letter from your bank on its letterhead, as in the example enclosed, confirming how long you've banked with it and that the account is in good standing; or (b) a current statement for a joint account that shows when the account was opened. Dated within the last 90 days."})+`</div>`+
+  `<div class="reveal" data-revealfor="Doc_DR_RefRoute" data-revealon="(a) A reference letter from your bank">`+
+    docRow("Doc_DR_BankRef", "Bank reference letter", "On your bank's letterhead, showing both your names.")+`</div>`+
+  `<div class="reveal" data-revealfor="Doc_DR_RefRoute" data-revealon="(b) A current account statement">`+
+    docRow("Doc_DR_AcctStatement", "Current account statement", "Showing both your names and the date the account was opened.")+
     `<p class="help" style="margin:6px 0 12px">With a statement, the bank also needs a short letter explaining why a reference letter can't be provided. We'll write it and send it for signature, so there's nothing to prepare.</p>`+`</div>`+
   docRow("Doc_DR_Statement", "Statement for the sending account", "The most recent statement for the account the opening deposit will come from.")+
   CHILDREN.map(c=>`<div class="subhead">${esc(c.full)}</div>`+

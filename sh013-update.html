@@ -216,7 +216,7 @@
   </div>
   <div class="panel success" id="panel-success">
     <h2>✓ Received — thank you</h2>
-    <p class="big">Your answers have reached Sullivan Hart. Please make sure the documents are attached to your reply email. We'll prepare clean copies of the bank forms for signature and be in touch.</p>
+    <p class="big">Your answers have reached Sullivan Hart. Please make sure the documents are attached to your reply email. We'll review your answers and be in touch about the next steps.</p>
     <p>You may now close this window.</p>
   </div>
   <div class="panel fallback" id="panel-fallback">
@@ -304,7 +304,7 @@ const CONFIG = {
   bank: "Caye International Bank",
   formEndpoint: "https://formspree.io/f/mkgvyyop"   // firm Formspree endpoint (banking forms)
 };
-const FORM_VERSION = "sh013_update_v1";
+const FORM_VERSION = "sh013_update_v2";
 
 const NET_WORTH_BANDS = ["Under $1M","$1M – $5M","$5M – $10M","$10M – $25M","$25M – $50M","$50M – $100M","$100M – $1B","Over $1B"];  // maps onto Hamilton: <1M / <100M / <1B / >1B
 const INCOME_BRACKETS = ["Under $100k","$100k – $250k","$250k – $500k","$500k – $1M","$1M – $10M","Over $10M"];  // maps onto Hamilton: <100k / <1M / <10M / >10M
@@ -320,10 +320,22 @@ const COMPLIANCE_QS = [
   "Have you ever been bankrupt or insolvent, or subject to a regulatory penalty?",
   "Have you ever been subject to international sanctions?"];
 const DOC_STATUS = ["Sent with my reply","To follow","Need help"];
-const REF_STATUS = ["Letter sent with my reply","Statement and note sent instead","To follow","Need help"];
-const REF_SUB = " If the bank won't provide a letter, a current account statement can be sent instead, with a short note explaining why a bank letter can't be provided. We can send you an example of the note.";
-const REF_HELP = "From their bank on its letterhead, or from a lawyer or accountant who has known them at least two years (templates enclosed). Dated within the last 90 days."+REF_SUB;
-const REF_HELP_TSB = "From TSB on its letterhead, confirming how long you've banked with it and that your accounts are in good standing (template enclosed). Dated within the last 90 days."+REF_SUB;
+const REF_A = "(a) A bank reference letter";
+const REF_B = "(b) A professional reference letter and a current account statement";
+const REF_EXPLAIN = "The bank needs one of two things, each dated within the last 90 days: (a) a reference letter from the bank, on its letterhead, as in the example enclosed; or (b) a professional reference letter from a lawyer or accountant who has known the person at least two years (template enclosed), together with a current account statement that shows when the account was opened.";
+const REF_NOTE_B = "With option (b), the bank also needs a short letter explaining why a bank reference can't be provided. We'll write it and send it for signature, so there's nothing to prepare.";
+/* Reference block: route choice, then the documents for that route (hidden rows are not required). */
+function refBlock(k, who, bank, profHelp){
+  return `<div class="docrow">`+fieldRadio(`Doc_${k}_RefRoute`, `${who} — reference`, [REF_A, REF_B], {req:true, half:false, help:REF_EXPLAIN})+`</div>`+
+    `<div class="reveal" data-revealfor="Doc_${k}_RefRoute" data-revealon="${REF_A}">`+
+      docRow(`Doc_${k}_BankRef`, `${who} — bank reference letter`, `From ${bank} on its letterhead, confirming how long the account has been held and that it is in good standing. Dated within the last 90 days.`)+
+    `</div>`+
+    `<div class="reveal" data-revealfor="Doc_${k}_RefRoute" data-revealon="${REF_B}">`+
+      (profHelp===null ? "" : docRow(`Doc_${k}_ProfRef`, `${who} — professional reference letter`, profHelp))+
+      docRow(`Doc_${k}_AcctStatement`, `${who} — current account statement`, "A current statement for an account in their own name that shows the date the account was opened.")+
+      `<p class="help" style="margin:6px 0 12px">${REF_NOTE_B}</p>`+
+    `</div>`;
+}
 
 /* People — first names and hints only (see PUBLIC HOSTING note above). */
 const PARENTS = [
@@ -482,15 +494,16 @@ CHILDREN.forEach(c=>{
 /* 6 — Documents checklist */
 const reqd = (who, k, extra) => [
   docRow(`Doc_${k}_POA`, `${who} — proof of address`, "A utility bill or bank statement in their own name, showing their residential address, dated within the last 90 days."),
-  docRow(`Doc_${k}_Ref`, `${who} — reference letter`, REF_HELP, REF_STATUS)
+  refBlock(k, who, "their bank", "From a lawyer or accountant who has known them at least two years, on letterhead (template enclosed). Dated within the last 90 days.")
 ].join("");
 html += sec("Documents checklist", "please email these to us",
   `<div class="explain">This form can't take files. Please attach the documents to your reply email and tell us here where each one stands. We'll follow up on anything marked <em>To follow</em>.</div>`+
   `<div class="subhead">Derek and Rosalind</div>`+
   docRow("Doc_DC_Passport", "Derek — renewed passport", "A colour scan of the photo page.")+
   docRow("Doc_DR_POA", "Proof of address — your home address", "A utility bill or bank statement dated within the last 90 days. One naming you both is enough.")+
-  docRow("Doc_DC_Ref", "Derek — TSB reference letter", REF_HELP_TSB, REF_STATUS)+
-  docRow("Doc_RC_Ref", "Rosalind — TSB reference letter", REF_HELP_TSB, REF_STATUS)+
+  refBlock("DC", "Derek", "TSB", null)+
+  refBlock("RC", "Rosalind", "TSB", null)+
+  `<p class="help" style="margin:-4px 0 12px">For both of you, the professional reference under option (b) comes from us: Peter von Irle will sign it. You only need to send the account statement.</p>`+
   docRow("Doc_DR_Statement", "Statement for the sending account", "The most recent statement for the account the opening deposit will come from.")+
   CHILDREN.map(c=>`<div class="subhead">${esc(c.full)}</div>`+
     (c.pp && c.pp.hint
@@ -499,13 +512,10 @@ html += sec("Documents checklist", "please email these to us",
     reqd(c.first, c.key)).join("")+
   `<p class="help" style="margin-top:14px">Once the account is approved, the bank will also want notarised passport copies. We'll arrange those with each of you at the time.</p>`);
 
-/* 7 — To sign now, and the pre-filled bank forms */
-html += sec("To sign now, and the bank forms", "",
+/* 7 — To sign now */
+html += sec("To sign now", "",
   `<div class="explain"><strong>To sign now:</strong> the Consent Schedule and the Constitution Amendment Resolution for Masterex Trust Foundation, attached to our email. They complete the move of the trust foundation's registered agent to Hamilton. Please sign both as Supervisory Board Members; the resolution is dated once the Consent Schedule is filed.</div><div class="grid">`+
   fieldRadio("Sign_Hamilton", "Consent Schedule and resolution", ["Signed and returned with my reply","To follow","We have a question"], {req:true, half:false})+
-  `</div><div class="explain" style="margin-top:16px"><strong>The bank forms</strong> — the application, its Schedule 1 and the information sheets — are pre-filled for your review. Please don't sign them yet: once your corrections are in, and Derek's renewed passport number is to hand, we'll send clean copies for signature.</div><div class="grid">`+
-  fieldRadio("BankForms_Review", "Have you reviewed the pre-filled bank forms?", ["Reviewed — no corrections","Reviewed — corrections below","Not yet"], {req:true, half:false})+
-  fieldArea("BankForms_Corrections", "Corrections to the bank forms (optional)", {})+
   fieldArea("Anything_Else", "Anything else we should know (optional)", {})+
   `</div>`);
 
@@ -661,8 +671,7 @@ function buildMapping(pairs){
   L.push(`DOCUMENTS`);
   pairs.filter(([k])=>k.startsWith("Doc_")).forEach(([k,v])=>L.push(`  ${readableLabel(k)}: ${v}`));
   L.push("");
-  L.push(`SIGNING: Consent Schedule + resolution — ${g("Sign_Hamilton")}  ·  Bank forms — ${g("BankForms_Review")}`);
-  if (g("BankForms_Corrections")) L.push(`  Corrections: ${g("BankForms_Corrections")}`);
+  L.push(`SIGNING: Consent Schedule + resolution — ${g("Sign_Hamilton")}`);
   if (g("Anything_Else")) L.push(`  Note: ${g("Anything_Else")}`);
   L.push(`Signed: ${g("Declaration_Name_DC")} / ${g("Declaration_Name_RC")} on ${g("Declaration_Date")}`);
   return L.join("\n");

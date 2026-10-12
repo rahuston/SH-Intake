@@ -304,7 +304,7 @@ const CONFIG = {
   bank: "Caye International Bank",
   formEndpoint: "https://formspree.io/f/mkgvyyop"   // firm Formspree endpoint (banking forms)
 };
-const FORM_VERSION = "sh013_update_v2";
+const FORM_VERSION = "sh013_update_v3";
 
 const NET_WORTH_BANDS = ["Under $1M","$1M – $5M","$5M – $10M","$10M – $25M","$25M – $50M","$50M – $100M","$100M – $1B","Over $1B"];  // maps onto Hamilton: <1M / <100M / <1B / >1B
 const INCOME_BRACKETS = ["Under $100k","$100k – $250k","$250k – $500k","$500k – $1M","$1M – $10M","Over $10M"];  // maps onto Hamilton: <100k / <1M / <10M / >10M
@@ -501,9 +501,13 @@ html += sec("Documents checklist", "please email these to us",
   `<div class="subhead">Derek and Rosalind</div>`+
   docRow("Doc_DC_Passport", "Derek — renewed passport", "A colour scan of the photo page.")+
   docRow("Doc_DR_POA", "Proof of address — your home address", "A utility bill or bank statement dated within the last 90 days. One naming you both is enough.")+
-  refBlock("DC", "Derek", "TSB", null)+
-  refBlock("RC", "Rosalind", "TSB", null)+
-  `<p class="help" style="margin:-4px 0 12px">For both of you, the professional reference under option (b) comes from us: Peter von Irle will sign it. You only need to send the account statement.</p>`+
+  `<div class="docrow">`+fieldRadio("Doc_DR_RefRoute", "Bank reference — one for the two of you", ["(a) A TSB reference letter","(b) A current TSB account statement"], {req:true, half:false,
+    help:"One document covers you both, as long as it shows both your names. Either (a) a reference letter from TSB on its letterhead, as in the example enclosed, confirming how long you've banked with it and that the account is in good standing; or (b) a current statement for a joint account that shows when the account was opened. Dated within the last 90 days."})+`</div>`+
+  `<div class="reveal" data-revealfor="Doc_DR_RefRoute" data-revealon="(a) A TSB reference letter">`+
+    docRow("Doc_DR_BankRef", "TSB reference letter", "On TSB letterhead, showing both your names.")+`</div>`+
+  `<div class="reveal" data-revealfor="Doc_DR_RefRoute" data-revealon="(b) A current TSB account statement">`+
+    docRow("Doc_DR_AcctStatement", "Current TSB account statement", "Showing both your names and the date the account was opened.")+
+    `<p class="help" style="margin:6px 0 12px">With a statement, the bank also needs a short letter explaining why a reference letter can't be provided. We'll write it and send it for signature, so there's nothing to prepare.</p>`+`</div>`+
   docRow("Doc_DR_Statement", "Statement for the sending account", "The most recent statement for the account the opening deposit will come from.")+
   CHILDREN.map(c=>`<div class="subhead">${esc(c.full)}</div>`+
     (c.pp && c.pp.hint

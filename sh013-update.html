@@ -304,7 +304,7 @@ const CONFIG = {
   bank: "Caye International Bank",
   formEndpoint: "https://formspree.io/f/mkgvyyop"   // firm Formspree endpoint (banking forms)
 };
-const FORM_VERSION = "sh013_update_v3";
+const FORM_VERSION = "sh013_update_v3.1";
 
 const NET_WORTH_BANDS = ["Under $1M","$1M – $5M","$5M – $10M","$10M – $25M","$25M – $50M","$50M – $100M","$100M – $1B","Over $1B"];  // maps onto Hamilton: <1M / <100M / <1B / >1B
 const INCOME_BRACKETS = ["Under $100k","$100k – $250k","$250k – $500k","$500k – $1M","$1M – $10M","Over $10M"];  // maps onto Hamilton: <100k / <1M / <10M / >10M
@@ -559,7 +559,7 @@ document.addEventListener("change", e=>{
 function collect(){
   const out=[];
   root.querySelectorAll("input[name], select[name], textarea[name]").forEach(el=>{
-    if (el.disabled) return;
+    if (el.disabled || el.closest(".reveal:not(.on)")) return;
     if (el.type==="radio"){ if(el.checked) out.push([el.name, el.value]); return; }
     if (el.type==="checkbox"){ if(el.checked) out.push([el.name, el.value]); return; }
     const v=(el.value||"").trim(); if(v!=="") out.push([el.name, v]);
@@ -569,6 +569,7 @@ function collect(){
 function validate(){
   const errs=[]; clearInvalid();
   root.querySelectorAll('[data-req="1"]').forEach(el=>{
+    if (el.closest(".reveal:not(.on)")) return;   /* 2026Oct23 fix: a required question in a hidden section (the reference route not chosen) blocked Submit */
     if (el.matches("[data-radio]")){
       const name=el.dataset.radio;
       if (!root.querySelector(`input[name="${name}"]:checked`)){ el.classList.add("fs-bad"); errs.push(el.dataset.label); }

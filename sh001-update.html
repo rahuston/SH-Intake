@@ -187,7 +187,7 @@
   <div class="firm">SULLIVAN&nbsp;<span class="amp">HART</span></div>
   <div class="rule"></div>
   <h1>Information Update</h1>
-  <div class="sub"><span id="cp-label"></span> &nbsp;•&nbsp; <span id="client-id-label">SH000</span> &nbsp;•&nbsp; Private &amp; Confidential</div>
+  <div class="sub"><span id="client-id-label">SH000</span> &nbsp;•&nbsp; Private &amp; Confidential</div>
 </div></div>
 <div class="wrap">
   <div class="intro" id="intro"></div>
@@ -240,6 +240,10 @@
    PER CLIENT: copy this file as sh0XX-update.html and edit ONLY the block
    between the CLIENT DATA markers. Nothing else changes per client.
 
+   NEUTRAL WORDING (RH 2026Oct23): nothing the client reads names the registered agent or the
+   bank, or says what waits on what (e.g. registration before the account). That belongs in the
+   cover email, so a change of counterparty or sequence doesn't mean redoing the form.
+
    PUBLIC HOSTING: the SH-Intake repo is public, so this page carries NO
    identifiers — no dates of birth, passport, tax or phone numbers or street
    addresses. Full names are shown (RH 2026Oct07). What we hold is shown only
@@ -277,8 +281,8 @@ const PEOPLE = [
    CONFIG.hamilton ...... true when Hamilton needs Annex A data (registration or RA transfer)
    CONFIG.caye .......... true when the form also gathers the Caye account application
    CONFIG.accountHolder . the LLC as the client should read it ("your new Cook Islands LLC")
-   CONFIG.pending ....... true when the trust foundation is not yet registered
-                          (Caye application waits for registration)
+   CONFIG.pending ....... internal only (not shown to the client): true when the trust
+                          foundation is not yet registered
    CONFIG.backupOpen .... true to ask whether the client would like to name a backup
                           Supervisory Board member (when no candidate is on file)
    PEOPLE[] ............. one entry per natural person:
@@ -323,7 +327,9 @@ const COMPLIANCE_QS = [
 const DOC_STATUS = ["Sent with my reply","To follow","Need help"];
 
 /* ---------- derived wording ---------- */
-const CP = CONFIG.hamilton && CONFIG.caye ? "Hamilton and the bank" : (CONFIG.caye ? "the bank" : "Hamilton");
+/* Client-facing text names no registered agent or bank (RH 2026Oct23): the form stays valid if a
+   counterparty changes. Which institution, and why, is for the cover email. Counterparty names
+   appear only in the staff exports (fill guide, readable summary). */
 const AR = PEOPLE.find(p=>p.role==="ar");
 const ADULTS = PEOPLE.filter(p=>p.role==="adult");
 const MINORS = PEOPLE.filter(p=>p.role==="minor");
@@ -467,23 +473,20 @@ function someoneElse(prefix){
 /* =====================  BUILD THE FORM  ===================== */
 const root = document.getElementById("form-root");
 document.getElementById("client-id-label").textContent = CONFIG.clientId;
-document.getElementById("cp-label").textContent = [CONFIG.hamilton?"Hamilton Trust":null, CONFIG.caye?"Caye International Bank":null].filter(Boolean).join("  •  ");
 
 (function intro(){
   const others = ADULTS.length+MINORS.length+OPTIONS.length > 0;
-  let what;
-  if (CONFIG.hamilton && CONFIG.caye) what = `Your structure is moving to a new trust foundation, with <strong>Hamilton Trust</strong> as registered agent, and an account at <strong>Caye International Bank</strong> for ${esc(CONFIG.accountHolder)}. This form gathers what both need, so you only answer each question once.`;
-  else if (CONFIG.caye) what = `This gathers what <strong>Caye International Bank</strong> needs to open the account for ${esc(CONFIG.accountHolder)}.`;
-  else what = `Your structure is moving to a new trust foundation, with <strong>Hamilton Trust</strong> as registered agent. Hamilton needs a current set of information for everyone involved, and this form gathers it in one place.`;
-  const pend = CONFIG.caye && CONFIG.pending ? `<p>The bank application can only be lodged once the trust foundation is registered and the LLC is set up. We're preparing everything now so it can go as soon as that happens. Nothing here needs signing.</p>` : "";
+  const what = CONFIG.caye
+    ? `This form gathers the current information we need for your structure and its bank account, for you and everyone else involved, so you only answer each question once.`
+    : `This form gathers the current information we need for your structure, for you and everyone else involved, in one place.`;
   document.getElementById("intro").innerHTML =
-   `<h2>Updating your information</h2><p>${what}</p>${pend}
+   `<h2>Updating your information</h2><p>${what}</p>
     <ol class="steps">
-      <li>Where we already hold something, it shows as <strong>On file</strong>: tick <em>Still correct</em>, or <em>Changed</em> and enter the new detail. For your security this page never shows full numbers or addresses. Everything else, please fill in fresh: ${CP==="Hamilton"?"Hamilton works":"Hamilton and the bank work"} only from current information.</li>
+      <li>Where we already hold something, it shows as <strong>On file</strong>: tick <em>Still correct</em>, or <em>Changed</em> and enter the new detail. For your security this page never shows full numbers or addresses. Everything else, please fill in fresh: we can work only from current information.</li>
       ${others?`<li>Complete the sections for the others named in your structure with them.</li>`:""}
       <li>Use the checklist at the end to tell us which documents are coming, attach them to your reply email, then press <strong>Submit</strong>.</li>
     </ol>
-    <p class="note">Everything you enter is held in strict confidence and used only for ${CONFIG.hamilton&&CONFIG.caye?"these applications":"this purpose"}. If anything is unclear, leave it and we'll go through it with you.</p>`;
+    <p class="note">Everything you enter is held in strict confidence and used only for your structure and its administration. If anything is unclear, leave it and we'll go through it with you.</p>`;
 })();
 
 let html = "", n = 0;
@@ -495,17 +498,17 @@ const sec = (title, opt, inner) => { n++;
 html += sec(esc(AR.full), "your details",
   `<div class="explain">${AR.note?esc(AR.note)+" ":""}Where you see <strong>On file</strong>, tick <em>Still correct</em> or <em>Changed</em> and enter the new detail. Boxes without it are for you to fill in.</div>`+
   personFields(AR)+
-  complianceBlock(AR, `${CP==="Hamilton"?"Hamilton asks":"Hamilton and the bank ask"} these of everyone named in the structure.`));
+  complianceBlock(AR, `These are asked of everyone named in the structure.`));
 
 /* 2 — Source of wealth (and biography for the bank) */
-html += sec("Your source of wealth", CONFIG.caye ? "for Hamilton and the bank" : "for Hamilton",
+html += sec("Your source of wealth", "",
   `<div class="explain">In your own words. A few sentences is enough: how you built your wealth over time, not a list of accounts.</div><div class="grid">`+
   fieldArea("SOW", "How you built your wealth", {req:true, placeholder:"e.g. I built and later sold a manufacturing business in Canada, and have invested the proceeds in listed shares and property."})+
   fieldText("Countries_of_Wealth", "Countries where your wealth was generated", {req:true, value:AR.wealthCountry||""})+
   fieldText("Countries_of_Income", "Countries where your income is earned now", {req:true})+
   fieldText("Countries_of_Asset_Location", "Countries where your main assets are held now", {req:true})+
   fieldText("Primary_Assets", "Your main assets, briefly", {req:true, placeholder:"e.g. brokerage accounts, business equity, property"})+
-  (CONFIG.caye ? fieldArea("Bio", "Short biography", {req:true, help:"For the bank. Three or four sentences: who you are, what you do, and how your wealth came about.", placeholder:"e.g. Jane is a Canadian entrepreneur who founded…"}) : "")+
+  (CONFIG.caye ? fieldArea("Bio", "Short biography", {req:true, help:"Three or four sentences: who you are, what you do, and how your wealth came about.", placeholder:"e.g. Jane is a Canadian entrepreneur who founded…"}) : "")+
   `</div>`);
 
 /* 3 — The structure: backup Supervisory Board member, people to confirm */
@@ -517,7 +520,7 @@ html += sec("Your source of wealth", CONFIG.caye ? "for Hamilton and the bank" :
       (p.lede?`<p class="lede" style="font-size:13.5px; color:#5d5d5d">${esc(p.lede)}</p>`:"")+
       fieldRadio(q, p.ask, p.choices, {req:true, half:false})+
       (p.as==="backup" ? "" : reveal(q, p.yes, `<div class="persontitle">${esc(p.first)}'s details</div>`+
-        `<div class="explain">Please complete this with ${esc(p.first)}. As a discretionary beneficiary, ${esc(p.first)} is identified in full by ${CP}.</div>`+
+        `<div class="explain">Please complete this with ${esc(p.first)}. As a discretionary beneficiary, ${esc(p.first)} needs to be identified in full.</div>`+
         personFields(p)+
         complianceBlock(p, "The same nine questions, for "+esc(p.first)+".")))+
       (p.other ? reveal(q, p.other, someoneElse(`${p.key}_Other`)) : "")+
@@ -535,7 +538,7 @@ html += sec("Your source of wealth", CONFIG.caye ? "for Hamilton and the bank" :
 /* 4 — Adult beneficiaries */
 ADULTS.forEach(p=>{
   html += sec(esc(p.full), p.rel || "discretionary beneficiary",
-    `<div class="explain">${p.note?esc(p.note)+" ":""}${esc(p.first)} is a discretionary beneficiary of the new trust foundation, so ${CP} ${CP==="Hamilton"?"needs":"need"} to identify ${p.pron||"them"}. Please complete this with ${p.pron||"them"}.</div>`+
+    `<div class="explain">${p.note?esc(p.note)+" ":""}${esc(p.first)} is a discretionary beneficiary of the new trust foundation, so ${p.pron==="her"?"she":p.pron==="him"?"he":"they"} ${p.pron?"needs":"need"} to be identified in full. Please complete this with ${p.pron||"them"}.</div>`+
     personFields(p)+
     complianceBlock(p, "The same nine questions, for "+esc(p.first)+"."));
 });
@@ -543,13 +546,13 @@ ADULTS.forEach(p=>{
 /* 5 — Children */
 if (MINORS.length){
   html += sec(MINORS.map(m=>esc(m.first)).join(" and "), "children under 18",
-    `<div class="explain">For children, ${CP} ${CP==="Hamilton"?"needs":"need"} only identifying details and a passport.</div>`+
+    `<div class="explain">For children, only identifying details and a passport are needed.</div>`+
     MINORS.map(m=>`<div class="persontitle">${esc(m.first)}</div>`+personFields(m)).join(""));
 }
 
 /* 6 — The bank account (Caye) */
 if (CONFIG.caye){
-  html += sec("The bank account", "Caye International Bank",
+  html += sec("The bank account", "",
   `<div class="explain">The account will be in the name of <strong>${esc(CONFIG.accountHolder)}</strong>, with you as signatory. The bank asks what it's for, roughly how much will move through it, and where money comes from and goes to. This describes the pattern you expect; it doesn't stop you receiving or sending funds elsewhere later.</div>
    <div class="subhead">What the account is for</div><div class="grid">`+
   fieldRadio("Acct_Main_Use", "Main use", ["Holding and investment account","Holding and investment account, plus a separate operating account for business","Other"],
@@ -557,9 +560,9 @@ if (CONFIG.caye){
   `</div>`+reveal("Acct_Main_Use","Other",`<div class="grid">`+fieldText("Acct_Main_Use_Other","Please describe",{req:true, half:false})+`</div>`)+
   `<div class="grid" style="margin-top:14px">`+
   fieldArea("SOF", "Where the money going into the account comes from", {req:true, placeholder:"e.g. my personal savings held with my bank in Canada, and the proceeds of investments as they are realised"})+
-  fieldText("Sending_Account", "Bank and account the opening deposit (at least USD 3,000) will come from", {req:true, half:false})+
+  fieldText("Sending_Account", "Bank and account the opening deposit will come from", {req:true, half:false})+
   `</div><div class="subhead">Expected size and activity</div><div class="grid">`+
-  fieldText("Balance_From", "Typical balance — from (USD)", {req:true, help:"The bank's minimum balance is USD 2,000."})+fieldText("Balance_To", "Typical balance — to (USD)", {req:true})+
+  fieldText("Balance_From", "Typical balance — from (USD)", {req:true})+fieldText("Balance_To", "Typical balance — to (USD)", {req:true})+
   fieldRadio("In_Count", "Payments in, per month", ["1–5","6–10","11–15"], {req:true})+`<div></div>`+
   fieldText("In_From", "Monthly total in — from (USD)", {req:true})+fieldText("In_To", "Monthly total in — to (USD)", {req:true})+
   fieldRadio("Out_Count", "Payments out, per month", ["1–5","6–10","11–15"], {req:true})+`<div></div>`+
@@ -575,17 +578,17 @@ if (CONFIG.caye){
   fieldRadio("Acct_Type", "Account type", ["Demand deposit (current account)","Savings"], {req:true, value:"Demand deposit (current account)"})+
   fieldRadio("Acct_Currency", "Currency", ["USD","CAD","EUR","GBP","CHF"], {req:true, value:"USD"})+
   fieldRadio("Online_Banking", "Online banking", ["Yes","No"], {req:true, value:"Yes"})+
-  fieldRadio("Prepaid_Card", "Prepaid Visa card", ["Yes","No"], {req:true, help:"If yes, we'll send the bank's card application separately."})+
+  fieldRadio("Prepaid_Card", "A card for the account, if the bank offers one", ["Yes","No"], {req:true})+
   fieldText("LLC_Email", "Email address for the LLC", {req:true, half:false, type:"email",
     help:"We recommend one for the LLC's business, separate from the one you use with us as your legal representatives. If the LLC already has one, use that."})+
-  `</div><p class="help" style="margin-top:12px">When you sign, the bank will ask you to set a security phrase of up to 12 characters. Don't enter it here.</p>`);
+  `</div>`);
 }
 
 /* 7 — Documents checklist */
 (function documents(){
   const days = "dated within the last 90 days";
   const bankRef = (p) => docRow(`Doc_${p.key}_BankRef`, `${p.first} — bank reference letter`,
-    `From ${p.key===AR.key?"your":"their"} bank, on its letterhead and signed, confirming how long the account has been held and that it is in good standing; ${days}.${CONFIG.caye?" An example is enclosed with our email.":""} A bank statement is not a reference letter.`);
+    `From ${p.key===AR.key?"your":"their"} bank, on its letterhead and signed, confirming how long the account has been held and that it is in good standing; ${days}. A sample is enclosed with our email. A bank statement is not a reference letter.`);
   const passRows = (p) => {
     const list=p.passports&&p.passports.length?p.passports:[{label:"Passport"}];
     return list.map((pp,i)=>{
@@ -607,7 +610,7 @@ if (CONFIG.caye){
   OPTIONS.filter(p=>p.as!=="backup").forEach(p=>{ inner += reveal(`${p.key}_Confirm`, p.yes, `<div class="subhead">${esc(p.first)}</div>`+fullSet(p)); });
   ADULTS.forEach(p=>{ inner += `<div class="subhead">${esc(p.first)}</div>`+fullSet(p); });
   MINORS.forEach(p=>{ inner += `<div class="subhead">${esc(p.first)}</div>`+passRows(p); });
-  if (CONFIG.caye) inner += `<p class="help" style="margin-top:14px">Nothing needs notarising yet. Once the account is approved, the bank will want notarised copies; we'll arrange those with each of you at the time.</p>`;
+  if (CONFIG.caye) inner += `<p class="help" style="margin-top:14px">Some documents may later need to be certified or notarised. We'll arrange that with each of you at the time.</p>`;
   html += sec("Documents checklist", "please email these to us", inner);
 })();
 
@@ -615,8 +618,7 @@ if (CONFIG.caye){
 html += sec("Anything else", "optional", `<div class="grid">`+fieldArea("Anything_Else", "Anything else we should know", {})+`</div>`);
 
 /* Declaration */
-const purposes = [CONFIG.caye?`prepare the account application of ${esc(CONFIG.accountHolder)} to Caye International Bank Limited`:null,
-                  CONFIG.hamilton?"prepare the know-your-customer forms of Hamilton Trust Company (Nevis) Limited":null].filter(Boolean).join(" and to ");
+const purposes = "prepare the applications and know-your-customer forms for my structure and its accounts, and to provide it to the registered agent, bank and other institutions involved";
 html += `<div class="card"><div class="card-head"><span class="badge">✓</span><h2>Declaration</h2></div>
   <p style="font-size:14px; color:#3a3a3a; margin:0 0 4px">I confirm that the information in this form is true and complete to the best of my knowledge, including the information given for the others named in it, and that my wealth comes from lawful sources. I will tell Sullivan Hart promptly of any change, and authorise Sullivan Hart to use this information to ${purposes}.</p>
   <span class="opt-pill" style="display:inline-block; margin:14px 0 4px">
@@ -729,7 +731,7 @@ function buildMapping(pairs){
     L.push(`  Type: ${g("Acct_Type")} · Currency: ${g("Acct_Currency")} · Online banking: ${g("Online_Banking")}`);
     L.push(`  Primary email (LLC): ${g("LLC_Email")}`);
     L.push(`  Signing instruction: Any One Person (single signatory)`);
-    L.push(`  Prepaid Visa card: ${g("Prepaid_Card")}${g("Prepaid_Card")==="Yes"?"  -> send cardholder application":""}`);
+    L.push(`  Card: ${g("Prepaid_Card")}${g("Prepaid_Card")==="Yes"?"  -> send the bank's card application":""}`);
     L.push(`CAYE — PAGE 2`);
     L.push(`  Main use: ${g("Acct_Main_Use")==="Other"?g("Acct_Main_Use_Other"):g("Acct_Main_Use")}`);
     L.push(`  Balance: USD ${g("Balance_From")} to ${g("Balance_To")}`);

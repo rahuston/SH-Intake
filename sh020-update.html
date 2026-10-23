@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Sullivan Hart — Information Update</title>
+<style>
+  :root{
+    --gold:#B8962E; --gold-soft:#D8C27E; --dark:#1A1A2E; --dark-2:#2A2A45;
+    --body:#2C2C2C; --sub:#888888; --lblbg:#F9F4E8; --roweven:#F5F5F5;
+    --border:#CCCCCC; --border-soft:#E4E4E4; --page:#FBFAF6; --card:#FFFFFF;
+    --ok:#2E7D4F; --err:#B23A3A; --err-bg:#FBEDED;
+    --font:Arial, "Helvetica Neue", Helvetica, sans-serif;
+    --shadow:0 1px 2px rgba(26,26,46,.06), 0 8px 24px rgba(26,26,46,.06);
+    --shadow-sm:0 1px 2px rgba(26,26,46,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; font-family:var(--font); color:var(--body); background:var(--page);
+    font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px 80px;}
+
+  .masthead{background:var(--dark); border-bottom:3px solid var(--gold); color:#fff; padding:30px 0 26px;}
+  .masthead .inner{max-width:920px; margin:0 auto; padding:0 20px;}
+  .firm{font-size:20px; font-weight:bold; letter-spacing:.16em;}
+  .firm .amp{color:var(--gold-soft); font-weight:bold;}
+  .masthead .rule{height:2px; width:54px; background:var(--gold); margin:12px 0 14px; border-radius:2px;}
+  .masthead h1{font-size:23px; margin:0; font-weight:bold; letter-spacing:.01em;}
+  .masthead .sub{color:#B9B9C8; font-size:12px; letter-spacing:.18em; margin-top:8px; text-transform:uppercase;}
+
+  .intro{background:var(--lblbg); border:1px solid #ECE0C2; border-left:4px solid var(--gold);
+    border-radius:6px; padding:20px 22px; margin:26px 0 8px; box-shadow:var(--shadow-sm);}
+  .intro h2{margin:0 0 6px; font-size:16px; color:var(--dark); letter-spacing:.01em;}
+  .intro p{margin:6px 0; font-size:14px; color:#5b5645;}
+  .intro .acct{margin:12px 0 2px; padding:10px 14px; background:#fff; border:1px solid #ECE0C2; border-radius:6px;
+    font-size:13.5px; color:var(--dark);}
+  .intro .acct strong{color:var(--dark);}
+  .steps{margin:14px 0 4px; padding:0; list-style:none; counter-reset:s;}
+  .steps li{position:relative; padding:6px 0 6px 38px; font-size:14px; color:#4a4636; counter-increment:s;}
+  .steps li::before{content:counter(s); position:absolute; left:0; top:5px;
+    width:24px; height:24px; border-radius:50%; background:var(--dark); color:#fff;
+    font-size:12px; font-weight:bold; display:flex; align-items:center; justify-content:center;}
+  .intro .note{font-size:12.5px; color:var(--sub); margin-top:12px; font-style:italic;}
+  .saver{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    background:#F4F6F3; border:1px solid #DCE5DC; border-left:4px solid var(--ok); border-radius:6px;
+    padding:11px 16px; margin:18px 0 0; font-size:13px; color:#4a5a4a;}
+  .saver-btn{background:none; border:1px solid var(--border); border-radius:5px; color:#6b6b6b;
+    font-size:12.5px; padding:6px 12px; cursor:pointer; font-family:var(--font); white-space:nowrap;}
+  .saver-btn:hover{border-color:var(--err); color:var(--err);}
+
+  .card{background:var(--card); border:1px solid var(--border-soft); border-radius:8px;
+    padding:24px 26px 26px; margin:22px 0; box-shadow:var(--shadow);
+    opacity:0; transform:translateY(8px); animation:rise .5s ease forwards;}
+  @keyframes rise{to{opacity:1; transform:none}}
+  @media (prefers-reduced-motion:reduce){.card{animation:none; opacity:1; transform:none}}
+  .card-head{display:flex; align-items:baseline; gap:12px; border-bottom:2px solid var(--gold);
+    padding-bottom:10px; margin-bottom:18px;}
+  .badge{flex:0 0 auto; min-width:26px; height:26px; padding:0 6px; border-radius:5px;
+    background:var(--dark); color:#fff; font-size:13px; font-weight:bold;
+    display:flex; align-items:center; justify-content:center;}
+  .card-head h2{margin:0; font-size:18px; color:var(--dark); font-weight:bold; letter-spacing:.01em;}
+  .card-head .opt{color:var(--sub); font-size:12px; font-weight:normal; letter-spacing:.04em;}
+  .card > .lede{color:#5d5d5d; font-size:13.5px; margin:-4px 0 18px;}
+  .explain{background:#FBF8F0; border:1px solid #EFE6CE; border-radius:6px; padding:14px 16px; margin:0 0 16px;
+    font-size:13px; color:#5b5645;}
+  .explain strong{color:var(--dark);}
+  .explain p{margin:6px 0;}
+  .explain .eg{display:block; margin-top:8px; padding-top:8px; border-top:1px dashed #E4D8B4; color:#6b6656; font-style:italic;}
+  .notfor{background:#FBF3EF; border:1px solid #EAD8CF; border-left:4px solid #C08457; border-radius:6px;
+    padding:12px 15px; margin:0 0 16px; font-size:13px; color:#6a4b3a;}
+  .notfor strong{color:#5a3d2e;}
+
+  .subhead{font-size:13px; font-weight:bold; color:var(--dark); letter-spacing:.06em;
+    text-transform:uppercase; margin:22px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--border-soft);}
+  .subhead:first-child{margin-top:0;}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px 18px;}
+  .grid .full{grid-column:1 / -1;}
+  @media (max-width:620px){.grid{grid-template-columns:1fr}}
+  .field{display:flex; flex-direction:column; gap:5px;}
+  .field.full{grid-column:1 / -1;}
+  label.lbl{font-size:13px; font-weight:bold; color:var(--dark);}
+  .req{color:var(--gold); margin-left:2px;}
+  .help{font-size:12px; color:var(--sub); margin-top:-1px;}
+  input[type=text], input[type=email], input[type=tel], input[type=number], select, textarea{
+    font-family:var(--font); font-size:14px; color:var(--body); background:#fff;
+    border:1px solid var(--border); border-radius:5px; padding:9px 11px; width:100%;
+    transition:border-color .15s, box-shadow .15s;}
+  textarea{resize:vertical; min-height:74px; line-height:1.45;}
+  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,150,46,.16);}
+  input.invalid, select.invalid, textarea.invalid{border-color:var(--err); background:var(--err-bg);}
+  fieldset.fs-bad .opts{outline:2px solid var(--err); outline-offset:6px; border-radius:6px;}
+  .opt-pill.pill-bad label{border-color:var(--err); background:var(--err-bg);}
+  select{appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='1.6' stroke-linecap='round'/></svg>");
+    background-repeat:no-repeat; background-position:right 11px center; padding-right:30px; cursor:pointer;}
+
+  .opts{display:flex; flex-wrap:wrap; gap:8px;}
+  .opt-pill{position:relative;}
+  .opt-pill input{position:absolute; opacity:0; width:0; height:0;}
+  .opt-pill label{display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;
+    border:1px solid var(--border); border-radius:6px; padding:8px 13px; font-size:13.5px;
+    color:var(--body); background:#fff; transition:.15s;}
+  .opt-pill input:focus-visible + label{box-shadow:0 0 0 3px rgba(184,150,46,.18);}
+  .opt-pill input:checked + label{border-color:var(--dark); background:var(--dark); color:#fff; font-weight:bold;}
+  .opt-pill input:checked + label .tick{opacity:1;}
+  .opt-pill .tick{width:14px; height:14px; opacity:.25;}
+  fieldset{border:none; margin:0; padding:0; min-width:0;}
+
+  .reveal{display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--border);}
+  .reveal.on{display:block;}
+  .talknote{background:#FBF3EF; border:1px solid #EAD8CF; border-radius:6px; padding:11px 14px; margin:0 0 10px;
+    font-size:12.5px; color:#6a4b3a;}
+
+  /* standard transaction profile (read-only) */
+  .txnwrap{overflow-x:auto; margin-top:4px; border:1px solid var(--border-soft); border-radius:8px;}
+  table.txn{border-collapse:collapse; width:100%; min-width:600px; font-size:13px;}
+  table.txn th, table.txn td{border:1px solid var(--border); padding:8px 10px; text-align:center; vertical-align:middle;}
+  table.txn thead th{background:var(--dark); color:#fff; font-weight:bold; font-size:11.5px; letter-spacing:.02em;}
+  table.txn thead th.grp{background:var(--dark-2);}
+  table.txn tbody th{background:var(--lblbg); color:var(--dark); text-align:left; font-weight:bold; white-space:nowrap;}
+  table.txn tbody td{color:var(--dark); font-weight:600;}
+  table.txn tbody tr:nth-child(even) td{background:#FBFAF6;}
+
+  .party{border:1px solid var(--border-soft); border-radius:8px; padding:18px 20px; margin:14px 0;
+    background:#FCFCFB; position:relative;}
+  .party-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .party-head .pt{font-size:13px; font-weight:bold; color:var(--dark); letter-spacing:.05em; text-transform:uppercase;}
+  .btn-add{display:inline-flex; align-items:center; gap:8px; background:#fff; color:var(--dark);
+    border:1.5px solid var(--dark); border-radius:6px; padding:9px 16px; font-size:13.5px;
+    font-weight:bold; cursor:pointer; font-family:var(--font); transition:.15s; margin-top:6px;}
+  .btn-add:hover{background:var(--dark); color:#fff;}
+  .btn-rm{background:none; border:none; color:var(--sub); font-size:12.5px; cursor:pointer;
+    font-family:var(--font); text-decoration:underline; padding:4px;}
+  .btn-rm:hover{color:var(--err);}
+
+  .submitbar{margin-top:30px; padding-top:24px; border-top:2px solid var(--gold);}
+  .submitbar .ready{font-size:14px; color:#5d5d5d; margin:0 0 16px;}
+  .btn-primary{display:inline-flex; align-items:center; gap:10px; background:var(--dark); color:#fff;
+    border:2px solid var(--dark); border-radius:7px; padding:14px 30px; font-size:15px;
+    font-weight:bold; letter-spacing:.03em; cursor:pointer; font-family:var(--font); transition:.18s;}
+  .btn-primary:hover{background:#fff; color:var(--dark); border-color:var(--gold);}
+  .btn-secondary{display:inline-flex; align-items:center; gap:8px; background:none; color:var(--dark);
+    border:none; padding:14px 6px; font-size:13.5px; cursor:pointer; font-family:var(--font);
+    text-decoration:underline; margin-left:10px;}
+  .btn-secondary:hover{color:var(--gold);}
+  .actions{display:flex; align-items:center; flex-wrap:wrap; gap:6px;}
+
+  .errsum{display:none; background:var(--err-bg); border:1px solid #E7C3C3; border-left:4px solid var(--err);
+    border-radius:6px; padding:14px 18px; margin:20px 0; color:#7a2727; font-size:13.5px;}
+  .errsum.on{display:block;}
+  .errsum strong{color:var(--err);}
+  .errsum ul{margin:8px 0 0; padding-left:20px;}
+
+  .panel{display:none; border-radius:8px; padding:26px 28px; margin:24px 0; box-shadow:var(--shadow);}
+  .panel.on{display:block;}
+  .panel.success{background:#F1F8F3; border:1px solid #CBE5D3; border-left:4px solid var(--ok);}
+  .panel.success h2{color:var(--ok); margin:0 0 8px; font-size:19px;}
+  .panel.fallback{background:#fff; border:1px solid var(--border-soft); border-left:4px solid var(--gold);}
+  .panel.fallback h2{color:var(--dark); margin:0 0 8px; font-size:18px;}
+  .panel p{font-size:14px; color:#4a4a4a; margin:8px 0;}
+  .panel .big{font-size:15px; color:var(--dark);}
+  .panel textarea{margin-top:12px; min-height:150px; font-size:12px; font-family:ui-monospace,Menlo,Consolas,monospace; background:#FCFBF8;}
+
+  .foot{margin-top:46px; padding-top:18px; border-top:1px solid var(--border-soft);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    color:var(--sub); font-size:11.5px; letter-spacing:.03em;}
+  .conf{font-style:italic;}
+  .staff{margin-top:18px; font-size:11.5px; color:#b3b3b3;}
+  .staff button{background:none; border:none; color:#b3b3b3; text-decoration:underline;
+    font-size:11.5px; cursor:pointer; font-family:var(--font);}
+  .staff button:hover{color:var(--sub);}
+
+  @media print{
+    body{background:#fff} .intro,.btn-add,.btn-rm,.submitbar,.staff,.errsum{display:none!important}
+    .card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+  }
+
+  .docrow{border-bottom:1px dashed var(--border-soft); padding:10px 0;}
+  .docrow:last-of-type{border-bottom:none;}
+  .subq{margin:18px 0 0; padding-top:16px; border-top:1px dashed var(--border);}
+  .persontitle{font-size:14px; font-weight:bold; color:var(--dark); margin:16px 0 10px;}
+</style>
+</head>
+<body>
+<div class="masthead"><div class="inner">
+  <div class="firm">SULLIVAN&nbsp;<span class="amp">HART</span></div>
+  <div class="rule"></div>
+  <h1>Information Update</h1>
+  <div class="sub"><span id="client-id-label">SH000</span> &nbsp;•&nbsp; Private &amp; Confidential</div>
+</div></div>
+<div class="wrap">
+  <div class="intro" id="intro"></div>
+  <div id="saver" class="saver" style="display:none">
+    <span id="saver-text">Your answers save automatically on this device, so you can close this window and come back to finish later.</span>
+    <button type="button" id="btn-startover" class="saver-btn">Start over</button>
+  </div>
+  <div id="form-root"></div>
+  <div class="errsum" id="errsum"><strong>A few items still need attention.</strong> Please check the boxes highlighted below:<ul id="errlist"></ul></div>
+  <div class="submitbar" id="submitbar">
+    <p class="ready">When everything is filled in, press Submit. If you'd rather not submit online, you can download your answers and email them to us instead.</p>
+    <div class="actions">
+      <button type="button" class="btn-primary" id="btn-submit">Submit my answers &nbsp;→</button>
+      <button type="button" class="btn-secondary" id="btn-download">or download my answers to email</button>
+    </div>
+    <div class="staff"><span>Staff use:</span>
+      <button type="button" id="btn-txt">copy field export (TSV)</button> &nbsp;·&nbsp;
+      <button type="button" id="btn-map">copy fill guide</button></div>
+  </div>
+  <div class="panel success" id="panel-success">
+    <h2>✓ Received — thank you</h2>
+    <p class="big">Your answers have reached Sullivan Hart. Please make sure the documents are attached to your reply email. We'll review your answers and be in touch about the next steps.</p>
+    <p>You may now close this window.</p>
+  </div>
+  <div class="panel fallback" id="panel-fallback">
+    <h2>Almost done — one small step</h2>
+    <p class="big">Your answers have been saved to a file on your device (look in your <strong>Downloads</strong> folder for a file beginning <strong>SH_Update</strong>).</p>
+    <p><strong>Please reply to our email and attach that file</strong>, with your documents.</p>
+    <p style="font-size:13px; color:#888">If the download did not start, copy the text below and paste it into your reply instead:</p>
+    <textarea id="fallback-text" readonly onclick="this.select()"></textarea>
+  </div>
+  <div class="foot"><span>Sullivan Hart &nbsp;•&nbsp; Private &amp; Confidential</span><span class="conf">This form and its contents are confidential.</span></div>
+</div>
+<script>
+/* =====================================================================
+   SULLIVAN HART — CLIENT INFORMATION UPDATE  (sh_update_v2)
+   The firm's standard update form for existing clients. One form covers
+   whichever counterparties the client needs, so each question is asked once:
+     - Hamilton Trust Company (Nevis) Limited — registered agent of the
+       client's trust foundation (Annex A for each natural person)
+     - Caye International Bank Limited — account for the holding LLC
+   Lineage: built 23 Oct 2026 from sh013-update.html v3 (Cressy, 12 Oct), the
+   working master, with sh023-update.html (Caye only) as the cut-down variant.
+   Supersedes sh_update_v1 (2 Oct). Same engine as sh013: Formspree submit,
+   offline fallback, save/restore, Readable / fill guide / TSV exports.
+   Fixed against sh013 v3: a required question inside a hidden section (e.g.
+   a reference route not chosen) no longer blocks Submit, and hidden fields
+   are not exported.
+
+   PER CLIENT: copy this file as sh0XX-update.html and edit ONLY the block
+   between the CLIENT DATA markers. Nothing else changes per client.
+
+   NEUTRAL WORDING (RH 2026Oct23): nothing the client reads names the registered agent or the
+   bank, or says what waits on what (e.g. registration before the account). That belongs in the
+   cover email, so a change of counterparty or sequence doesn't mean redoing the form.
+
+   PUBLIC HOSTING: the SH-Intake repo is public, so this page carries NO
+   identifiers — no dates of birth, passport, tax or phone numbers or street
+   addresses. Full names are shown (RH 2026Oct07). What we hold is shown only
+   as a short hint ("ending 918", "an address in Masterton") for the client to
+   confirm; the full values stay in the client profile. Where the firm wants
+   a detail given fresh rather than confirmed (e.g. a current address), leave
+   the hint out (null) and the form asks for it outright.
+   ===================================================================== */
+
+/* ===================== CLIENT DATA — BEGIN ===================== */
+const CONFIG = {
+  clientId: "SH020",
+  hamilton: true,
+  caye: true,
+  accountHolder: "Granite Ridge Ventures LLC",
+  pending: false,
+  backupOpen: false,
+  signers: ["Dallas","Stephanie"],
+  couple: "SN",
+  noSample: true,
+  coupleRefHelp: "An updated version of the ATB reference letter you gave us before, dated within the last 90 days. One letter naming you both is enough.",
+  llcEmailHint: "the LLC's protonmail.com address",
+  prefill: {
+    SOW: "Mr. Dallas Nelson is a Canadian citizen resident in Alberta, Canada. His wealth has been built over more than two decades through business ownership, real estate, and personal investment.\n\nMr. Nelson is the sole shareholder of 2232572 Alberta Ltd., a private Alberta corporation through which he carries on an oilfield-services and energy-consulting business; this has been his principal and recurring source of income. In 2022 he completed the sale of agricultural land that he had acquired and improved, realizing gross proceeds of CAD 1,867,500. The family holds publicly traded securities in Canadian registered accounts and a self-directed brokerage account, built through long-term and active investment.\n\nMr. Nelson actively manages the self-directed brokerage account, including options trading, and this is currently a principal focus alongside the consulting business.",
+    Bio: "Dallas Nelson is a Canadian business owner based in Alberta. Through his company, 2232572 Alberta Ltd., he runs an oilfield-services and energy-consulting business, and he actively manages his own investment portfolio, including options trading. His wife, Stephanie, runs her own custom-apparel business. Their wealth comes from the consulting business, the 2022 sale of agricultural land, and long-term and active investing.",
+    Countries_of_Income: "Canada",
+    Countries_of_Asset_Location: "Canada",
+    Primary_Assets: "Publicly traded securities in Canadian registered accounts and an actively traded self-directed brokerage account; business equity"
+  },
+  formEndpoint: "https://formspree.io/f/mkgvyyop"
+};
+const PEOPLE = [
+  { key:"DN", role:"ar", first:"Dallas", full:"Dallas Adam Nelson", cit:"Canada",
+    passports:[{label:"Canadian passport", hint:"Canadian passport ending 416, valid to March 2029"}],
+    addr:"your rural address near Standard, Alberta", tel:"ending 0300", email:"your live.ca address", tin:"Canada, SIN ending 343",
+    occ:"Business owner", emp:"2232572 Alberta Ltd.", wealthCountry:"Canada",
+    secondIdHelp:"The photo we hold of your driver's licence is too blurry to use. Please send a clear colour photo of the front and back.",
+    sowHelp:"We hold your April 2026 investment statements and the 2022 land-sale letter. Recent statements for the same accounts are all we need." },
+  { key:"SN", role:"adult", pron:"her", signer:true, rel:"Supervisory Board member", first:"Stephanie", full:"Stephanie Lynn Nelson", cit:"Canada",
+    explain:"Stephanie is a Supervisory Board member and a signatory on the account, so she needs to be identified in full.",
+    passports:[{label:"Canadian passport", hint:"Canadian passport ending 234, valid to November 2027"}],
+    addr:"the same address as Dallas", tel:"ending 9011", email:"your gmail.com address", tin:"Canada, SIN ending 692",
+    occ:"Business owner", emp:"Crooked Arrow Co.",
+    secondIdHelp:"Your driver's licence expired in September. Please send a colour photo of the renewed licence, front and back." },
+  { key:"CN", role:"adult", pron:"him", first:"Colby", full:"Colby Douglas Nelson", cit:"Canada",
+    passports:[{label:"Canadian passport", hint:"Canadian passport ending 942, valid to November 2027"}],
+    addr:null, tel:null, email:null, tin:null, occ:"Student",
+    bankRefHelp:"From his bank, on its letterhead and signed, confirming how long he has held the account and that it is in good standing; dated within the last 90 days. If his bank won't issue a letter, an account balance verification that shows the date the account was opened will do." },
+  { key:"JN", role:"minor", first:"Jaden", full:"Jaden McKenzie Nelson",
+    passports:[{label:"Passport", hint:"Canadian passport ending 037, valid to November 2027"}] }
+];
+/* ===================== CLIENT DATA — END ======================= */
+/*
+   CLIENT DATA reference
+   CONFIG.hamilton ...... true when Hamilton needs Annex A data (registration or RA transfer)
+   CONFIG.caye .......... true when the form also gathers the Caye account application
+   CONFIG.accountHolder . the LLC as the client should read it ("your new Cook Islands LLC")
+   CONFIG.pending ....... internal only (not shown to the client): true when the trust
+                          foundation is not yet registered
+   CONFIG.signers ....... first names of the account signatories, when more than one (adds "Who can sign")
+   CONFIG.couple ........ key of a spouse who shares the client's address and bank: one proof of address
+                          and one bank reference for the two of them
+   CONFIG.llcEmailHint .. the LLC's email as a hint to confirm, when one is on file
+   CONFIG.prefill ....... drafted answers from the file: SOW, Bio, Countries_of_Income,
+                          Countries_of_Asset_Location, Primary_Assets (client corrects)
+   CONFIG.noSample ...... true when the client needs no sample reference letter (drops "A sample is enclosed")
+   CONFIG.coupleRefHelp . replaces the couple's bank-reference help (e.g. "an updated version of the letter you gave us")
+   CONFIG.backupOpen .... true to ask whether the client would like to name a backup
+                          Supervisory Board member (when no candidate is on file)
+   PEOPLE[] ............. one entry per natural person:
+     key   two-letter field prefix, unique
+     role  "ar"      the client: Supervisory Board member and Authorised Representative
+           "adult"   adult discretionary beneficiary — full set
+           "minor"   child under 18 — identifying details and passport only
+           "option"  someone the client is asked about. Needs: ask (question), yes (the
+                     yes choice), choices[], as ("backup" or "beneficiary"), and optional
+                     other (the choice that opens name/contact boxes for someone else).
+                     as:"beneficiary" — a yes opens their full section and documents.
+                     as:"backup" — yes/no only: the firm does not submit KYC for backup
+                     Supervisory Board members (RH 2026Oct23), so nothing more is asked.
+     first, full    first name and full name as held (full name is shown)
+     rel            relationship to the client, as shown in headings
+     cit            citizenship hint to confirm, e.g. "Canada" (null = ask)
+     passports[]    {label, hint} to confirm | {label, expired:"Month YYYY", choices?}
+                    | {label} with nothing held (ask). With choices, the client says
+                    whether it has been renewed (e.g. ["Renewed","Not renewed"]).
+     addr, tel, email, tin   hints to confirm (null = ask fresh, no hint shown)
+     emailHelp, occ, emp, wealthCountry   optional pre-fills / help
+     note           optional sentence shown at the top of the person's section
+     explain        replaces the standard "discretionary beneficiary" line (e.g. a spouse who is a
+                    Supervisory Board member and signatory)
+     signer         true for a bank signatory other than the client (adds a second photo ID)
+     bankRefHelp, secondIdHelp   replace that person's document help (e.g. an alternative to a bank
+                    letter, or "the licence we hold has expired")
+     sowHelp        (client only) replaces the source-of-wealth document help, e.g. to say what is held
+*/
+
+const FORM_VERSION = "sh_update_v2/" + CONFIG.clientId;
+const MONTHS = [["January","Jan"],["February","Feb"],["March","Mar"],["April","Apr"],
+  ["May","May"],["June","Jun"],["July","Jul"],["August","Aug"],["September","Sep"],
+  ["October","Oct"],["November","Nov"],["December","Dec"]];
+const NET_WORTH_BANDS = ["Under $1M","$1M – $5M","$5M – $10M","$10M – $25M","$25M – $50M","$50M – $100M","$100M – $1B","Over $1B"];  // maps onto Hamilton: <1M / <100M / <1B / >1B
+const INCOME_BRACKETS = ["Under $100k","$100k – $250k","$250k – $500k","$500k – $1M","$1M – $10M","Over $10M"];  // maps onto Hamilton: <100k / <1M / <10M / >10M
+const WEALTH_SOURCES = ["Employment","Business ownership","Investments","Real estate","Inheritance or gift","Other"];
+const COMPLIANCE_QS = [
+  "Do any of your activities involve goods, software or technology that can be used for both civilian and military purposes?",
+  "Do any of your activities involve high-volume cash transactions?",
+  "Do any of your activities involve arms or military goods, restricted financial services, counterfeit goods or IP infringement, regulated products, drugs, adult content or services, multi-level marketing, or gambling?",
+  "Are you, a close family member or a close associate someone who holds or has held a high-profile public position or function?",
+  "Have you ever had a criminal or police record, or any civil or criminal litigation or charges?",
+  "Have you ever been, or are you now, the subject of a fraud, money laundering, terrorist financing or proliferation financing investigation?",
+  "Have you ever had a judgment or lien filed against you?",
+  "Have you ever been bankrupt or insolvent, or subject to a regulatory penalty?",
+  "Have you ever been subject to international sanctions?"];
+const DOC_STATUS = ["Sent with my reply","To follow","Need help"];
+
+/* ---------- derived wording ---------- */
+/* Client-facing text names no registered agent or bank (RH 2026Oct23): the form stays valid if a
+   counterparty changes. Which institution, and why, is for the cover email. Counterparty names
+   appear only in the staff exports (fill guide, readable summary). */
+const AR = PEOPLE.find(p=>p.role==="ar");
+const ADULTS = PEOPLE.filter(p=>p.role==="adult");
+const MINORS = PEOPLE.filter(p=>p.role==="minor");
+const OPTIONS = PEOPLE.filter(p=>p.role==="option");
+
+/* ---------- small builders ---------- */
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const idOf = n => "f_"+n.replace(/[^A-Za-z0-9_]/g,"_");
+const star = req => req ? '<span class="req">★</span>' : '';
+const TICK = '<svg class="tick" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function fieldText(name, label, o={}){
+  const t = o.type || "text";
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <input type="${t}" id="${idOf(name)}" name="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}"
+      ${o.value!=null?`value="${esc(o.value)}"`:''} ${o.placeholder?`placeholder="${esc(o.placeholder)}"`:''}>
+  </div>`;
+}
+function fieldArea(name, label, o={}){
+  return `<div class="field full">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <textarea id="${idOf(name)}" name="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}"
+      ${o.placeholder?`placeholder="${esc(o.placeholder)}"`:''}>${o.value!=null?esc(o.value):''}</textarea>
+  </div>`;
+}
+function fieldSelect(name, label, opts, o={}){
+  const options = [ (o.value!=null? '' : '<option value="">— select —</option>') ]
+    .concat(opts.map(v=>`<option value="${esc(v)}" ${o.value===v?'selected':''}>${esc(v)}</option>`)).join("");
+  return `<div class="field${o.half===false?' full':''}">
+    <label class="lbl" for="${idOf(name)}">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <select id="${idOf(name)}" name="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}">${options}</select>
+  </div>`;
+}
+function fieldRadio(name, label, opts, o={}){
+  const pills = opts.map((v,i)=>`<span class="opt-pill">
+    <input type="radio" id="${idOf(name)}_${i}" name="${name}" value="${esc(v)}" ${o.value===v?'checked':''}>
+    <label for="${idOf(name)}_${i}">${esc(v)}</label></span>`).join("");
+  return `<fieldset class="field${o.half===false?' full':''}" data-radio="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}">
+    <label class="lbl">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <div class="opts">${pills}</div></fieldset>`;
+}
+function fieldChecks(name, label, opts, o={}){
+  const vals = o.value || [];
+  const pills = opts.map((v,i)=>`<span class="opt-pill">
+    <input type="checkbox" id="${idOf(name)}_${i}" name="${name}" value="${esc(v)}" ${vals.includes(v)?'checked':''}>
+    <label for="${idOf(name)}_${i}">${TICK}${esc(v)}</label></span>`).join("");
+  return `<fieldset class="field full" data-checks="${name}" data-req="${o.req?1:0}" data-label="${esc(label)}">
+    <label class="lbl">${esc(label)}${star(o.req)}</label>
+    ${o.help?`<span class="help">${esc(o.help)}</span>`:''}
+    <div class="opts">${pills}</div></fieldset>`;
+}
+const reveal = (forName, on, inner) => `<div class="reveal" data-revealfor="${forName}" data-revealon="${esc(on)}">${inner}</div>`;
+
+/* "We have X on file" — confirm, or reveal a box for the new value. No hint: ask outright. */
+function confirmField(name, label, hint, o={}){
+  if (!hint) return o.area ? fieldArea(name, label, {req:o.req!==false, help:o.help, placeholder:o.placeholder})
+                           : fieldText(name, label, {req:o.req!==false, half:false, help:o.help, placeholder:o.placeholder, type:o.type});
+  const st = name+"_Status";
+  return `<div class="field full">`+
+    fieldRadio(st, label, ["Still correct","Changed"], {req:true, half:false, help:`On file: ${hint}`})+
+    reveal(st, "Changed", `<div class="grid">`+
+      (o.area ? fieldArea(name, `${label} — new`, {req:true, placeholder:o.placeholder})
+              : fieldText(name, `${label} — new`, {req:true, half:false, placeholder:o.placeholder, type:o.type}))+
+    `</div>`)+`</div>`;
+}
+
+function passportFields(p){
+  const k=p.key, list=p.passports&&p.passports.length ? p.passports : [{label:"Passport"}];
+  return list.map((pp,i)=>{
+    const s = list.length>1 ? String(i+1) : "";
+    const nm = `${k}_Passport${s}`;
+    if (pp.hint) return confirmField(nm, pp.label, pp.hint, {placeholder:"Number and expiry date"});
+    if (pp.expired && pp.choices){
+      return `<div class="field full">`+
+        fieldRadio(nm+"_Renewed", `${pp.label} — renewed?`, pp.choices, {req:true, half:false, help:`The one we hold expired in ${pp.expired}.`})+
+        reveal(nm+"_Renewed", pp.choices[0], `<div class="grid">`+
+          fieldText(nm+"_No", `${pp.label} — number`, {req:true})+fieldText(nm+"_Expiry", "Expiry date", {req:true, placeholder:"e.g. 3 October 2036"})+`</div>`)+
+        `</div>`;
+    }
+    if (pp.expired) return `<div class="talknote" style="grid-column:1/-1"><strong>${esc(pp.label)}.</strong> The one we hold for ${esc(p.first)} expired in ${esc(pp.expired)}. Please enter the renewed passport here and send a colour scan of its photo page (see the documents checklist).</div>`+
+      fieldText(nm+"_No", `Renewed passport — number`, {req:true})+fieldText(nm+"_Expiry", "Expiry date", {req:true, placeholder:"e.g. 3 October 2036"});
+    return fieldText(nm+"_No", `${pp.label} — number`, {req:true})+fieldText(nm+"_Expiry", "Expiry date", {req:true, placeholder:"e.g. 3 October 2036"})+
+      fieldText(nm+"_Country", "Issuing country", {req:true, half:false});
+  }).join("") + (p.passportNote ? `<p class="help" style="grid-column:1/-1; margin:0">${esc(p.passportNote)}</p>` : "");
+}
+
+function personFields(p, opt={}){
+  const k=p.key, isMinor=p.role==="minor";
+  const newPerson = p.role==="option";
+  const you = p.role==="ar", Y = you?"you":"they", YR = you?"your":"their";
+  let h = `<div class="grid">`;
+  if (isMinor || newPerson)
+    h += fieldText(`${k}_Name`, "Full legal name", {req:true, half:false, value:p.full||"", help:"As it appears on the passport. Please correct it if it doesn't."});
+  if (newPerson)
+    h += fieldText(`${k}_DOB`, "Date of birth", {req:true, placeholder:"e.g. 14 March 1975"})+
+         fieldText(`${k}_POB`, "Place of birth (town and country)", {req:true});
+  if (isMinor) return h + passportFields(p) + `</div>`;
+  h += confirmField(`${k}_Citizenship`, "Citizenship(s)", p.cit, {placeholder:`Every country of which ${Y} ${you?"are":"are"} a citizen`});
+  h += passportFields(p);
+  h += confirmField(`${k}_Address`, "Residential address", p.addr, {area:true, placeholder:"Street, town, postcode, country — no P.O. boxes",
+        help: p.addr ? null : `Where ${Y} live now.`});
+  if (!p.addr) h += fieldText(`${k}_AddressSince`, "Living there since", {req:true, placeholder:"e.g. March 2024"});
+  h += fieldArea(`${k}_Mailing`, "Mailing address, if different", {});
+  h += confirmField(`${k}_Mobile`, "Mobile phone", p.tel, {type:"tel", placeholder:"With country code"});
+  h += confirmField(`${k}_Email`, "Email", p.email, {type:"email", help:p.emailHelp});
+  h += confirmField(`${k}_TaxRes`, "Tax residence and tax number", p.tin, {placeholder:"Country, and the tax number there"});
+  h += fieldText(`${k}_TaxRes_Other`, `Any other country where ${Y} ${you?"are":"are"} tax resident now, and the tax number there`, {half:false, placeholder:"Leave blank if none"});
+  h += fieldText(`${k}_Occupation`, "Occupation", {req:true, value:p.occ||"", placeholder:"Job or business activity"});
+  h += fieldText(`${k}_Employer`, "Employer (name and town), if employed", {value:p.emp||""});
+  h += fieldChecks(`${k}_WealthSources`, `How ${YR} wealth was built (tick all that apply)`, WEALTH_SOURCES, {req:true});
+  h += fieldText(`${k}_WealthCountry`, "Country where it was built", {req:true, value:p.wealthCountry||""});
+  h += fieldSelect(`${k}_NetWorth`, "Estimated net worth (USD)", NET_WORTH_BANDS, {req:true});
+  h += fieldSelect(`${k}_Income`, "Annual income (USD)", INCOME_BRACKETS, {req:true});
+  return h + `</div>`;
+}
+const complianceList = `<ol style="margin:8px 0 0 18px; padding:0; font-size:12.5px; color:#5b5645">${COMPLIANCE_QS.map(q=>`<li style="margin:3px 0">${esc(q)}</li>`).join("")}</ol>`;
+function complianceBlock(p, lead){
+  const k=p.key;
+  return `<div class="explain" style="margin-top:16px">${lead}${complianceList}</div>`+
+    fieldRadio(`${k}_Compliance`, `The nine questions above — ${p.first}`, ["No to all nine","Yes to one or more"], {req:true, half:false})+
+    reveal(`${k}_Compliance`, "Yes to one or more", `<div class="grid">`+fieldArea(`${k}_Compliance_Detail`, "Which question, and the details", {req:true})+`</div>`);
+}
+function docRow(name, label, help, opts){
+  return `<div class="docrow">`+fieldRadio(name, label, opts||DOC_STATUS, {req:true, half:false, help})+`</div>`;
+}
+function someoneElse(prefix){
+  return `<div class="grid">`+
+    fieldText(`${prefix}_Full_Name`,"Their full name",{req:true})+
+    fieldText(`${prefix}_Relationship`,"Relationship to you",{req:true, placeholder:"e.g. sibling / trusted friend / adviser"})+
+    fieldText(`${prefix}_Email`,"Their email",{type:"email"})+
+    fieldText(`${prefix}_Telephone`,"Their telephone",{type:"tel"})+
+    fieldText(`${prefix}_Country`,"Their country of residence")+
+  `</div>`;
+}
+
+/* =====================  BUILD THE FORM  ===================== */
+const root = document.getElementById("form-root");
+document.getElementById("client-id-label").textContent = CONFIG.clientId;
+
+(function intro(){
+  const others = ADULTS.length+MINORS.length+OPTIONS.length > 0;
+  const what = CONFIG.caye
+    ? `This form gathers the current information we need for your structure and its bank account, for you and everyone else involved, so you only answer each question once.`
+    : `This form gathers the current information we need for your structure, for you and everyone else involved, in one place.`;
+  document.getElementById("intro").innerHTML =
+   `<h2>Updating your information</h2><p>${what}</p>
+    <ol class="steps">
+      <li>Where we already hold something, it shows as <strong>On file</strong>: tick <em>Still correct</em>, or <em>Changed</em> and enter the new detail. For your security this page never shows full numbers or addresses. Everything else, please fill in fresh: we can work only from current information.</li>
+      ${others?`<li>Complete the sections for the others named in your structure with them.</li>`:""}
+      <li>Use the checklist at the end to tell us which documents are coming, attach them to your reply email, then press <strong>Submit</strong>.</li>
+    </ol>
+    <p class="note">Everything you enter is held in strict confidence and used only for your structure and its administration. If anything is unclear, leave it and we'll go through it with you.</p>`;
+})();
+
+let html = "", n = 0;
+const sec = (title, opt, inner) => { n++;
+  return `<div class="card"><div class="card-head"><span class="badge">${n}</span>
+    <h2>${title}${opt?` <span class="opt">${opt}</span>`:''}</h2></div>${inner}</div>`; };
+
+/* 1 — The client */
+html += sec(esc(AR.full), "your details",
+  `<div class="explain">${AR.note?esc(AR.note)+" ":""}Where you see <strong>On file</strong>, tick <em>Still correct</em> or <em>Changed</em> and enter the new detail. Boxes without it are for you to fill in.</div>`+
+  personFields(AR)+
+  complianceBlock(AR, `These are asked of everyone named in the structure.`));
+
+/* 2 — Source of wealth (and biography for the bank) */
+html += sec("Your source of wealth", "",
+  `<div class="explain">In your own words. A few sentences is enough: how you built your wealth over time, not a list of accounts.</div><div class="grid">`+
+  fieldArea("SOW", "How you built your wealth", {req:true, value:(CONFIG.prefill||{}).SOW, help:(CONFIG.prefill||{}).SOW?"We've drafted this from your file. Please correct anything that has changed.":null, placeholder:"e.g. I built and later sold a manufacturing business in Canada, and have invested the proceeds in listed shares and property."})+
+  fieldText("Countries_of_Wealth", "Countries where your wealth was generated", {req:true, value:AR.wealthCountry||""})+
+  fieldText("Countries_of_Income", "Countries where your income is earned now", {req:true, value:(CONFIG.prefill||{}).Countries_of_Income})+
+  fieldText("Countries_of_Asset_Location", "Countries where your main assets are held now", {req:true, value:(CONFIG.prefill||{}).Countries_of_Asset_Location})+
+  fieldText("Primary_Assets", "Your main assets, briefly", {req:true, value:(CONFIG.prefill||{}).Primary_Assets, placeholder:"e.g. brokerage accounts, business equity, property"})+
+  (CONFIG.caye ? fieldArea("Bio", "Short biography", {req:true, value:(CONFIG.prefill||{}).Bio, help:(CONFIG.prefill||{}).Bio?"We've drafted this from your file. Please correct it.":"Three or four sentences: who you are, what you do, and how your wealth came about.", placeholder:"e.g. Jane is a Canadian entrepreneur who founded…"}) : "")+
+  `</div>`);
+
+/* 3 — The structure: backup Supervisory Board member, people to confirm */
+(function structure(){
+  let inner = "";
+  OPTIONS.forEach(p=>{
+    const q=`${p.key}_Confirm`;
+    inner += `<div class="${inner?'subq':''}">`+
+      (p.lede?`<p class="lede" style="font-size:13.5px; color:#5d5d5d">${esc(p.lede)}</p>`:"")+
+      fieldRadio(q, p.ask, p.choices, {req:true, half:false})+
+      (p.as==="backup" ? "" : reveal(q, p.yes, `<div class="persontitle">${esc(p.first)}'s details</div>`+
+        `<div class="explain">Please complete this with ${esc(p.first)}. As a discretionary beneficiary, ${esc(p.first)} needs to be identified in full.</div>`+
+        personFields(p)+
+        complianceBlock(p, "The same nine questions, for "+esc(p.first)+".")))+
+      (p.other ? reveal(q, p.other, someoneElse(`${p.key}_Other`)) : "")+
+      `</div>`;
+  });
+  if (CONFIG.backupOpen){
+    inner += `<div class="${inner?'subq':''}">`+
+      `<p class="lede" style="font-size:13.5px; color:#5d5d5d">We recommend naming someone who could step in as Supervisory Board member if you were ever unable to act. They would only take on the role if that happened.</p>`+
+      fieldRadio("BackupSB_Name_Now","Would you like to name a backup Supervisory Board member now?",["Yes","No","I'd like to discuss it first"],{req:true, half:false})+
+      reveal("BackupSB_Name_Now","Yes", someoneElse("BackupSB"))+`</div>`;
+  }
+  if (inner) html += sec("Your trust foundation", "who's involved", inner);
+})();
+
+/* 4 — Adult beneficiaries */
+ADULTS.forEach(p=>{
+  html += sec(esc(p.full), p.rel || "discretionary beneficiary",
+    `<div class="explain">${p.note?esc(p.note)+" ":""}${p.explain?esc(p.explain):`${esc(p.first)} is a discretionary beneficiary of the ${CONFIG.pending?"new ":""}trust foundation, so ${p.pron==="her"?"she":p.pron==="him"?"he":"they"} ${p.pron?"needs":"need"} to be identified in full.`} Please complete this with ${p.pron||"them"}.</div>`+
+    personFields(p)+
+    complianceBlock(p, "The same nine questions, for "+esc(p.first)+"."));
+});
+
+/* 5 — Children */
+if (MINORS.length){
+  html += sec(MINORS.map(m=>esc(m.first)).join(" and "), "children under 18",
+    `<div class="explain">For children, only identifying details and a passport are needed.</div>`+
+    MINORS.map(m=>`<div class="persontitle">${esc(m.first)}</div>`+personFields(m)).join(""));
+}
+
+/* 6 — The bank account (Caye) */
+if (CONFIG.caye){
+  html += sec("The bank account", "",
+  `<div class="explain">The account will be in the name of <strong>${esc(CONFIG.accountHolder)}</strong>, ${(CONFIG.signers||[]).length>1?"with "+CONFIG.signers.join(" and ")+" as signatories":"with you as signatory"}. The bank asks what it's for, roughly how much will move through it, and where money comes from and goes to. This describes the pattern you expect; it doesn't stop you receiving or sending funds elsewhere later.</div>
+   <div class="subhead">What the account is for</div><div class="grid">`+
+  fieldRadio("Acct_Main_Use", "Main use", ["Holding and investment account","Holding and investment account, plus a separate operating account for business","Other"],
+    {req:true, half:false, value:"Holding and investment account", help:"Holding and investment: receiving your funds, funding a brokerage account in the LLC's name, and paying the LLC's own costs."})+
+  `</div>`+reveal("Acct_Main_Use","Other",`<div class="grid">`+fieldText("Acct_Main_Use_Other","Please describe",{req:true, half:false})+`</div>`)+
+  `<div class="grid" style="margin-top:14px">`+
+  fieldArea("SOF", "Where the money going into the account comes from", {req:true, placeholder:"e.g. my personal savings held with my bank in Canada, and the proceeds of investments as they are realised"})+
+  fieldText("Sending_Account", "Bank and account the opening deposit will come from", {req:true, half:false})+
+  `</div><div class="subhead">Expected size and activity</div><div class="grid">`+
+  fieldText("Balance_From", "Typical balance — from (USD)", {req:true})+fieldText("Balance_To", "Typical balance — to (USD)", {req:true})+
+  fieldRadio("In_Count", "Payments in, per month", ["1–5","6–10","11–15"], {req:true})+`<div></div>`+
+  fieldText("In_From", "Monthly total in — from (USD)", {req:true})+fieldText("In_To", "Monthly total in — to (USD)", {req:true})+
+  fieldRadio("Out_Count", "Payments out, per month", ["1–5","6–10","11–15"], {req:true})+`<div></div>`+
+  fieldText("Out_From", "Monthly total out — from (USD)", {req:true})+fieldText("Out_To", "Monthly total out — to (USD)", {req:true})+
+  fieldArea("Counterparties", "Who pays in, and who is paid", {req:true, placeholder:"In general terms — e.g. transfers from my own bank account; the LLC's brokerage account; registered agent and management fees"})+
+  fieldText("Countries", "Countries payments will come from or go to", {req:true, half:false})+
+  `</div><div class="notfor" style="margin-top:14px">Please describe only what the LLC will actually do with the account. If you're considering an arrangement between the LLC and a business you own, such as a licence or a lease, tell us about it separately: it needs to be in place and documented before payments under it are described to the bank.</div>`+
+  reveal("Acct_Main_Use","Holding and investment account, plus a separate operating account for business",
+     `<div class="subhead">Operating account</div><div class="grid">`+
+     fieldText("Op_Turnover_Last","Turnover, last financial year (USD)",{req:true})+fieldText("Op_Turnover_Next","Projected turnover, next year (USD)",{req:true})+
+     fieldArea("Op_Suppliers","Top five suppliers",{req:true})+fieldArea("Op_Customers","Top five customers",{req:true})+`</div>`)+
+  `<div class="subhead">Account settings</div><div class="grid">`+
+  fieldRadio("Acct_Type", "Account type", ["Demand deposit (current account)","Savings"], {req:true, value:"Demand deposit (current account)"})+
+  fieldRadio("Acct_Currency", "Currency", ["USD","CAD","EUR","GBP","CHF"], {req:true, value:"USD"})+
+  fieldRadio("Online_Banking", "Online banking", ["Yes","No"], {req:true, value:"Yes"})+
+  fieldRadio("Prepaid_Card", "A card for the account, if the bank offers one", ["Yes","No"], {req:true})+
+  ((CONFIG.signers||[]).length>1 ? fieldRadio("Signing_Rule", "Who can sign", ["Either of you alone","Both of you together"], {req:true, half:false}) : "")+
+  (CONFIG.llcEmailHint ? confirmField("LLC_Email", "Email address for the LLC", CONFIG.llcEmailHint, {type:"email"})
+  : fieldText("LLC_Email", "Email address for the LLC", {req:true, half:false, type:"email",
+    help:"We recommend one for the LLC's business, separate from the one you use with us as your legal representatives. If the LLC already has one, use that."}))+
+  `</div>`);
+}
+
+/* 7 — Documents checklist */
+(function documents(){
+  const days = "dated within the last 90 days";
+  const SAMPLE = CONFIG.noSample ? "" : " A sample is enclosed with our email.";
+  const bankRef = (p) => docRow(`Doc_${p.key}_BankRef`, `${p.first} — bank reference letter`,
+    p.bankRefHelp || `From ${p.key===AR.key?"your":"their"} bank, on its letterhead and signed, confirming how long the account has been held and that it is in good standing; ${days}.${SAMPLE} A bank statement is not a reference letter.`);
+  const passRows = (p) => {
+    const list=p.passports&&p.passports.length?p.passports:[{label:"Passport"}];
+    return list.map((pp,i)=>{
+      const nm=`Doc_${p.key}_Passport${list.length>1?i+1:""}`;
+      if (pp.hint) return docRow(nm, `${p.first} — ${pp.label} scan`, "We hold a copy. Send a new scan only if the passport has been replaced.", ["Not needed — unchanged"].concat(DOC_STATUS));
+      if (pp.choices) return docRow(nm, `${p.first} — ${pp.label} scan`, "A colour scan of the photo page, if it has been renewed.", ["Not renewed"].concat(DOC_STATUS));
+      return docRow(nm, `${p.first} — ${pp.label} scan`, p.role==="minor"&&p.birthCertOnFile
+        ? "A colour scan of the photo page of the current passport. If the passport hasn't been renewed, tell us — we hold the birth certificate."
+        : "A colour scan of the photo page of the current passport.");
+    }).join("");
+  };
+  const poa = (p) => docRow(`Doc_${p.key}_POA`, `${p.first} — proof of address`, `A utility bill or bank statement in ${p.key===AR.key?"your":"their"} own name, showing the residential address, ${days}.`);
+  const fullSet = (p) => passRows(p)+poa(p)+bankRef(p);
+  const CP2 = CONFIG.couple ? PEOPLE.find(x=>x.key===CONFIG.couple) : null;   /* spouse sharing the client's address and bank */
+  const secondID = (p) => docRow(`Doc_${p.key}_SecondID`, `${p.first} — second photo ID`, p.secondIdHelp || "A driver's licence or other government photo ID, colour scan of front and back.");
+  let inner = `<div class="explain">This form can't take files. Please attach the documents to your reply email and tell us here where each one stands. We'll follow up on anything marked <em>To follow</em>. You don't need to arrange a professional reference: we'll take care of it.</div>`;
+  if (CP2){
+    inner += `<div class="subhead">${esc(AR.first)} and ${esc(CP2.first)}</div>`+passRows(AR)+passRows(CP2)+
+      docRow(`Doc_${AR.key}${CP2.key}_POA`, "Proof of address — your home address", `A utility bill or bank statement, ${days}. One naming you both is enough.`)+
+      docRow(`Doc_${AR.key}${CP2.key}_BankRef`, "Bank reference letter", CONFIG.coupleRefHelp || `From your bank, on its letterhead and signed, confirming how long the account has been held and that it is in good standing; ${days}. One letter is enough if it names you both; if you bank separately, one each.${SAMPLE} A bank statement is not a reference letter.`)+
+      secondID(AR)+(CP2.signer?secondID(CP2):"");
+  } else {
+    inner += `<div class="subhead">${esc(AR.first)}</div>`+fullSet(AR)+secondID(AR);
+  }
+  inner +=
+    docRow(`Doc_${AR.key}_SOW`, `${AR.first} — source of wealth`, AR.sowHelp || "A few documents that show where your wealth comes from: for example investment or brokerage statements, the summary page of a recent tax return, or financial statements of a business you own. A clear picture, not a full audit.", DOC_STATUS.concat(["Not sure what to send — let's talk"]))+
+    (CONFIG.caye ? docRow("Doc_SendingStatement", "Statement for the sending account", "The most recent statement for the account the opening deposit will come from.") : "");
+  OPTIONS.filter(p=>p.as!=="backup").forEach(p=>{ inner += reveal(`${p.key}_Confirm`, p.yes, `<div class="subhead">${esc(p.first)}</div>`+fullSet(p)); });
+  ADULTS.filter(p=>!CP2||p.key!==CP2.key).forEach(p=>{ inner += `<div class="subhead">${esc(p.first)}</div>`+fullSet(p)+(p.signer?secondID(p):""); });
+  MINORS.forEach(p=>{ inner += `<div class="subhead">${esc(p.first)}</div>`+passRows(p); });
+  if (CONFIG.caye) inner += `<p class="help" style="margin-top:14px">Some documents may later need to be certified or notarised. We'll arrange that with each of you at the time.</p>`;
+  html += sec("Documents checklist", "please email these to us", inner);
+})();
+
+/* 8 — Anything else */
+html += sec("Anything else", "optional", `<div class="grid">`+fieldArea("Anything_Else", "Anything else we should know", {})+`</div>`);
+
+/* Declaration */
+const purposes = "prepare the applications and know-your-customer forms for my structure and its accounts, and to provide it to the registered agent, bank and other institutions involved";
+html += `<div class="card"><div class="card-head"><span class="badge">✓</span><h2>Declaration</h2></div>
+  <p style="font-size:14px; color:#3a3a3a; margin:0 0 4px">I confirm that the information in this form is true and complete to the best of my knowledge, including the information given for the others named in it, and that my wealth comes from lawful sources. I will tell Sullivan Hart promptly of any change, and authorise Sullivan Hart to use this information to ${purposes}.</p>
+  <span class="opt-pill" style="display:inline-block; margin:14px 0 4px">
+    <input type="checkbox" id="decl-agree" name="Declaration_Agreed" value="Yes" data-reqcheck="1" data-label="the declaration">
+    <label for="decl-agree">${TICK}I have read and agree to the above</label></span>
+  <div class="grid">`+
+    fieldText(`Declaration_Name`,`${AR.first} — type your full name to sign`,{req:true})+
+  `</div>
+  <p class="help" style="margin-top:8px">Date: <span id="decl-date" style="color:var(--dark); font-weight:bold"></span></p>
+  <input type="hidden" name="Declaration_Date">`;
+
+root.innerHTML = html;
+(function(){
+  const d=new Date();
+  document.getElementById("decl-date").textContent=`${d.getDate()} ${MONTHS[d.getMonth()][0]} ${d.getFullYear()}`;
+  document.querySelector('[name="Declaration_Date"]').value=ymdToday();
+})();
+
+/* ---------- delegated events ---------- */
+document.addEventListener("change", e=>{
+  const t=e.target;
+  if (t.type==="radio" && t.name){
+    document.querySelectorAll(`[data-revealfor="${t.name}"]`).forEach(rev=>{ const on=rev.dataset.revealon||"Yes"; rev.classList.toggle("on", t.value===on); });
+  }
+});
+
+/* =====================  COLLECT + VALIDATE  ===================== */
+const hidden = el => !!el.closest(".reveal:not(.on)");
+function collect(){
+  const out=[];
+  root.querySelectorAll("input[name], select[name], textarea[name]").forEach(el=>{
+    if (el.disabled || hidden(el)) return;
+    if (el.type==="radio"){ if(el.checked) out.push([el.name, el.value]); return; }
+    if (el.type==="checkbox"){ if(el.checked) out.push([el.name, el.value]); return; }
+    const v=(el.value||"").trim(); if(v!=="") out.push([el.name, v]);
+  });
+  return out;
+}
+function validate(){
+  const errs=[]; clearInvalid();
+  root.querySelectorAll('[data-req="1"]').forEach(el=>{
+    if (hidden(el)) return;
+    if (el.matches("[data-radio]")){
+      if (!root.querySelector(`input[name="${el.dataset.radio}"]:checked`)){ el.classList.add("fs-bad"); errs.push(el.dataset.label); }
+      return;
+    }
+    if (el.matches("[data-checks]")){
+      if (!root.querySelector(`input[name="${el.dataset.checks}"]:checked`)){ el.classList.add("fs-bad"); errs.push(el.dataset.label); }
+      return;
+    }
+    if (el.disabled) return;
+    const v=(el.value||"").trim();
+    if (v===""){ el.classList.add("invalid"); errs.push(el.dataset.label||el.name); }
+  });
+  root.querySelectorAll('[data-reqcheck="1"]').forEach(cb=>{
+    if (!cb.checked){ const pill=cb.closest(".opt-pill"); if(pill) pill.classList.add("pill-bad"); errs.push("Please confirm "+(cb.dataset.label||"the declaration")); }
+  });
+  return errs;
+}
+function clearInvalid(){
+  root.querySelectorAll(".invalid").forEach(e=>e.classList.remove("invalid"));
+  root.querySelectorAll(".pill-bad").forEach(e=>e.classList.remove("pill-bad"));
+  root.querySelectorAll(".fs-bad").forEach(e=>e.classList.remove("fs-bad"));
+}
+
+/* =====================  EXPORTS  ===================== */
+function toTSV(pairs){ return pairs.map(([k,v])=>`${k}\t${String(v).replace(/\t/g," ").replace(/\r?\n/g," ")}`).join("\n"); }
+function fileStamp(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function ymdToday(){ const d=new Date(); return `${d.getFullYear()}${MONTHS[d.getMonth()][1]}${String(d.getDate()).padStart(2,"0")}`; }
+function readableLabel(name){
+  const el=root.querySelector(`[name="${name}"]`);
+  if(el&&el.dataset&&el.dataset.label) return el.dataset.label;
+  const fs=root.querySelector(`[data-radio="${name}"]`)||root.querySelector(`[data-checks="${name}"]`);
+  if(fs&&fs.dataset&&fs.dataset.label) return fs.dataset.label;
+  return name.replace(/_/g," ");
+}
+function sectionTitleFor(name){
+  const el=root.querySelector(`[name="${name}"]`)||root.querySelector(`[data-radio="${name}"]`);
+  if(!el) return "Other";
+  const card=el.closest(".card"); let t="Other";
+  if(card){ const h=card.querySelector(".card-head h2"); if(h){ const c=h.cloneNode(true); const o=c.querySelector(".opt"); if(o)o.remove(); t=c.textContent.trim(); } }
+  return t;
+}
+function headline(){ return `SULLIVAN HART — INFORMATION UPDATE (${CONFIG.clientId}) · ${[CONFIG.hamilton?"Hamilton":null, CONFIG.caye?"Caye":null].filter(Boolean).join(" + ")}`; }
+function buildReadable(pairs){
+  const order=[], vals={};
+  pairs.forEach(([k,v])=>{ if(!(k in vals)){vals[k]=[];order.push(k);} vals[k].push(v); });
+  const groups=[], gidx={};
+  order.forEach(name=>{
+    const title=sectionTitleFor(name);
+    if(!gidx[title]){ gidx[title]={title,lines:[]}; groups.push(gidx[title]); }
+    gidx[title].lines.push(`${readableLabel(name)}: ${vals[name].join(", ")}`);
+  });
+  const out=[headline(),""];
+  groups.forEach(g=>{ out.push(`== ${g.title.toUpperCase()} ==`); g.lines.forEach(l=>out.push(l)); out.push(""); });
+  return out.join("\n").trim();
+}
+/* Fill guide: Hamilton Annex A per person; Caye application + Schedule 1 + PIS per person */
+function buildMapping(pairs){
+  const m={}; pairs.forEach(([k,v])=>{ (m[k]=m[k]||[]).push(v); });
+  const g=k=>m[k]?m[k].join(", "):"";
+  const conf=k=> g(k+"_Status")==="Changed" ? `CHANGED -> ${g(k)}` : (g(k+"_Status") ? "on file (confirmed)" : (g(k)||"(blank)"));
+  const L=[];
+  L.push(`# ${CONFIG.clientId} — fill guide. "on file (confirmed)" = take the value from the client profile.`);
+  L.push(`# Update the ClientProfile first, then the forms: ${[CONFIG.hamilton?"Hamilton Annex A per person":null, CONFIG.caye?"Caye application + Schedule 1 + Personal Information Sheet per person":null].filter(Boolean).join("; ")}.`);
+  L.push("");
+  if (CONFIG.caye){
+    L.push(`CAYE — PAGE 1`);
+    L.push(`  Account holder: ${CONFIG.accountHolder}`);
+    L.push(`  Type: ${g("Acct_Type")} · Currency: ${g("Acct_Currency")} · Online banking: ${g("Online_Banking")}`);
+    L.push(`  Primary email (LLC): ${conf("LLC_Email")}`);
+    L.push(`  Signing instruction: ${(CONFIG.signers||[]).length>1 ? (g("Signing_Rule")==="Either of you alone"?"Any One Person":(g("Signing_Rule")?"Any Two Persons":"")) : "Any One Person (single signatory)"}`);
+    L.push(`  Card: ${g("Prepaid_Card")}${g("Prepaid_Card")==="Yes"?"  -> send the bank's card application":""}`);
+    L.push(`CAYE — PAGE 2`);
+    L.push(`  Main use: ${g("Acct_Main_Use")==="Other"?g("Acct_Main_Use_Other"):g("Acct_Main_Use")}`);
+    L.push(`  Balance: USD ${g("Balance_From")} to ${g("Balance_To")}`);
+    L.push(`  Incoming: ${g("In_Count")} per month, USD ${g("In_From")} to ${g("In_To")}`);
+    L.push(`  Outgoing: ${g("Out_Count")} per month, USD ${g("Out_From")} to ${g("Out_To")}`);
+    L.push(`  Source of funds (Schedule 1 s.1): ${g("SOF")}  ·  sending account: ${g("Sending_Account")}`);
+    L.push(`  Source of wealth (Schedule 1 s.2): ${g("SOW")}`);
+    L.push(`  Counterparties (Schedule 1 s.3): ${g("Counterparties")}`);
+    L.push(`  Short biography (Schedule 1 s.4): ${g("Bio")}`);
+    L.push(`  Countries: ${g("Countries")}`);
+    if (g("Op_Turnover_Last")) L.push(`  OPERATING ACCOUNT REQUESTED — separate application: turnover ${g("Op_Turnover_Last")} / ${g("Op_Turnover_Next")}; suppliers ${g("Op_Suppliers")}; customers ${g("Op_Customers")}`);
+    else L.push(`  Turnover / suppliers / customers: n/a (holding and investment account)`);
+    L.push("");
+  }
+  L.push(`SOURCE OF WEALTH (${AR.first})`);
+  L.push(`  Narrative: ${g("SOW")}`);
+  L.push(`  Countries — wealth: ${g("Countries_of_Wealth")} · income: ${g("Countries_of_Income")} · assets: ${g("Countries_of_Asset_Location")}`);
+  L.push(`  Main assets: ${g("Primary_Assets")}`);
+  L.push("");
+  const person=(p)=>{
+    const k=p.key;
+    L.push(`${p.first.toUpperCase()} — ${p.role==="ar"?"Supervisory Board member / Authorised Representative":p.role==="minor"?"minor beneficiary":p.role==="adult"?"adult discretionary beneficiary":(p.as==="backup"?"backup Supervisory Board member":"discretionary beneficiary")}`);
+    if (g(`${k}_Name`)) L.push(`  Full legal name: ${g(`${k}_Name`)}`);
+    if (g(`${k}_DOB`)) L.push(`  Born: ${g(`${k}_DOB`)}, ${g(`${k}_POB`)}`);
+    if (p.role!=="minor") L.push(`  Citizenship: ${conf(`${k}_Citizenship`)}`);
+    const list=p.passports&&p.passports.length?p.passports:[{label:"Passport"}];
+    list.forEach((pp,i)=>{ const nm=`${k}_Passport${list.length>1?i+1:""}`;
+      if (pp.hint) L.push(`  ${pp.label}: ${conf(nm)}`);
+      else if (pp.choices) L.push(`  ${pp.label}: ${g(nm+"_Renewed")}${g(nm+"_No")?" — "+g(nm+"_No")+", expires "+g(nm+"_Expiry"):""}`);
+      else L.push(`  ${pp.label}: ${g(nm+"_No")}, expires ${g(nm+"_Expiry")}${g(nm+"_Country")?" ("+g(nm+"_Country")+")":""}`);
+    });
+    if (p.role==="minor"){ L.push(""); return; }
+    L.push(`  Residential address: ${conf(`${k}_Address`)}${g(`${k}_AddressSince`)?"  ·  since "+g(`${k}_AddressSince`):""}${g(`${k}_Mailing`)?"  ·  mailing: "+g(`${k}_Mailing`):""}`);
+    L.push(`  Mobile: ${conf(`${k}_Mobile`)}  ·  Email: ${conf(`${k}_Email`)}`);
+    L.push(`  Tax residence / TIN: ${conf(`${k}_TaxRes`)}${g(`${k}_TaxRes_Other`)?"  ·  also: "+g(`${k}_TaxRes_Other`):""}`);
+    L.push(`  Occupation: ${g(`${k}_Occupation`)}  ·  Employer: ${g(`${k}_Employer`)||"(none given)"}`);
+    L.push(`  Wealth: ${g(`${k}_WealthSources`)} (${g(`${k}_WealthCountry`)})  ·  net worth ${g(`${k}_NetWorth`)}  ·  income ${g(`${k}_Income`)}`);
+    L.push(`  Compliance: ${g(`${k}_Compliance`)}${g(`${k}_Compliance_Detail`)?" — "+g(`${k}_Compliance_Detail`):""}`);
+    L.push("");
+  };
+  person(AR);
+  OPTIONS.forEach(p=>{
+    L.push(`STRUCTURE — ${p.ask}  ->  ${g(`${p.key}_Confirm`)}`);
+    if (g(`${p.key}_Other_Full_Name`)) L.push(`  Someone else: ${g(`${p.key}_Other_Full_Name`)} (${g(`${p.key}_Other_Relationship`)}) · ${g(`${p.key}_Other_Email`)} · ${g(`${p.key}_Other_Telephone`)} · ${g(`${p.key}_Other_Country`)}`);
+    if (p.as!=="backup" && g(`${p.key}_Confirm`)===p.yes) person(p); else L.push("");
+  });
+  if (CONFIG.backupOpen){
+    L.push(`BACKUP SUPERVISORY BOARD MEMBER: ${g("BackupSB_Name_Now")}${g("BackupSB_Full_Name")?" — "+g("BackupSB_Full_Name")+" ("+g("BackupSB_Relationship")+") · "+g("BackupSB_Email")+" · "+g("BackupSB_Telephone")+" · "+g("BackupSB_Country"):""}`);
+    L.push("");
+  }
+  ADULTS.forEach(person);
+  MINORS.forEach(person);
+  L.push(`DOCUMENTS`);
+  pairs.filter(([k])=>k.startsWith("Doc_")).forEach(([k,v])=>L.push(`  ${readableLabel(k)}: ${v}`));
+  L.push("");
+  if (g("Anything_Else")) L.push(`Note from client: ${g("Anything_Else")}`);
+  L.push(`Signed: ${g("Declaration_Name")} on ${g("Declaration_Date")}`);
+  return L.join("\n");
+}
+/* ---------- download / copy ---------- */
+function downloadText(text, filename){
+  try{
+    const blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 1500);
+    return true;
+  }catch(err){ return false; }
+}
+function copyText(text){
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).then(()=>true).catch(()=>false);
+  }
+  return Promise.resolve(false);
+}
+function show(id){ document.getElementById(id).classList.add("on"); }
+function finishUI(){ document.getElementById("submitbar").style.display="none";
+  document.getElementById("intro").style.display="none"; root.style.display="none";
+  const sv=document.getElementById("saver"); if(sv) sv.style.display="none";
+  window.scrollTo({top:0,behavior:"smooth"}); }
+function doneOnline(){ clearSaved(); finishUI(); show("panel-success"); }
+function doneFallback(tsv){
+  clearSaved(); finishUI();
+  downloadText(tsv, `SH_Update_${CONFIG.clientId}_${fileStamp()}.txt`);
+  document.getElementById("fallback-text").value=tsv;
+  show("panel-fallback");
+}
+document.getElementById("btn-download").addEventListener("click", ()=>{
+  downloadText(toTSV(collect()), `SH_Update_${CONFIG.clientId}_${fileStamp()}.txt`);
+});
+document.getElementById("btn-txt").addEventListener("click", async ()=>{
+  const t=toTSV(collect()); const ok=await copyText(t);
+  flash(document.getElementById("btn-txt"), ok?"TSV copied":"copy failed — see console"); if(!ok) console.log(t);
+});
+document.getElementById("btn-map").addEventListener("click", async ()=>{
+  const t=buildMapping(collect()); const ok=await copyText(t);
+  flash(document.getElementById("btn-map"), ok?"fill guide copied":"copy failed — see console"); if(!ok) console.log(t);
+});
+function flash(btn,msg){ const o=btn.textContent; btn.textContent=msg; setTimeout(()=>btn.textContent=o,1600); }
+
+/* ---------- submit ---------- */
+document.getElementById("btn-submit").addEventListener("click", ()=>{
+  const errs=validate();
+  const box=document.getElementById("errsum"), list=document.getElementById("errlist");
+  if (errs.length){
+    list.innerHTML=errs.slice(0,12).map(e=>`<li>${esc(e)}</li>`).join("")
+      +(errs.length>12?`<li>…and ${errs.length-12} more</li>`:"");
+    box.classList.add("on");
+    const firstBad=root.querySelector(".invalid, .fs-bad"); if(firstBad) firstBad.scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  box.classList.remove("on");
+  const pairs=collect(), tsv=toTSV(pairs);
+  const ep=(CONFIG.formEndpoint||"").trim();
+  if (/^https?:\/\//.test(ep)){
+    const fd=new FormData();
+    fd.append("Readable_Summary", buildReadable(pairs));
+    fd.append("Fill_Guide_Mapping", buildMapping(pairs));
+    fd.append("Field_Export_TSV", tsv);
+    fd.append("_client_id", CONFIG.clientId);
+    fd.append("_form_version", FORM_VERSION);
+    fd.append("_subject", `Information update — ${CONFIG.clientId}`);
+    // On any non-OK or network failure go straight to the offline copy/download panel,
+    // never a full-page redirect that would lose the client's answers.
+    fetch(ep,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+      .then(r=>{ if(r.ok){ doneOnline(); } else { doneFallback(tsv); } })
+      .catch(()=> { doneFallback(tsv); });
+  } else { doneFallback(tsv); }
+});
+
+/* ---------- save / restore (localStorage) ---------- */
+/* Saves only what the client has actually touched (2026Oct23), so drafts we pre-fill from the file
+   always show our latest wording and are never overwritten by an older copy saved in the browser. */
+const STORE_KEY="sh_update_v2b_"+CONFIG.clientId;
+let saveTimer=null, RESTORING=true;
+const TOUCHED=new Set();
+function storeAvailable(){ try{ const k="__sh_t"; localStorage.setItem(k,"1"); localStorage.removeItem(k); return true; }catch(e){ return false; } }
+const CAN_SAVE=storeAvailable();
+function snapshot(){
+  const d={v:1, ts:Date.now(), fields:{}, multi:{}};
+  root.querySelectorAll("input[name], select[name], textarea[name]").forEach(el=>{
+    const nm=el.name;
+    if(!TOUCHED.has(nm)) return;
+    if(el.type==="radio"){ if(el.checked) d.fields[nm]=el.value; return; }
+    if(el.type==="checkbox"){ (d.multi[nm]=d.multi[nm]||[]); if(el.checked) d.multi[nm].push(el.value); return; }
+    d.fields[nm]=el.value;
+  });
+  d.touched=[...TOUCHED];
+  return d;
+}
+function saveNow(){ if(!CAN_SAVE||RESTORING) return; try{ localStorage.setItem(STORE_KEY, JSON.stringify(snapshot())); }catch(e){} }
+function scheduleSave(){ if(!CAN_SAVE||RESTORING) return; clearTimeout(saveTimer); saveTimer=setTimeout(saveNow,500); }
+function clearSaved(){ try{ localStorage.removeItem(STORE_KEY); }catch(e){} }
+function syncReveals(){
+  root.querySelectorAll("[data-radio]").forEach(fs=>{
+    const nm=fs.dataset.radio, checked=root.querySelector(`input[name="${nm}"]:checked`);
+    root.querySelectorAll(`[data-revealfor="${nm}"]`).forEach(rev=>{ const on=rev.dataset.revealon||"Yes"; rev.classList.toggle("on", !!checked && checked.value===on); });
+  });
+}
+function restore(d){
+  if(!d||!d.fields) return false; d.multi=d.multi||{};
+  (d.touched||[]).forEach(n=>TOUCHED.add(n));
+  Object.keys(d.fields).forEach(nm=>{
+    const els=root.querySelectorAll(`[name="${nm}"]`); if(!els.length) return;
+    if(els[0].type==="radio"){ els.forEach(r=> r.checked=(r.value===d.fields[nm])); return; }
+    els[0].value=d.fields[nm];
+  });
+  Object.keys(d.multi).forEach(nm=>{ const vals=d.multi[nm]||[];
+    root.querySelectorAll(`input[type=checkbox][name="${nm}"]`).forEach(cb=>{ cb.checked=vals.includes(cb.value); }); });
+  return true;
+}
+(function initSaveRestore(){
+  let resumed=false;
+  if(CAN_SAVE){
+    let saved=null;
+    try{ const raw=localStorage.getItem(STORE_KEY); if(raw) saved=JSON.parse(raw); }catch(e){}
+    if(saved && saved.touched && saved.touched.length){ try{ restore(saved); resumed=true; }catch(e){ console.warn("restore failed", e); } }
+  }
+  syncReveals();
+  RESTORING=false;
+  if(CAN_SAVE){
+    const sv=document.getElementById("saver"); if(sv) sv.style.display="";
+    if(resumed){ const t=document.getElementById("saver-text"); if(t) t.textContent="We've brought back the answers you started earlier — pick up where you left off. (Saved on this device.)"; }
+    const mark=e=>{ if(e.target&&e.target.name){ TOUCHED.add(e.target.name); scheduleSave(); } };
+    document.addEventListener("input", mark, true);
+    document.addEventListener("change", mark, true);
+  }
+})();
+const _startover=document.getElementById("btn-startover");
+if(_startover) _startover.addEventListener("click", ()=>{ if(confirm("Clear everything and start over? This cannot be undone.")){ clearSaved(); location.reload(); } });
+</script>
+</body>
+</html>
